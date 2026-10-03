@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE29A"/>
+      <stop offset="45%" stop-color="#F5B942"/>
+      <stop offset="100%" stop-color="#B8801F"/>
+    </linearGradient>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#141414"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </radialGradient>
+  </defs>
+  <!-- Background Circle -->
+  <circle cx="32" cy="32" r="31" fill="url(#bgGrad)" stroke="#F5B942" stroke-width="2"/>
+  
+  <!-- Bull Horns & Head Icon -->
+  <path d="M18 20C14 14 9 10 3 10C4 14 8 18 13 21L18 20Z" fill="url(#goldGrad)" />
+  <path d="M30 17C35 12 42 11 48 13C45 17 40 20 34 20L30 17Z" fill="url(#goldGrad)" />
+  <path d="M14 21C17 19 28 18 31 21C35 24 36 30 33 34C31 38 26 41 20 41C14 41 10 37 9 32C9 26 11 23 14 21Z" fill="url(#goldGrad)"/>
+  
+  <!-- Dynamic Growth Arrow -->
+  <path d="M33 29L50 13" stroke="url(#goldGrad)" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M42 12H54V24L49 19L45 23L43 21L47 17L42 12Z" fill="url(#goldGrad)"/>
+  
+  <!-- Tiny Gold Underline -->
+  <rect x="18" y="49" width="28" height="3" rx="1.5" fill="url(#goldGrad)" />
+</svg>

@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #050505;
+  --bg-soft: #0B0B0B;
+  --gold: #F5B942;
+  --gold-light: #FFE29A;
+  --gold-dark: #B8801F;
+  --gold-gradient: linear-gradient(180deg, #FFE29A 0%, #F5B942 45%, #B8801F 100%);
+  --white: #FFFFFF;
+  --text-muted: #D6D6D6;
+  --text-dim: #A8A8A8;
+  --border: rgba(255, 255, 255, 0.10);
+}
+
+@theme {
+  --color-ftt-bg: #050505;
+  --color-ftt-bg-soft: #0B0B0B;
+  --color-ftt-gold: #F5B942;
+  --color-ftt-gold-light: #FFE29A;
+  --color-ftt-gold-dark: #B8801F;
+  --color-ftt-white: #FFFFFF;
+  --color-ftt-text-muted: #D6D6D6;
+  --color-ftt-text-dim: #A8A8A8;
+  --color-ftt-border: rgba(255, 255, 255, 0.10);
+
+  --font-heading: var(--font-heading), "Anton", "Bebas Neue", "Oswald", sans-serif;
+  --font-body: var(--font-body), "Inter", sans-serif;
+  --font-script: var(--font-script), "Mrs Saint Delafield", cursive;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 78px;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body), "Inter", sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.font-heading {
+  font-family: var(--font-heading), "Anton", "Bebas Neue", "Oswald", sans-serif;
+}
+
+.font-body {
+  font-family: var(--font-body), "Inter", sans-serif;
+}
+
+.font-script {
+  font-family: var(--font-script), "Mrs Saint Delafield", cursive;
+}
+
+.text-gold-gradient {
+  background: linear-gradient(180deg, #FFE29A 0%, #F5B942 45%, #B8801F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-btn-gradient {
+  background: linear-gradient(135deg, #FFC857 0%, #F0A92E 100%);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@keyframes button-shimmer {
+  0%, 80% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+.animate-shimmer-sweep {
+  animation: button-shimmer 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer-sweep {
+    animation: none !important;
+  }
+}
