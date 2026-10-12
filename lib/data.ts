@@ -334,3 +334,201 @@ export const joinCommunityStats: JoinCommunityStat[] = [
   { icon: "BarChart3", value: "Real Growth", label: "Together with the Community" },
   { icon: "Handshake", value: "Serious Traders", label: "Helping Each Other Succeed" },
 ];
+
+export interface TestimonialItem {
+  id: string;
+  name: string;
+  city: string;
+  avatarInitials: string;
+  category: "passes" | "live" | "psychology";
+  rating: number;
+  highlightBadge: string;
+  payoutAmount: string;
+  firmName: string;
+  quote: string;
+  tradingFocus: string;
+  verifiedStatus: string;
+}
+
+export const testimonialsData: TestimonialItem[] = [
+  {
+    id: "test-01",
+    name: "Suresh V.",
+    city: "Hyderabad, TS",
+    avatarInitials: "SV",
+    category: "passes",
+    rating: 5,
+    highlightBadge: "MFF $100K PASSED",
+    payoutAmount: "$4,850",
+    firmName: "MyFundedFutures",
+    quote:
+      "Before joining FTT, I blew 4 accounts using lagging indicators and telegram tips. Chaitanya anna's structured price action and live execution sessions changed my whole mindset. Passed my MyFundedFutures evaluation on the first attempt and received a $4,850 payout! The Telugu explanations make complex institutional setups so easy to grasp.",
+    tradingFocus: "NQ Futures & Gold",
+    verifiedStatus: "Verified Prop Trader",
+  },
+  {
+    id: "test-02",
+    name: "Karthik R.",
+    city: "Bengaluru, KA",
+    avatarInitials: "KR",
+    category: "live",
+    rating: 5,
+    highlightBadge: "LUCID FUNDED",
+    payoutAmount: "$6,200",
+    firmName: "Lucid Trading",
+    quote:
+      "The daily 7:30 PM IST Live Trading streams are unmatched. Watching Chaitanya anna read order flow, mark liquidity pools, and strictly wait for candle closes taught me patience. I stopped over-trading and collected $6,200 in Lucid Trading payouts. FTT is the real deal.",
+    tradingFocus: "Nasdaq (NQ) & ES",
+    verifiedStatus: "Verified Payout Earner",
+  },
+  {
+    id: "test-03",
+    name: "Venkatesh P.",
+    city: "Visakhapatnam, AP",
+    avatarInitials: "VP",
+    category: "psychology",
+    rating: 5,
+    highlightBadge: "FULL-TIME TRADER",
+    payoutAmount: "$9,400+",
+    firmName: "Multi-Firm Funded",
+    quote:
+      "My biggest hurdle was psychology and revenge trading after losses. FTT's risk framework, weekend simulation replays, and the discipline checklist saved my trading career. I now trade full-time with over $9,400 in documented prop firm withdrawals. Grateful for this community.",
+    tradingFocus: "Gold (XAU/USD) & NQ",
+    verifiedStatus: "Full-Time Funded Trader",
+  },
+  {
+    id: "test-04",
+    name: "Praveen K.",
+    city: "Vijayawada, AP",
+    avatarInitials: "PK",
+    category: "passes",
+    rating: 5,
+    highlightBadge: "2x ACCOUNTS FUNDED",
+    payoutAmount: "$3,500",
+    firmName: "MyFundedFutures",
+    quote:
+      "Most courses sell theory and disappear. In FTT, mentor Chaitanya is on stream daily answering every single question in Telugu. Passed two funded evaluations simultaneously and just withdrew my first $3,500 payout. The Telegram and Discord family is pure positive energy.",
+    tradingFocus: "Futures & Currencies",
+    verifiedStatus: "Verified Community Member",
+  },
+  {
+    id: "test-05",
+    name: "Anil Reddy M.",
+    city: "Dallas, Texas (USA)",
+    avatarInitials: "AR",
+    category: "live",
+    rating: 5,
+    highlightBadge: "NRI PROP TRADER",
+    payoutAmount: "$11,200",
+    firmName: "Lucid Trading",
+    quote:
+      "Being an NRI trading the US session, I watched hundreds of English YouTube channels with zero edge. Chaitanya's institutional SMC concepts and liquidity engineering gave me absolute clarity. Secured $11,200 in Lucid Trading payouts so far. Best Telugu trading platform worldwide.",
+    tradingFocus: "CME Futures & Indices",
+    verifiedStatus: "Verified Global Member",
+  },
+  {
+    id: "test-06",
+    name: "Sai Krishna B.",
+    city: "Warangal, TS",
+    avatarInitials: "SK",
+    category: "psychology",
+    rating: 5,
+    highlightBadge: "DISCIPLINE CERTIFIED",
+    payoutAmount: "$5,100",
+    firmName: "Futures Funded",
+    quote:
+      "I went from constant stress and blown accounts to steady consistency. The rule of maximum 1-2 trades per session and hard stop losses transformed my trading life. Banked a $5,100 payout within 4 months.",
+    tradingFocus: "Gold & Nasdaq 100",
+    verifiedStatus: "Verified Prop Trader",
+  },
+  {
+    id: "test-07",
+    name: "Madhav C.",
+    city: "Guntur, AP",
+    avatarInitials: "MC",
+    category: "passes",
+    rating: 5,
+    highlightBadge: "LUCID $50K PASSED",
+    payoutAmount: "$5,400",
+    firmName: "Lucid Trading",
+    quote:
+      "Learning liquidity sweeps and fair value gaps in Telugu removed all the confusion. Passed Lucid challenge with strict 1% risk per trade and received my first $5,400 transfer.",
+    tradingFocus: "Nasdaq (NQ) Futures",
+    verifiedStatus: "Verified Prop Trader",
+  },
+  {
+    id: "test-08",
+    name: "Rahul Teja",
+    city: "Khammam, TS",
+    avatarInitials: "RT",
+    category: "live",
+    rating: 5,
+    highlightBadge: "LIVE STREAM TRADER",
+    payoutAmount: "$3,800",
+    firmName: "MyFundedFutures",
+    quote:
+      "Chaitanya anna's live market analysis during New York opening is pure mastery. You see the actual execution checklist in action without any hindsight bias. Just withdrew $3,800.",
+    tradingFocus: "Gold (GC) & NQ",
+    verifiedStatus: "Active Live Member",
+  },
+  {
+    id: "test-09",
+    name: "Niharika M.",
+    city: "Hyderabad, TS",
+    avatarInitials: "NM",
+    category: "psychology",
+    rating: 5,
+    highlightBadge: "SYSTEMATIC TRADER",
+    payoutAmount: "$4,200",
+    firmName: "MyFundedFutures",
+    quote:
+      "As a female trader, having a disciplined, supportive Telugu environment was critical. The risk calculator and post-market reviews stopped my impulse trades completely.",
+    tradingFocus: "Forex & US Indices",
+    verifiedStatus: "Verified Funded Member",
+  },
+  {
+    id: "test-10",
+    name: "Sridhar K.",
+    city: "San Jose, CA (USA)",
+    avatarInitials: "SK",
+    category: "passes",
+    rating: 5,
+    highlightBadge: "NRI ELITE TRADER",
+    payoutAmount: "$14,600",
+    firmName: "Lucid Trading",
+    quote:
+      "Trading Silicon Valley hours, FTT gave me the institutional structure I was lacking. The payout proof and mechanical rules gave me complete confidence to scale to multiple accounts.",
+    tradingFocus: "CME Nasdaq & ES",
+    verifiedStatus: "Verified Global Trader",
+  },
+  {
+    id: "test-11",
+    name: "Bhanu Prakash",
+    city: "Tirupati, AP",
+    avatarInitials: "BP",
+    category: "live",
+    rating: 5,
+    highlightBadge: "MFF $150K FUNDED",
+    payoutAmount: "$7,200",
+    firmName: "MyFundedFutures",
+    quote:
+      "Watching the live streams every day helped me develop real patience. Waiting for the key liquidity hunt before entering changed everything. Withdrew $7,200 with zero stress.",
+    tradingFocus: "Nasdaq & Micro Gold",
+    verifiedStatus: "Funded Account Trader",
+  },
+  {
+    id: "test-12",
+    name: "Vikram S.",
+    city: "Rajahmundry, AP",
+    avatarInitials: "VS",
+    category: "psychology",
+    rating: 5,
+    highlightBadge: "RULE-BASED TRADER",
+    payoutAmount: "$6,900",
+    firmName: "Futures Funded",
+    quote:
+      "The weekend simulation replays and trading journal reviews are worth ten times the mentorship fee. If you follow the checklist, the market rewards you consistently.",
+    tradingFocus: "Price Action & Order Flow",
+    verifiedStatus: "Verified Community Member",
+  },
+];

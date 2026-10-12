@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useInView } from "framer-motion";
+import { useInView, useReducedMotion } from "framer-motion";
 
 interface CountUpProps {
   end: number;
@@ -18,7 +18,7 @@ interface CountUpProps {
 export const CountUp: React.FC<CountUpProps> = ({
   end,
   start = 0,
-  duration = 2000,
+  duration = 1800,
   prefix = "",
   suffix = "",
   decimals = 0,
@@ -26,6 +26,8 @@ export const CountUp: React.FC<CountUpProps> = ({
   locale = "en-IN",
   className = "",
 }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   function formatNumber(num: number, dec: number, group: boolean, loc: string): string {
     if (!group) return num.toFixed(dec);
     try {
@@ -45,10 +47,15 @@ export const CountUp: React.FC<CountUpProps> = ({
     `${prefix}${formatNumber(end, decimals, useGrouping, locale)}${suffix}`
   );
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
   const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
+    if (shouldReduceMotion) {
+      setDisplayValue(`${prefix}${formatNumber(end, decimals, useGrouping, locale)}${suffix}`);
+      return;
+    }
+
     if (!isInView || hasAnimatedRef.current) return;
     hasAnimatedRef.current = true;
 
@@ -60,7 +67,7 @@ export const CountUp: React.FC<CountUpProps> = ({
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Smooth cubic ease-out
+      // Smooth cubic-bezier ease-out
       const easeOut = 1 - Math.pow(1 - progress, 3);
       const current = start + (end - start) * easeOut;
 
@@ -78,7 +85,7 @@ export const CountUp: React.FC<CountUpProps> = ({
     return () => {
       cancelAnimationFrame(animId);
     };
-  }, [isInView, end, start, duration, prefix, suffix, decimals, useGrouping, locale]);
+  }, [isInView, end, start, duration, prefix, suffix, decimals, useGrouping, locale, shouldReduceMotion]);
 
   return (
     <span ref={ref} className={`tabular-nums ${className}`}>

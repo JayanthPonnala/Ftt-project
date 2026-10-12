@@ -15,7 +15,7 @@ import {
 import SectionShell from "@/components/ui/SectionShell";
 import Eyebrow from "@/components/ui/Eyebrow";
 import GlassCard from "@/components/ui/GlassCard";
-import Reveal from "@/components/ui/Reveal";
+import Reveal, { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import CountUp from "@/components/ui/CountUp";
 import { mentorStats, philosophy } from "@/lib/data";
 
@@ -48,25 +48,26 @@ export const AboutSection: React.FC = () => {
     <SectionShell id="about" titleId="about-title" glowSide="right">
       <div
         ref={containerRef}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start"
+        className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch"
       >
-        {/* Left Column: Photo (~42% width = 5 cols) */}
-        <div className="lg:col-span-5 relative w-full h-[280px] sm:h-[340px] lg:h-[460px] rounded-2xl overflow-hidden shadow-2xl">
+        {/* Left Column: Photo (~42% width = 5 cols) filling all the way down to My Trading Philosophy */}
+        <div className="lg:col-span-5 relative w-full h-[400px] sm:h-[480px] lg:h-full min-h-[540px] rounded-2xl overflow-hidden shadow-2xl group border border-white/10 self-stretch">
           <motion.div style={{ y: photoY }} className="absolute inset-0 w-full h-[110%] -top-[5%]">
             <Image
-              src="/images/mentor.png"
+              src="/images/mentor-podium.jpg"
               alt="Chaitanya - Founder and Mentor at Forex Trader Telugu"
               fill
               sizes="(max-width: 1024px) 100vw, 42vw"
-              className="object-cover object-[70%_center] lg:object-[68%_center]"
+              className="object-cover object-[center_12%] transition-transform duration-700 ease-out group-hover:scale-105"
+              priority
             />
           </motion.div>
 
-          {/* Right edge fade into #050505 background (desktop) */}
+          {/* Right edge subtle gradient blend (desktop) */}
           <div
             className="hidden lg:block absolute inset-0 pointer-events-none"
             style={{
-              background: "linear-gradient(90deg, transparent 60%, #050505 100%)",
+              background: "linear-gradient(90deg, transparent 75%, #050505 100%)",
             }}
           />
 
@@ -74,7 +75,7 @@ export const AboutSection: React.FC = () => {
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: "linear-gradient(0deg, #050505 0%, transparent 35%)",
+              background: "linear-gradient(0deg, #050505 0%, transparent 20%)",
             }}
           />
         </div>
@@ -120,42 +121,45 @@ export const AboutSection: React.FC = () => {
             </p>
           </Reveal>
 
-          {/* 5. Four Stat Cards */}
-          <Reveal delay={0.2} className="w-full mt-5">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
-              {mentorStats.map((stat, idx) => (
-                <GlassCard
-                  key={idx}
-                  className="p-3 sm:p-3.5 flex flex-col justify-between"
-                  hoverGlow
-                >
-                  <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-[#F5B942]/30 flex items-center justify-center mb-1.5">
-                    {iconMap[stat.icon]}
-                  </div>
-                  <div>
-                    <div className="text-white font-bold text-[15px] sm:text-[17px] leading-tight">
-                      {stat.value !== undefined ? (
-                        <CountUp
-                          end={stat.value}
-                          prefix={stat.prefix || ""}
-                          suffix={stat.suffix || ""}
-                          locale="en-IN"
-                        />
-                      ) : (
-                        <span>{stat.textValue}</span>
-                      )}
-                    </div>
-                    <div className="text-[11px] text-[#A8A8A8] mt-0.5 leading-tight">
-                      {stat.label}
-                    </div>
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-          </Reveal>
+          {/* 5. Four Stat Cards Staggered in View */}
+          <div className="w-full mt-5">
+            <RevealGroup stagger={0.08} delay={0.15}>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+                {mentorStats.map((stat, idx) => (
+                  <RevealItem key={idx}>
+                    <GlassCard
+                      className="p-3 sm:p-3.5 flex flex-col justify-between h-full"
+                      hoverGlow
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-[#F5B942]/30 flex items-center justify-center mb-1.5 transition-colors group-hover:border-[#F5B942]/60 group-hover:bg-[#F5B942]/10">
+                        {iconMap[stat.icon]}
+                      </div>
+                      <div>
+                        <div className="text-white font-bold text-[15px] sm:text-[17px] leading-tight">
+                          {stat.value !== undefined ? (
+                            <CountUp
+                              end={stat.value}
+                              prefix={stat.prefix || ""}
+                              suffix={stat.suffix || ""}
+                              locale="en-IN"
+                            />
+                          ) : (
+                            <span>{stat.textValue}</span>
+                          )}
+                        </div>
+                        <div className="text-[11px] text-[#A8A8A8] mt-0.5 leading-tight">
+                          {stat.label}
+                        </div>
+                      </div>
+                    </GlassCard>
+                  </RevealItem>
+                ))}
+              </div>
+            </RevealGroup>
+          </div>
 
           {/* 6. My Trading Journey */}
-          <Reveal delay={0.25} className="mt-5 sm:mt-6">
+          <Reveal delay={0.2} className="mt-5 sm:mt-6">
             <div className="flex items-center gap-2 mb-2">
               <span className="w-1 h-4 bg-[#F5B942] rounded-full inline-block" />
               <h3 className="font-heading uppercase text-white text-[17px] sm:text-[19px] tracking-wide">
@@ -170,36 +174,41 @@ export const AboutSection: React.FC = () => {
             </p>
           </Reveal>
 
-          {/* 7. My Trading Philosophy (4 cards) */}
-          <Reveal delay={0.3} className="w-full mt-5 sm:mt-6">
-            <div className="flex items-center gap-2 mb-2.5">
-              <span className="w-1 h-4 bg-[#F5B942] rounded-full inline-block" />
-              <h3 className="font-heading uppercase text-white text-[17px] sm:text-[19px] tracking-wide">
-                MY TRADING PHILOSOPHY
-              </h3>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {philosophy.map((item, idx) => (
-                <GlassCard
-                  key={idx}
-                  className={`p-3 transition-all duration-300 ${
-                    idx === 0 ? "border-l-2 border-l-[#F5B942]" : ""
-                  }`}
-                  hoverGlow
-                >
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-[#F5B942]/10 border border-[#F5B942]/40 flex items-center justify-center shrink-0">
-                      {iconMap[item.icon]}
-                    </div>
-                    <div>
-                      <h4 className="text-[13.5px] font-bold text-white">{item.title}</h4>
-                      <p className="text-[11.5px] text-[#A8A8A8] mt-0.5">{item.desc}</p>
-                    </div>
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-          </Reveal>
+          {/* 7. My Trading Philosophy (4 cards) Staggered in View */}
+          <div className="w-full mt-5 sm:mt-6">
+            <Reveal delay={0.22}>
+              <div className="flex items-center gap-2 mb-2.5">
+                <span className="w-1 h-4 bg-[#F5B942] rounded-full inline-block" />
+                <h3 className="font-heading uppercase text-white text-[17px] sm:text-[19px] tracking-wide">
+                  MY TRADING PHILOSOPHY
+                </h3>
+              </div>
+            </Reveal>
+            <RevealGroup stagger={0.08} delay={0.25}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {philosophy.map((item, idx) => (
+                  <RevealItem key={idx}>
+                    <GlassCard
+                      className={`p-3 transition-all duration-300 h-full ${
+                        idx === 0 ? "border-l-2 border-l-[#F5B942]" : ""
+                      }`}
+                      hoverGlow
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-[#F5B942]/10 border border-[#F5B942]/40 flex items-center justify-center shrink-0">
+                          {iconMap[item.icon]}
+                        </div>
+                        <div>
+                          <h4 className="text-[13.5px] font-bold text-white">{item.title}</h4>
+                          <p className="text-[11.5px] text-[#A8A8A8] mt-0.5">{item.desc}</p>
+                        </div>
+                      </div>
+                    </GlassCard>
+                  </RevealItem>
+                ))}
+              </div>
+            </RevealGroup>
+          </div>
         </div>
       </div>
     </SectionShell>

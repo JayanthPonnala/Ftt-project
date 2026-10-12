@@ -22,7 +22,7 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import GlassCard from "@/components/ui/GlassCard";
 import IconBox from "@/components/ui/IconBox";
 import GoldButton from "@/components/ui/GoldButton";
-import Reveal from "@/components/ui/Reveal";
+import Reveal, { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { joinCommunityCards, joinCommunityStats } from "@/lib/data";
 import { SITE } from "@/lib/config";
 
@@ -62,17 +62,17 @@ export const JoinCommunitySection: React.FC = () => {
   return (
     <SectionShell id="join" titleId="join-title" glowSide="right">
       <div ref={containerRef} className="relative">
-        {/* Background Trading Floor Image Anchored Top-Right */}
+        {/* Background Trading Floor Image Anchored Top-Right with subtle hover zoom */}
         <motion.div
           style={{ y: bgY }}
-          className="absolute top-0 right-0 w-full sm:w-[55%] lg:w-[45%] h-[260px] sm:h-[320px] lg:h-[380px] rounded-3xl overflow-hidden pointer-events-none select-none opacity-25 lg:opacity-40"
+          className="absolute top-0 right-0 w-full sm:w-[55%] lg:w-[45%] h-[260px] sm:h-[320px] lg:h-[380px] rounded-3xl overflow-hidden pointer-events-none select-none opacity-25 lg:opacity-40 group/bg"
         >
           <Image
             src="/images/community-room.png"
             alt="FTT Trading Floor & Community Lounge"
             fill
             sizes="(max-width: 1024px) 100vw, 45vw"
-            className="object-cover object-center"
+            className="object-cover object-center transition-transform duration-700 ease-out group-hover/bg:scale-105"
           />
 
           {/* Left Fade */}
@@ -120,32 +120,36 @@ export const JoinCommunitySection: React.FC = () => {
           </Reveal>
         </div>
 
-        {/* 4x2 Grid of Feature Cards (2 cols on tablet, 1 on mobile) */}
-        <div className="relative z-10 mt-8 sm:mt-10 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {joinCommunityCards.map((card, idx) => (
-            <Reveal key={card.title} delay={0.05 + idx * 0.05}>
-              <GlassCard className="p-4 sm:p-5 flex items-start gap-3.5 h-full group hover:border-[#F5B942]/60">
-                <IconBox size="sm" className="shrink-0 mt-0.5 w-10 h-10 rounded-[10px]">
-                  {cardIcons[card.icon]}
-                </IconBox>
-                <div>
-                  <div className="flex flex-wrap items-baseline gap-2">
-                    <h3 className="text-[14.5px] sm:text-[15.5px] font-bold text-white group-hover:text-[#F5B942] transition-colors leading-snug">
-                      {card.title}
-                    </h3>
-                    {card.tag && (
-                      <span className="text-[10.5px] font-semibold text-[#F5B942] bg-[#F5B942]/10 px-2 py-0.5 rounded-full border border-[#F5B942]/30">
-                        {card.tag}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-[12.5px] sm:text-[13px] leading-[1.55] text-[#A8A8A8] mt-1.5">
-                    {card.desc}
-                  </p>
-                </div>
-              </GlassCard>
-            </Reveal>
-          ))}
+        {/* 4x2 Grid of Feature Cards with Staggered Entrance */}
+        <div className="relative z-10 mt-8 sm:mt-10">
+          <RevealGroup stagger={0.06} delay={0.1}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {joinCommunityCards.map((card) => (
+                <RevealItem key={card.title} className="h-full">
+                  <GlassCard className="p-4 sm:p-5 flex items-start gap-3.5 h-full group hover:border-[#F5B942]/60">
+                    <IconBox size="sm" className="shrink-0 mt-0.5 w-10 h-10 rounded-[10px] transition-transform duration-300 group-hover:scale-105">
+                      {cardIcons[card.icon]}
+                    </IconBox>
+                    <div>
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <h3 className="text-[14.5px] sm:text-[15.5px] font-bold text-white group-hover:text-[#F5B942] transition-colors leading-snug">
+                          {card.title}
+                        </h3>
+                        {card.tag && (
+                          <span className="text-[10.5px] font-semibold text-[#F5B942] bg-[#F5B942]/10 px-2 py-0.5 rounded-full border border-[#F5B942]/30">
+                            {card.tag}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[12.5px] sm:text-[13px] leading-[1.55] text-[#A8A8A8] mt-1.5">
+                        {card.desc}
+                      </p>
+                    </div>
+                  </GlassCard>
+                </RevealItem>
+              ))}
+            </div>
+          </RevealGroup>
         </div>
 
         {/* Action Row Under Hairline */}
@@ -162,34 +166,40 @@ export const JoinCommunitySection: React.FC = () => {
             </GoldButton>
           </div>
 
-          {/* 4 Stat Items with Dividers */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-0 sm:divide-x sm:divide-white/10 w-full lg:w-auto">
-            {joinCommunityStats.map((item, idx) => (
-              <div key={idx} className="px-3 sm:px-4 py-1 flex items-center gap-3">
-                <div className="shrink-0">{statIcons[item.icon]}</div>
-                <div>
-                  <span className="font-heading text-[18px] sm:text-[20px] text-white block leading-tight">
-                    {item.value}
-                  </span>
-                  <span className="text-[11px] text-[#A8A8A8] leading-tight block">
-                    {item.label}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* 4 Stat Items with Dividers and Staggered Entrance */}
+          <RevealGroup stagger={0.06} delay={0.15} className="w-full lg:w-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-0 sm:divide-x sm:divide-white/10 w-full lg:w-auto">
+              {joinCommunityStats.map((item, idx) => (
+                <RevealItem key={idx}>
+                  <div className="px-3 sm:px-4 py-1 flex items-center gap-3 group hover:bg-white/[0.02] rounded-lg transition-colors cursor-default">
+                    <div className="shrink-0 transition-transform duration-300 group-hover:scale-110">{statIcons[item.icon]}</div>
+                    <div>
+                      <span className="font-heading text-[18px] sm:text-[20px] text-white block leading-tight group-hover:text-[#F5B942] transition-colors duration-200">
+                        {item.value}
+                      </span>
+                      <span className="text-[11px] text-[#A8A8A8] leading-tight block">
+                        {item.label}
+                      </span>
+                    </div>
+                  </div>
+                </RevealItem>
+              ))}
+            </div>
+          </RevealGroup>
         </div>
 
         {/* Disclaimer Bar */}
-        <div className="relative z-10 mt-10 p-4 sm:p-5 rounded-xl bg-white/[0.02] border border-white/10 flex items-start gap-3.5">
-          <Info className="w-5 h-5 text-[#F5B942] shrink-0 mt-0.5" />
-          <p className="text-[11px] sm:text-[12px] leading-[1.6] text-[#8E8E8E]">
-            FTT provides trading education and community support. We do not provide investment
-            advice or guaranteed returns. Trading in futures, forex and other markets involves
-            substantial risk of loss. Past performance (including prop firm payouts) does not
-            guarantee future results. Please trade only with capital you can afford to lose.
-          </p>
-        </div>
+        <Reveal delay={0.2} className="relative z-10 mt-10">
+          <div className="p-4 sm:p-5 rounded-xl bg-white/[0.02] border border-white/10 flex items-start gap-3.5">
+            <Info className="w-5 h-5 text-[#F5B942] shrink-0 mt-0.5" />
+            <p className="text-[11px] sm:text-[12px] leading-[1.6] text-[#8E8E8E]">
+              FTT provides trading education and community support. We do not provide investment
+              advice or guaranteed returns. Trading in futures, forex and other markets involves
+              substantial risk of loss. Past performance (including prop firm payouts) does not
+              guarantee future results. Please trade only with capital you can afford to lose.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </SectionShell>
   );

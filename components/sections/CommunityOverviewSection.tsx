@@ -2,17 +2,20 @@
 
 import React from "react";
 import { BarChart3, Quote } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import SectionShell from "@/components/ui/SectionShell";
 import Eyebrow from "@/components/ui/Eyebrow";
 import SectionTitle from "@/components/ui/SectionTitle";
 import NumberBadge from "@/components/ui/NumberBadge";
 import GoldButton from "@/components/ui/GoldButton";
 import PlayLink from "@/components/ui/PlayLink";
-import Reveal from "@/components/ui/Reveal";
+import Reveal, { EASE_CUSTOM } from "@/components/ui/Reveal";
 import { communityGrid } from "@/lib/data";
 import { SITE } from "@/lib/config";
 
 export const CommunityOverviewSection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <SectionShell id="community" titleId="community-title" glowSide="left">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
@@ -82,31 +85,38 @@ export const CommunityOverviewSection: React.FC = () => {
           </Reveal>
         </div>
 
-        {/* Right Column: 2x3 Bordered Grid Panel (~60% = 7 cols) */}
+        {/* Right Column: 2x3 Bordered Grid Panel (~60% = 7 cols) with Staggered Cells */}
         <div className="lg:col-span-7">
           <Reveal delay={0.15}>
             <div className="rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-md overflow-hidden grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-white/10 shadow-2xl">
               {communityGrid.map((item, idx) => {
-                // Border logic for 2-column internal dividers
                 const isTopRow = idx < 2;
                 const isLeftCol = idx % 2 === 0;
 
                 return (
-                  <div
+                  <motion.div
                     key={item.id}
-                    className={`group p-4 sm:p-5 lg:p-5.5 flex flex-col justify-between transition-all duration-300 hover:bg-[#F5B942]/[0.035] ${
+                    initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{
+                      duration: 0.6,
+                      delay: 0.1 + idx * 0.08,
+                      ease: EASE_CUSTOM,
+                    }}
+                    className={`group p-4 sm:p-5 lg:p-5.5 flex flex-col justify-between transition-colors duration-300 hover:bg-[#F5B942]/[0.04] ${
                       !isTopRow ? "sm:border-t sm:border-white/10" : ""
                     } ${!isLeftCol ? "sm:border-l sm:border-white/10" : ""}`}
                   >
                     <div>
                       {/* Number Badge + Dash Line */}
                       <div className="flex items-center gap-3 mb-3">
-                        <NumberBadge n={item.number} className="w-9 h-9 text-[13px]" />
+                        <NumberBadge n={item.number} className="w-9 h-9 text-[13px] transition-transform duration-300 group-hover:scale-105" />
                         <span className="w-8 h-[1px] bg-[#F5B942]/40 inline-block transition-all duration-300 group-hover:w-12 group-hover:bg-[#F5B942]" />
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-white font-bold text-[16px] sm:text-[18px] leading-tight uppercase font-body">
+                      <h3 className="text-white font-bold text-[16px] sm:text-[18px] leading-tight uppercase font-body group-hover:text-[#F5B942] transition-colors duration-200">
                         {item.title}
                       </h3>
 
@@ -120,7 +130,7 @@ export const CommunityOverviewSection: React.FC = () => {
                         {item.desc}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>

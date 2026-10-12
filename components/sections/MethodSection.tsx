@@ -7,7 +7,6 @@ import {
   FileText,
   TrendingUp,
   ArrowRight,
-  ChevronDown,
 } from "lucide-react";
 import SectionShell from "@/components/ui/SectionShell";
 import Eyebrow from "@/components/ui/Eyebrow";
@@ -15,7 +14,7 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import NumberBadge from "@/components/ui/NumberBadge";
 import GlassCard from "@/components/ui/GlassCard";
 import GoldUnderlineScribble from "@/components/ui/GoldUnderlineScribble";
-import Reveal from "@/components/ui/Reveal";
+import Reveal, { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { methodSteps } from "@/lib/data";
 
 const iconMap = {
@@ -76,84 +75,90 @@ export const MethodSection: React.FC = () => {
       </Reveal>
 
       {/* 4 Cards in a Row with Arrows */}
-      <div className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
-        {methodSteps.map((step, idx) => {
-          return (
-            <React.Fragment key={step.id}>
-              <Reveal delay={0.1 + idx * 0.08} className="h-full">
-                <GlassCard className="h-full p-4 sm:p-5 flex flex-col justify-between group hover:border-[#F5B942]/60">
-                  <div>
-                    {/* Top Row: Badge + Icon */}
-                    <div className="flex items-center justify-between mb-4">
-                      <NumberBadge n={step.number} className="w-9 h-9 text-[13px]" />
-                      <div className="w-9 h-9 rounded-lg bg-white/[0.03] border border-[#F5B942]/30 flex items-center justify-center transition-colors group-hover:border-[#F5B942]/70 group-hover:bg-[#F5B942]/10">
-                        {iconMap[step.icon]}
+      <div className="mt-8 sm:mt-10">
+        <RevealGroup stagger={0.08} delay={0.1}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
+            {methodSteps.map((step, idx) => {
+              return (
+                <React.Fragment key={step.id}>
+                  <RevealItem className="h-full">
+                    <GlassCard className="h-full p-4 sm:p-5 flex flex-col justify-between group hover:border-[#F5B942]/60">
+                      <div>
+                        {/* Top Row: Badge + Icon */}
+                        <div className="flex items-center justify-between mb-4">
+                          <NumberBadge n={step.number} className="w-9 h-9 text-[13px] transition-transform duration-300 group-hover:scale-105" />
+                          <div className="w-9 h-9 rounded-lg bg-white/[0.03] border border-[#F5B942]/30 flex items-center justify-center transition-colors group-hover:border-[#F5B942]/70 group-hover:bg-[#F5B942]/10">
+                            {iconMap[step.icon]}
+                          </div>
+                        </div>
+
+                        {/* Step Title - Bold, Clean & Neat Inter typography */}
+                        <h3 className="text-white font-bold text-[16.5px] sm:text-[17.5px] font-body tracking-tight leading-snug group-hover:text-[#F5B942] transition-colors">
+                          {step.title}
+                        </h3>
+
+                        {/* Description */}
+                        <p className="text-[12.5px] sm:text-[13.5px] leading-[1.55] text-[#A8A8A8] mt-2">
+                          {step.desc}
+                        </p>
                       </div>
+
+                      {/* 28px x 2px Gold Underline at Bottom */}
+                      <div className="w-7 h-[2px] bg-[#F5B942] rounded-full mt-5 transition-all duration-300 group-hover:w-12" />
+                    </GlassCard>
+                  </RevealItem>
+
+                  {/* Arrow Indicator between cards (desktop right arrow) */}
+                  {idx < methodSteps.length - 1 && (
+                    <div
+                      className="hidden lg:flex absolute top-1/2 -translate-y-1/2 z-20 pointer-events-none text-[#F5B942]/50 transition-transform duration-300 group-hover:translate-x-1"
+                      style={{
+                        left: `calc(${(idx + 1) * 25}% - 14px)`,
+                      }}
+                      aria-hidden="true"
+                    >
+                      <ArrowRight className="w-5 h-5 stroke-[2]" />
                     </div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </RevealGroup>
+      </div>
 
-                    {/* Step Title - Bold, Clean & Neat Inter typography */}
-                    <h3 className="text-white font-bold text-[16.5px] sm:text-[17.5px] font-body tracking-tight leading-snug group-hover:text-[#F5B942] transition-colors">
-                      {step.title}
-                    </h3>
+      {/* Hairline Divider & Equation Strip with Reveal */}
+      <Reveal delay={0.2} className="w-full">
+        <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div>
+            {/* Letter spaced formula header */}
+            <div className="text-[11.5px] uppercase tracking-[0.25em] font-semibold text-[#A8A8A8] mb-2">
+              DISCIPLINE <span className="text-[#F5B942]">×</span> PATIENCE{" "}
+              <span className="text-[#F5B942]">×</span> CONSISTENCY
+            </div>
 
-                    {/* Description */}
-                    <p className="text-[12.5px] sm:text-[13.5px] leading-[1.55] text-[#A8A8A8] mt-2">
-                      {step.desc}
-                    </p>
-                  </div>
-
-                  {/* 28px x 2px Gold Underline at Bottom */}
-                  <div className="w-7 h-[2px] bg-[#F5B942] rounded-full mt-5 transition-all duration-300 group-hover:w-12" />
-                </GlassCard>
-              </Reveal>
-
-              {/* Arrow Indicator between cards (desktop right arrow, mobile down chevron) */}
-              {idx < methodSteps.length - 1 && (
-                <div
-                  className="hidden lg:flex absolute top-1/2 -translate-y-1/2 z-20 pointer-events-none text-[#F5B942]/50"
-                  style={{
-                    left: `calc(${(idx + 1) * 25}% - 14px)`,
-                  }}
-                  aria-hidden="true"
-                >
-                  <ArrowRight className="w-5 h-5 stroke-[2]" />
+            {/* Big Equation */}
+            <div className="font-heading uppercase text-[22px] sm:text-[28px] md:text-[34px] lg:text-[38px] leading-tight text-white flex flex-wrap items-baseline gap-2">
+              <span>DISCIPLINE + PATIENCE + CONSISTENCY =</span>
+              <span className="relative inline-block text-gold-gradient">
+                PROFITABLE.
+                <div className="absolute -bottom-2 left-0 right-0">
+                  <GoldUnderlineScribble />
                 </div>
-              )}
-            </React.Fragment>
-          );
-        })}
-      </div>
-
-      {/* Hairline Divider & Equation Strip */}
-      <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-        <div>
-          {/* Letter spaced formula header */}
-          <div className="text-[11.5px] uppercase tracking-[0.25em] font-semibold text-[#A8A8A8] mb-2">
-            DISCIPLINE <span className="text-[#F5B942]">×</span> PATIENCE{" "}
-            <span className="text-[#F5B942]">×</span> CONSISTENCY
+              </span>
+            </div>
           </div>
 
-          {/* Big Equation */}
-          <div className="font-heading uppercase text-[22px] sm:text-[28px] md:text-[34px] lg:text-[38px] leading-tight text-white flex flex-wrap items-baseline gap-2">
-            <span>DISCIPLINE + PATIENCE + CONSISTENCY =</span>
-            <span className="relative inline-block text-gold-gradient">
-              PROFITABLE.
-              <div className="absolute -bottom-2 left-0 right-0">
-                <GoldUnderlineScribble />
-              </div>
-            </span>
+          {/* Far Right Tagline behind vertical divider */}
+          <div className="flex items-center gap-3.5 lg:border-l lg:border-white/15 lg:pl-6 shrink-0">
+            <div className="text-[13px] sm:text-[14px] leading-snug">
+              <span className="text-[#A8A8A8] block">Same market.</span>
+              <span className="text-[#A8A8A8] block">Same rules.</span>
+              <strong className="text-[#F5B942] font-semibold block">Better results.</strong>
+            </div>
           </div>
         </div>
-
-        {/* Far Right Tagline behind vertical divider */}
-        <div className="flex items-center gap-3.5 lg:border-l lg:border-white/15 lg:pl-6 shrink-0">
-          <div className="text-[13px] sm:text-[14px] leading-snug">
-            <span className="text-[#A8A8A8] block">Same market.</span>
-            <span className="text-[#A8A8A8] block">Same rules.</span>
-            <strong className="text-[#F5B942] font-semibold block">Better results.</strong>
-          </div>
-        </div>
-      </div>
+      </Reveal>
     </SectionShell>
   );
 };

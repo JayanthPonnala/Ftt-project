@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Inter, Mrs_Saint_Delafield } from "next/font/google";
+import { Anton, Inter, Mrs_Saint_Delafield, Space_Grotesk } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import { SITE } from "@/lib/config";
 import "./globals.css";
@@ -22,6 +22,13 @@ const mrsSaintDelafield = Mrs_Saint_Delafield({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-script",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space",
   display: "swap",
 });
 
@@ -78,11 +85,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
       { url: "/images/ftt-logo.jpg", type: "image/jpeg" },
     ],
-    shortcut: "/images/ftt-logo.jpg",
-    apple: "/images/ftt-logo.jpg",
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
   },
   openGraph: {
     title: "Forex Trader Telugu by Chaitanya | FTT Community & Courses",
@@ -156,7 +164,6 @@ const jsonLd = {
         SITE.socials.instagram,
         SITE.socials.telegram,
         SITE.socials.twitter,
-        SITE.socials.discord,
       ],
       founder: {
         "@type": "Person",
@@ -233,7 +240,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${anton.variable} ${inter.variable} ${mrsSaintDelafield.variable} h-full dark`}
+      className={`${anton.variable} ${inter.variable} ${mrsSaintDelafield.variable} ${spaceGrotesk.variable} h-full dark`}
     >
       <head>
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
