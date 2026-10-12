@@ -30,7 +30,7 @@ export const AdminHeader: React.FC = () => {
           <Link href="/admin/blog" className="flex items-center gap-2.5">
             <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#F5B942]/60 shadow-[0_0_10px_rgba(245,185,66,0.25)]">
               <Image
-                src="/images/ftt-logo.jpg"
+                src="/fttlogo.jpg"
                 alt="FTT Logo"
                 fill
                 sizes="32px"

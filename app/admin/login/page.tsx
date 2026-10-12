@@ -64,7 +64,7 @@ function LoginFormContent() {
       <div className="text-center mb-8">
         <div className="relative w-14 h-14 rounded-full overflow-hidden border border-[#F5B942]/60 shadow-[0_0_16px_rgba(245,185,66,0.3)] mx-auto mb-4">
           <Image
-            src="/images/ftt-logo.jpg"
+            src="/fttlogo.jpg"
             alt="FTT Logo"
             fill
             sizes="56px"

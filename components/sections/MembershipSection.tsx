@@ -14,7 +14,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import NumberBadge from "@/components/ui/NumberBadge";
 import IconBox from "@/components/ui/IconBox";
 import CountUp from "@/components/ui/CountUp";
-import FttMark from "@/components/ui/FttMark";
 import Reveal, { EASE_CUSTOM } from "@/components/ui/Reveal";
 import { membershipFeatures, membershipBenefits } from "@/lib/data";
 import { SITE } from "@/lib/config";
@@ -159,7 +158,7 @@ export const MembershipSection: React.FC = () => {
           {/* COLUMN 3: Right Quote, Brand Mark & 10 Features          */}
           {/* ======================================================== */}
           <div className="flex flex-col justify-between">
-            {/* Top Row: Quote (Left) & FTT Community Mark (Right) */}
+            {/* Top Row: Quote */}
             <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
               {/* Bold Quote with Gold Bar */}
               <div className="flex items-center gap-3">
@@ -170,8 +169,6 @@ export const MembershipSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* FTT Community Brand Mark using Official Asset Logo */}
-              <FttMark size={56} className="w-[110px] sm:w-[125px] shrink-0 self-start sm:self-center" />
             </div>
 
             {/* 10 Feature Rows in 2 Sub-Columns with Staggered Entrance */}

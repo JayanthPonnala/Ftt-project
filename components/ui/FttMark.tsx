@@ -15,7 +15,7 @@ export const FttMark: React.FC<FttMarkProps> = ({ className = "", size = 68 }) =
         style={{ width: `${size}px`, height: `${size}px` }}
       >
         <Image
-          src="/images/ftt-logo.jpg"
+          src="/fttlogo.jpg"
           alt="Forex Trader Telugu Logo"
           fill
           sizes={`${size}px`}

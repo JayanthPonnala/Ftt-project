@@ -48,7 +48,7 @@ export const Footer: React.FC = () => {
               >
                 <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0 border border-[#F5B942]/60 shadow-[0_0_12px_rgba(245,185,66,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_18px_rgba(245,185,66,0.4)]">
                   <Image
-                    src="/images/ftt-logo.jpg"
+                    src="/fttlogo.jpg"
                     alt="Forex Trader Telugu"
                     fill
                     sizes="40px"
