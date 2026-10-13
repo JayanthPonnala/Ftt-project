@@ -98,7 +98,7 @@ export const Navbar: React.FC = () => {
           {/* Official FTT Logo with image zoom on hover */}
           <div className="relative w-[36px] h-[36px] sm:w-[42px] sm:h-[42px] rounded-full overflow-hidden shrink-0 border border-[#F5B942]/60 shadow-[0_0_12px_rgba(245,185,66,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_18px_rgba(245,185,66,0.4)]">
             <Image
-              src="/images/ftt-logo.jpg"
+              src="https://res.cloudinary.com/dtqtgdqzq/image/upload/v1791866901/FTT_Logo.jpg"
               alt="Forex Trader Telugu Logo"
               fill
               sizes="42px"
