@@ -21,7 +21,7 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({ showBackToBlog = false }
         >
           <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border border-[#F5B942]/60 shadow-[0_0_12px_rgba(245,185,66,0.25)] transition-transform duration-300 group-hover:scale-105">
             <Image
-              src="/fttlogo.jpg"
+              src="https://res.cloudinary.com/dtqtgdqzq/image/upload/v1791866901/FTT_Logo.jpg"
               alt="Forex Trader Telugu Logo"
               fill
               sizes="36px"
