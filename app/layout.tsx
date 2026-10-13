@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Inter, Mrs_Saint_Delafield } from "next/font/google";
+import { Anton, Inter, Mrs_Saint_Delafield, Space_Grotesk } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import { SITE } from "@/lib/config";
 import "./globals.css";
@@ -22,6 +22,13 @@ const mrsSaintDelafield = Mrs_Saint_Delafield({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-script",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space",
   display: "swap",
 });
 
@@ -78,11 +85,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/images/ftt-logo.jpg", type: "image/jpeg" },
+      { url: "/icon.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/fttlogo.jpg", type: "image/jpeg" },
     ],
-    shortcut: "/images/ftt-logo.jpg",
-    apple: "/images/ftt-logo.jpg",
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
   },
   openGraph: {
     title: "Forex Trader Telugu by Chaitanya | FTT Community & Courses",
@@ -95,7 +103,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/ftt-logo.jpg",
+        url: "/fttlogo.jpg",
         width: 1200,
         height: 1200,
         alt: "Forex Trader Telugu - Official Logo",
@@ -113,7 +121,7 @@ export const metadata: Metadata = {
     title: "Forex Trader Telugu | Best Telugu Trading Community by Chaitanya",
     description:
       "Learn Forex & Futures trading in Telugu. Daily live trading sessions, price action education, and prop firm passing guidance.",
-    images: ["/images/ftt-logo.jpg"],
+    images: ["/fttlogo.jpg"],
     creator: "@forex_telugu",
     site: "@forex_telugu",
   },
@@ -150,13 +158,12 @@ const jsonLd = {
       "@id": "https://forextradertelugu.com/#organization",
       name: "Forex Trader Telugu (FTT)",
       url: "https://forextradertelugu.com",
-      logo: "https://forextradertelugu.com/images/ftt-logo.jpg",
+      logo: "https://forextradertelugu.com/fttlogo.jpg",
       sameAs: [
         SITE.socials.youtube,
         SITE.socials.instagram,
         SITE.socials.telegram,
         SITE.socials.twitter,
-        SITE.socials.discord,
       ],
       founder: {
         "@type": "Person",
@@ -233,11 +240,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${anton.variable} ${inter.variable} ${mrsSaintDelafield.variable} h-full dark`}
+      className={`${anton.variable} ${inter.variable} ${mrsSaintDelafield.variable} ${spaceGrotesk.variable} h-full dark`}
     >
       <head>
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/images/ftt-logo.jpg" />
+        <link rel="apple-touch-icon" href="/fttlogo.jpg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

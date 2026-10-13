@@ -29,7 +29,7 @@ export const PlayLink: React.FC<PlayLinkProps> = ({
     <button
       type="button"
       onClick={handleClick}
-      className={`group inline-flex items-center gap-3 text-left focus-visible:ring-2 focus-visible:ring-[#F5B942] rounded-full outline-none select-none ${className}`}
+      className={`group inline-flex items-center gap-3 text-left focus-visible:ring-2 focus-visible:ring-[#F5B942] rounded-full outline-none select-none transition-all duration-300 hover:scale-[1.035] active:scale-[0.98] ${className}`}
     >
       {/* 48px Circular Play Button */}
       <div className="w-12 h-12 rounded-full border border-[#F5B942]/60 bg-[#F5B942]/5 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:bg-[#F5B942] group-hover:border-[#F5B942] group-hover:shadow-[0_0_20px_rgba(245,185,66,0.35)]">

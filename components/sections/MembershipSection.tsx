@@ -10,12 +10,11 @@ import {
   CalendarDays,
   ArrowRight,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import NumberBadge from "@/components/ui/NumberBadge";
 import IconBox from "@/components/ui/IconBox";
 import CountUp from "@/components/ui/CountUp";
-import FttMark from "@/components/ui/FttMark";
-import Reveal from "@/components/ui/Reveal";
+import Reveal, { EASE_CUSTOM } from "@/components/ui/Reveal";
 import { membershipFeatures, membershipBenefits } from "@/lib/data";
 import { SITE } from "@/lib/config";
 
@@ -29,6 +28,8 @@ const benefitIcons = {
 };
 
 export const MembershipSection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section
       id="courses"
@@ -54,7 +55,7 @@ export const MembershipSection: React.FC = () => {
         aria-hidden="true"
       />
 
-      {/* Main Inner Container - Compact, Zoomed-Out Layout */}
+      {/* Main Inner Container */}
       <div className="relative z-10 max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
         {/* Main Grid: Desktop 34% / 1px / 1fr */}
         <div className="grid grid-cols-1 lg:grid-cols-[34%_1px_1fr] gap-6 xl:gap-10 items-stretch">
@@ -71,7 +72,7 @@ export const MembershipSection: React.FC = () => {
                 </div>
               </Reveal>
 
-              {/* 2. Heading: FTT (white) over COMMUNITY (gold gradient) */}
+              {/* 2. Heading */}
               <Reveal delay={0.08}>
                 <h2
                   id="courses-title"
@@ -119,13 +120,13 @@ export const MembershipSection: React.FC = () => {
 
                 <div className="w-[80px] h-[1px] bg-[#F5B942] mt-2.5" aria-hidden="true" />
 
-                {/* 7. Full-width Pill CTA Button with subtle shimmer */}
+                {/* Full-width Pill CTA Button with subtle scale & hover shadow */}
                 <a
                   href={SITE.joinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Join FTT Community, 6 months access for ₹14,999"
-                  className="relative w-full h-[52px] sm:h-[58px] rounded-full gold-btn-gradient text-[#0A0A0A] font-bold text-[15px] sm:text-[16px] uppercase tracking-[0.08em] flex items-center justify-center gap-2 mt-5 sm:mt-6 shadow-[0_12px_40px_rgba(245,185,66,0.30)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_48px_rgba(245,185,66,0.45)] active:translate-y-0 overflow-hidden group select-none"
+                  className="relative w-full h-[52px] sm:h-[58px] rounded-full gold-btn-gradient text-[#0A0A0A] font-bold text-[15px] sm:text-[16px] uppercase tracking-[0.08em] flex items-center justify-center gap-2 mt-5 sm:mt-6 shadow-[0_12px_40px_rgba(245,185,66,0.30)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_16px_48px_rgba(245,185,66,0.45)] active:scale-[0.98] overflow-hidden group select-none"
                 >
                   {/* Periodic shimmer sweep */}
                   <div
@@ -133,14 +134,14 @@ export const MembershipSection: React.FC = () => {
                     aria-hidden="true"
                   />
                   <span className="relative z-10">JOIN FTT COMMUNITY</span>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1 relative z-10" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1.5 relative z-10" />
                 </a>
               </div>
             </Reveal>
           </div>
 
           {/* ======================================================== */}
-          {/* COLUMN 2: 1px Vertical Divider (Fade top/bottom)          */}
+          {/* COLUMN 2: 1px Vertical Divider                            */}
           {/* ======================================================== */}
           <div
             className="hidden lg:block w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent self-stretch"
@@ -157,7 +158,7 @@ export const MembershipSection: React.FC = () => {
           {/* COLUMN 3: Right Quote, Brand Mark & 10 Features          */}
           {/* ======================================================== */}
           <div className="flex flex-col justify-between">
-            {/* Top Row: Quote (Left) & FTT Community Mark (Right) */}
+            {/* Top Row: Quote */}
             <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
               {/* Bold Quote with Gold Bar */}
               <div className="flex items-center gap-3">
@@ -168,65 +169,67 @@ export const MembershipSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* FTT Community Brand Mark using Official Asset Logo */}
-              <FttMark size={56} className="w-[110px] sm:w-[125px] shrink-0 self-start sm:self-center" />
             </div>
 
-            {/* 10 Feature Rows in 2 Sub-Columns */}
+            {/* 10 Feature Rows in 2 Sub-Columns with Staggered Entrance */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 xl:gap-x-10 mt-3.5">
-              {/* Left Sub-Column: 01 to 04 */}
+              {/* Left Sub-Column: 01 to 05 (5 points) */}
               <div className="flex flex-col">
-                {membershipFeatures.slice(0, 4).map((feat, idx) => (
-                  <div
+                {membershipFeatures.slice(0, 5).map((feat, idx) => (
+                  <motion.div
                     key={feat.number}
-                    className="py-2.5 sm:py-3 flex items-start gap-3 group relative border-b border-white/10 last:border-b-0"
+                    initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{
+                      duration: 0.5,
+                      delay: idx * 0.06,
+                      ease: EASE_CUSTOM,
+                    }}
+                    className="py-2.5 sm:py-3 flex items-start gap-3 group relative border-b border-white/10 last:border-b-0 cursor-default"
                   >
-                    <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      whileInView={{ scale: 1, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.35, delay: idx * 0.05 }}
-                      className="shrink-0 mt-0.5"
-                    >
-                      <NumberBadge n={feat.number} className="w-8 h-8 text-[12px]" />
-                    </motion.div>
+                    <div className="shrink-0 mt-0.5">
+                      <NumberBadge n={feat.number} className="w-8 h-8 text-[12px] transition-transform duration-300 group-hover:scale-105" />
+                    </div>
                     <div className="flex-1">
-                      <h3 className="text-[14px] sm:text-[15px] font-semibold text-white group-hover:text-[#F5B942] group-hover:translate-x-1 transition-all duration-200 leading-snug">
+                      <h3 className="text-[14px] sm:text-[15px] font-semibold text-white group-hover:text-[#F5B942] group-hover:translate-x-1.5 transition-all duration-300 leading-snug">
                         {feat.title}
                       </h3>
                       <p className="text-[12px] sm:text-[12.5px] text-[#A8A8A8] mt-0.5 leading-[1.45]">
                         {feat.desc}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
-              {/* Right Sub-Column: 05 to 10 */}
+              {/* Right Sub-Column: 06 to 10 (5 points) */}
               <div className="flex flex-col">
-                {membershipFeatures.slice(4, 10).map((feat, idx) => (
-                  <div
+                {membershipFeatures.slice(5, 10).map((feat, idx) => (
+                  <motion.div
                     key={feat.number}
-                    className="py-2.5 sm:py-3 flex items-start gap-3 group relative border-b border-white/10 last:border-b-0"
+                    initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{
+                      duration: 0.5,
+                      delay: 0.15 + idx * 0.06,
+                      ease: EASE_CUSTOM,
+                    }}
+                    className="py-2.5 sm:py-3 flex items-start gap-3 group relative border-b border-white/10 last:border-b-0 cursor-default"
                   >
-                    <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      whileInView={{ scale: 1, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.35, delay: 0.2 + idx * 0.05 }}
-                      className="shrink-0 mt-0.5"
-                    >
-                      <NumberBadge n={feat.number} className="w-8 h-8 text-[12px]" />
-                    </motion.div>
+                    <div className="shrink-0 mt-0.5">
+                      <NumberBadge n={feat.number} className="w-8 h-8 text-[12px] transition-transform duration-300 group-hover:scale-105" />
+                    </div>
                     <div className="flex-1">
-                      <h3 className="text-[14px] sm:text-[15px] font-semibold text-white group-hover:text-[#F5B942] group-hover:translate-x-1 transition-all duration-200 leading-snug">
+                      <h3 className="text-[14px] sm:text-[15px] font-semibold text-white group-hover:text-[#F5B942] group-hover:translate-x-1.5 transition-all duration-300 leading-snug">
                         {feat.title}
                       </h3>
                       <p className="text-[12px] sm:text-[12.5px] text-[#A8A8A8] mt-0.5 leading-[1.45]">
                         {feat.desc}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -241,17 +244,17 @@ export const MembershipSection: React.FC = () => {
             {membershipBenefits.map((item, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 12 }}
+                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                className="px-2 sm:px-3 py-1.5 flex items-center lg:items-start gap-2.5 group hover:bg-white/[0.02] rounded-xl transition-colors"
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.55, delay: idx * 0.07, ease: EASE_CUSTOM }}
+                className="px-2 sm:px-3 py-1.5 flex items-center lg:items-start gap-2.5 group hover:bg-white/[0.03] rounded-xl transition-all duration-300 hover:-translate-y-0.5 cursor-default"
               >
-                <IconBox size="sm" className="w-9 h-9 rounded-[8px] shrink-0">
+                <IconBox size="sm" className="w-9 h-9 rounded-[8px] shrink-0 transition-transform duration-300 group-hover:scale-105">
                   {benefitIcons[item.icon]}
                 </IconBox>
                 <div>
-                  <h4 className="text-[12.5px] sm:text-[13.5px] font-semibold text-white leading-tight">
+                  <h4 className="text-[12.5px] sm:text-[13.5px] font-semibold text-white leading-tight group-hover:text-[#F5B942] transition-colors duration-200">
                     {item.title}
                   </h4>
                   <p className="text-[10.5px] sm:text-[11.5px] text-[#A8A8A8] mt-0.5 leading-tight">

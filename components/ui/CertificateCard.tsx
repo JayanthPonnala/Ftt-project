@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Award } from "lucide-react";
+import { EASE_CUSTOM } from "./Reveal";
 
 interface CertificateCardProps {
   firm: string;
@@ -24,12 +25,12 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
 
   return (
     <>
-      {/* Mini Certificate Thumbnail (Tilted by default, straightens on hover) */}
+      {/* Mini Certificate Thumbnail (Tilted by default, straightens and lifts on hover) */}
       <button
         type="button"
         onClick={() => setIsOpen(true)}
         aria-label={`View ${firm} ${amount} Payout Certificate`}
-        className="group/cert relative w-full sm:w-[130px] md:w-[140px] aspect-[4/3] rounded-[8px] bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] border border-[#F5B942]/40 p-3 flex flex-col justify-between shadow-[0_6px_20px_rgba(0,0,0,0.6)] transform -rotate-2 group-hover:rotate-0 group-hover:scale-105 group-hover:border-[#F5B942] group-hover:shadow-[0_0_24px_rgba(245,185,66,0.35)] transition-all duration-300 text-left outline-none focus-visible:ring-2 focus-visible:ring-[#F5B942]"
+        className="group/cert relative w-full sm:w-[130px] md:w-[140px] aspect-[4/3] rounded-[8px] bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] border border-[#F5B942]/40 p-3 flex flex-col justify-between shadow-[0_6px_20px_rgba(0,0,0,0.6)] transform -rotate-2 group-hover:rotate-0 group-hover:scale-105 group-hover:-translate-y-1 group-hover:border-[#F5B942] group-hover:shadow-[0_0_24px_rgba(245,185,66,0.35)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] text-left outline-none focus-visible:ring-2 focus-visible:ring-[#F5B942]"
       >
         {/* Certificate Header */}
         <div className="flex items-center justify-between">
@@ -47,7 +48,7 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
           <span className="text-[8px] uppercase tracking-wider text-[#A8A8A8] block">
             PAYOUT VALUE
           </span>
-          <span className="font-heading text-[17px] text-white tracking-tight leading-none block mt-0.5">
+          <span className="font-heading text-[17px] text-white tracking-tight leading-none block mt-0.5 group-hover:text-gold-gradient transition-colors">
             {amount}
           </span>
         </div>
@@ -85,10 +86,10 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
 
             {/* Modal Dialog */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.25 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ duration: 0.3, ease: EASE_CUSTOM }}
               role="dialog"
               aria-modal="true"
               aria-label={`${firm} Payout Certificate`}
@@ -98,7 +99,7 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="absolute top-5 right-5 p-2 text-white/70 hover:text-white bg-black/60 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-[#F5B942]"
+                className="absolute top-5 right-5 p-2 text-white/70 hover:text-white bg-black/60 rounded-full transition-colors active:scale-95 focus-visible:ring-2 focus-visible:ring-[#F5B942]"
                 aria-label="Close modal"
               >
                 <X className="w-6 h-6" />

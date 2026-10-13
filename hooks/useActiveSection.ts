@@ -10,7 +10,7 @@ const ALL_SECTION_IDS = [
   "method",
   "courses",
   "partners",
-  "results",
+  "blog",
   "join",
   "contact",
 ];

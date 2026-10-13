@@ -23,7 +23,7 @@ export const GoldButton: React.FC<GoldButtonProps> = ({
   target,
   rel,
 }) => {
-  const baseClasses = `group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 gold-btn-gradient text-[#0A0A0A] font-semibold text-[15px] sm:text-[16px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(245,185,66,0.35)] active:translate-y-0 text-center select-none ${
+  const baseClasses = `group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 gold-btn-gradient text-[#0A0A0A] font-semibold text-[15px] sm:text-[16px] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.035] hover:shadow-[0_12px_36px_rgba(245,185,66,0.4)] active:scale-[0.98] text-center select-none ${
     pill ? "rounded-full" : "rounded-[8px]"
   } ${className}`;
 
@@ -31,7 +31,7 @@ export const GoldButton: React.FC<GoldButtonProps> = ({
     <>
       <span>{children}</span>
       {showArrow && (
-        <ArrowRight className="w-[18px] h-[18px] transition-transform duration-300 group-hover:translate-x-1" />
+        <ArrowRight className="w-[18px] h-[18px] transition-transform duration-300 ease-out group-hover:translate-x-1.5" />
       )}
     </>
   );

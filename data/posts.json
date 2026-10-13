@@ -1,0 +1,43 @@
+[
+  {
+    "title": "2w3erdfgbv",
+    "slug": "2w3erdfgbv",
+    "excerpt": "wqedrafgbvsfvcsd  werftfghbftre3w2e3rftg ewrftgfber",
+    "content": "ewrftgbvzszdvf gb f werfgdxbfverwdfrg",
+    "published": true,
+    "id": "a343976e-27a2-483e-adb6-edb9b1ad8606",
+    "created_at": "2026-10-12T18:41:35.359Z",
+    "updated_at": "2026-10-12T18:41:35.359Z",
+    "read_time": "1 min read"
+  },
+  {
+    "id": "11111111-1111-1111-1111-111111111111",
+    "title": "$196,000+ MyFundedFutures Payout: My Scaling Plan & Risk Rules",
+    "slug": "196k-myfundedfutures-payout-scaling-plan",
+    "excerpt": "A complete breakdown of my largest prop firm payout cycle. How I managed drawdown on NQ and Gold, scaled position sizes, and requested the payout.",
+    "content": "# The $196,000+ Prop Firm Payout Playbook\n\nSecuring over **$196,000 in payouts** from MyFundedFutures did not happen by taking oversized gambles or chasing 100-point moves on Nasdaq. It was the result of relentless, boring execution of a mechanical trading strategy.\n\n> \"Consistency is not about making money every day. It is about never violating your daily drawdown limit, no matter how tempted you feel.\"\n\n---\n\n## 1. The Core Risk Framework\n\nWhen managing funded accounts, **capital preservation is your only objective**. The prop firm gives you capital, but they also enforce strict trailing thresholds.\n\nHere is the exact risk configuration I deployed:\n\n- **Daily Loss Limit:** Strictly capped at 1.5% of total account buffer.\n- **Max Stop-Outs per Day:** 2 consecutive losses = session terminated immediately.\n- **Position Sizing:** Started with 2 NQ contracts, only scaling to 4 contracts after building a $5,000 cushion.\n\n```text\nAccount Balance: $150,000\nTrailing Drawdown: $5,000\nMax Daily Risk: $1,250 (0.83% of balance, 25% of buffer)\nRisk per Trade: $600 (approx. 15 points on 2 NQ contracts)\n```\n\n---\n\n## 2. Session Liquidity & Timing\n\nI trade exclusively during high-liquidity market overlaps:\n\n1. **London Open Sweep (11:30 AM - 1:30 PM IST):** Observing EUR/USD and GBP/USD institutional liquidity pools.\n2. **New York Morning Open (7:00 PM - 9:30 PM IST):** Nasdaq (NQ) and Gold (GC) fair value gap fills and previous day high/low raids.\n\nTrading outside these windows introduces erratic spread expansion and low-volume chop that eats away at funded buffers.\n\n---\n\n## 3. The Payout Request Ritual\n\nOnce reaching the 14-day evaluation requirement, many traders make the fatal mistake of attempting to \"double the balance\" before requesting payout. \n\n**Always take the withdrawal.** Requesting regular payouts crystallizes real profits in your bank account and resets your psychological relationship with the charts.",
+    "published": true,
+    "created_at": "2026-10-09T15:36:58.023Z",
+    "updated_at": "2026-10-09T15:36:58.023Z"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222222",
+    "title": "Navigating Volatility: How I Withdrew $187,000+ from Lucid Trading",
+    "slug": "withdrew-187k-lucid-trading-volatility",
+    "excerpt": "Trading high-impact news days and staying disciplined during choppy summer market conditions to achieve consistent withdrawals.",
+    "content": "# Managing Choppy Regimes & $187,000+ in Lucid Trading Payouts\n\nMarkets do not trend 100% of the time. Over 70% of market sessions are spent in ranging consolidations or liquidity-seeking rotations. Learning how to trade or **sit on your hands** during chop is what separates professional traders from gamblers.\n\n---\n\n## The Rule of High Impact News\n\nDuring FOMC and CPI announcement weeks, spreads on futures widen dramatically. Here are my rules:\n\n- **15 Minutes Before News:** Flatten all open contracts. No exceptions.\n- **15 Minutes After News:** Wait for the initial spike to exhaust and the orderbook spreads to normalize.\n- **Enter on Liquidity Retest:** Only take trades after the high and low of the news candle have been tapped and swept.\n\n```json\n{\n  \"instrument\": \"Gold Futures (GC)\",\n  \"payout_total\": \"$187,240.50\",\n  \"average_rr\": \"1:2.4\",\n  \"win_rate\": \"58.4%\"\n}\n```\n\n> \"In the FTT Community, we emphasize that 80% of profitable trading is knowing when NOT to click buy or sell.\"\n\n---\n\n## Mental Stamina on Drawdown Days\n\nWhen you hit a losing trade, your heart rate spikes. Dopamine triggers urge you to enter another trade to \"get back to even\". \n\nTo defeat revenge trading, I close the laptop screen and do 20 pushups or step outside for a 10-minute walk. Your edge only works over hundreds of trades, not in 5 minutes.",
+    "published": true,
+    "created_at": "2026-10-05T15:36:58.023Z",
+    "updated_at": "2026-10-05T15:36:58.023Z"
+  },
+  {
+    "id": "33333333-3333-3333-3333-333333333333",
+    "title": "$168,000+ Forex Payouts: Why Simplicity Always Outperforms Complexity",
+    "slug": "168k-forex-payouts-simplicity-over-complexity",
+    "excerpt": "Trading major Forex pairs with pure price action, clean liquidity sweeps, and zero lagging indicators.",
+    "content": "# Naked Charts: Why Simplicity Outperforms Indicators\n\nWhen Telugu traders ask me what magical indicators I rely on to generate hundreds of thousands of dollars in payouts, they are usually stunned by my answer:\n\n**I trade completely naked charts.**\n\nNo RSI, no Bollinger Bands, no Stochastic oscillators, and no lagging ribbons.\n\n---\n\n## What Actually Moves Forex Prices?\n\nPrice moves for two reasons only:\n1. **To engineer and sweep liquidity (Stop-losses of retail traders).**\n2. **To rebalance price inefficiencies (Fair Value Gaps & imbalances).**\n\nIndicators only calculate the average of past prices. By the time a moving average crosses or an RSI registers overbought, the institutional move has already ended.\n\n### My Daily Execution Checklist:\n\n* [x] Mark Previous Day High (PDH) and Previous Day Low (PDL)\n* [x] Identify clean 15-minute Fair Value Gaps (FVG)\n* [x] Wait for a liquidity raid into Asian highs/lows\n* [x] Wait for 1-minute Market Structure Shift (MSS) with displacement\n* [x] Place limit order at 50% discount with stop above swing high\n\n---\n\n## The Power of the Telugu Trading Community\n\nTrading can be lonely and isolating. Having a team of dedicated traders analyzing the charts alongside you every day keeps you accountable. Join our live trade rooms, log your trades, and let discipline do the compounding.",
+    "published": true,
+    "created_at": "2026-09-30T15:36:58.023Z",
+    "updated_at": "2026-09-30T15:36:58.023Z"
+  }
+]

@@ -5,26 +5,40 @@ import Lenis from "lenis";
 
 interface SmoothScrollContextType {
   scrollToId: (id: string) => void;
+  lenis: Lenis | null;
 }
 
 const SmoothScrollContext = createContext<SmoothScrollContextType>({
   scrollToId: () => {},
+  lenis: null,
 });
 
 export const useSmoothScroll = () => useContext(SmoothScrollContext);
 
 export const scrollToIdGlobal = (id: string) => {
+  if (typeof window === "undefined") return;
+
   const cleanId = id.replace(/^#/, "");
   const target = document.getElementById(cleanId);
   if (!target) return;
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-  const offset = isMobile ? -64 : -78;
+  const isMobile = window.innerWidth < 768;
+  const offset = isMobile ? -64 : -76;
 
-  if (typeof window !== "undefined" && (window as unknown as { __lenis?: Lenis }).__lenis) {
-    (window as unknown as { __lenis: Lenis }).__lenis.scrollTo(target, { offset });
-  } else if (target) {
-    target.scrollIntoView({ behavior: "smooth" });
+  const lenisInstance = (window as unknown as { __lenis?: Lenis }).__lenis;
+
+  if (lenisInstance) {
+    lenisInstance.scrollTo(target, {
+      offset,
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+  } else {
+    const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: elementPosition + offset,
+      behavior: "smooth",
+    });
   }
 };
 
@@ -38,8 +52,10 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
 
     const lenis = new Lenis({
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      touchMultiplier: 1.5,
+      infinite: false,
     });
 
     lenisRef.current = lenis;
@@ -52,16 +68,46 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
 
     const animId = requestAnimationFrame(raf);
 
-    // Scroll to initial hash if present
+    // Intercept clicks on anchor tags pointing to hashes for buttery inertia scrolling
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      const anchor = target?.closest<HTMLAnchorElement>("a[href*='#']");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+
+      const hashIndex = href.indexOf("#");
+      if (hashIndex === -1) return;
+
+      const pathPart = href.substring(0, hashIndex);
+      const hashPart = href.substring(hashIndex + 1);
+
+      if (
+        (pathPart === "" || pathPart === "/" || pathPart === window.location.pathname) &&
+        hashPart
+      ) {
+        const targetElement = document.getElementById(hashPart);
+        if (targetElement) {
+          e.preventDefault();
+          scrollToIdGlobal(hashPart);
+        }
+      }
+    };
+
+    document.addEventListener("click", handleAnchorClick);
+
+    // Scroll to initial hash if present on mount
     if (window.location.hash) {
       const targetId = window.location.hash.slice(1);
       setTimeout(() => {
         scrollToIdGlobal(targetId);
-      }, 300);
+      }, 350);
     }
 
     return () => {
       cancelAnimationFrame(animId);
+      document.removeEventListener("click", handleAnchorClick);
       lenis.destroy();
       (window as unknown as { __lenis?: Lenis }).__lenis = undefined;
     };
@@ -72,7 +118,7 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <SmoothScrollContext.Provider value={{ scrollToId }}>
+    <SmoothScrollContext.Provider value={{ scrollToId, lenis: lenisRef.current }}>
       {children}
     </SmoothScrollContext.Provider>
   );

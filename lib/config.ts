@@ -5,11 +5,10 @@ export const SITE = {
   price: "₹14,999",
   priceLabel: "6 MONTHS ACCESS",
   socials: {
-    youtube: "https://youtube.com/@forextradertelugu",
-    instagram: "https://instagram.com/forextradertelugu",
+    youtube: "https://www.youtube.com/@forextradertelugu1",
+    instagram: "https://www.instagram.com/forextradertelugu.fx/",
     telegram: "https://t.me/forextradertelugu",
     twitter: "https://x.com/forex_telugu",
-    discord: "https://discord.gg/your-invite",
     email: "support@forextradertelugu.com",
   },
 };

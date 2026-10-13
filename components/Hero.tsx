@@ -2,12 +2,17 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, BarChart3, Users, Play, X } from "lucide-react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+  type Variants,
+} from "framer-motion";
 import StatItem from "./StatItem";
 import PartnerLogos from "./PartnerLogos";
 import { scrollToIdGlobal } from "./SmoothScroll";
+import { EASE_CUSTOM } from "./ui/Reveal";
 
 const STORY_VIDEO_URL = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
 
@@ -36,26 +41,27 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
+      staggerChildren: 0.1,
+      delayChildren: 0.05,
     },
   },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
-      ease: "easeOut",
+      duration: 0.65,
+      ease: EASE_CUSTOM,
     },
   },
 };
 
 export const Hero: React.FC = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section
@@ -63,15 +69,16 @@ export const Hero: React.FC = () => {
       aria-labelledby="hero-heading"
       className="relative min-h-[640px] lg:h-screen lg:max-h-screen bg-[#050505] overflow-hidden flex items-center pt-[64px] lg:pt-[68px] pb-4 sm:pb-6 scroll-mt-16 md:scroll-mt-[78px]"
     >
-      {/* Background Image - static, properly positioned and scaled */}
+      {/* Background Image */}
       <div className="absolute inset-0 w-full h-full pointer-events-none select-none">
         <Image
-          src="/images/hero-bg.png"
-          alt="Chaitanya, Forex Trader Telugu founder, seated at his trading desk"
+          src="https://res.cloudinary.com/dtqtgdqzq/image/upload/v1791737603/FTT_hero_background_4K.png"
+          alt="Forex Trader Telugu"
           fill
           priority
+          quality={100}
           sizes="100vw"
-          className="object-cover object-[72%_center] lg:object-[68%_center] xl:object-[65%_center]"
+          className="object-cover"
         />
       </div>
 
@@ -142,30 +149,89 @@ export const Hero: React.FC = () => {
             <span>CONSISTENCY</span>
           </motion.div>
 
-          {/* 2. Heading */}
-          <motion.h1
+          {/* 2. Masked Word-by-Word Hero Headline Reveal */}
+          <h1
             id="hero-heading"
-            variants={itemVariants}
             className="font-heading uppercase tracking-[0.5px] text-[36px] sm:text-[48px] md:text-[58px] lg:text-[68px] xl:text-[76px] leading-[0.95] drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
           >
-            <span className="block text-white">FOREX TRADER</span>
-            <span className="block text-gold-gradient">TELUGU</span>
-          </motion.h1>
+            {/* Line 1: FOREX TRADER with masked slide-up per word */}
+            <span className="block text-white">
+              <span className="inline-block overflow-hidden mr-[0.25em] align-top">
+                <motion.span
+                  className="inline-block"
+                  initial={
+                    shouldReduceMotion
+                      ? { opacity: 1, y: 0 }
+                      : { y: "110%", opacity: 0 }
+                  }
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.7, ease: EASE_CUSTOM, delay: 0.12 }}
+                >
+                  FOREX
+                </motion.span>
+              </span>
+              <span className="inline-block overflow-hidden align-top">
+                <motion.span
+                  className="inline-block"
+                  initial={
+                    shouldReduceMotion
+                      ? { opacity: 1, y: 0 }
+                      : { y: "110%", opacity: 0 }
+                  }
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.7, ease: EASE_CUSTOM, delay: 0.22 }}
+                >
+                  TRADER
+                </motion.span>
+              </span>
+            </span>
 
-          {/* 3. Byline */}
-          <motion.div
-            variants={itemVariants}
-            className="flex items-baseline -mt-1 sm:-mt-1.5"
-          >
-            <span className="font-body text-[#A8A8A8] text-[18px] sm:text-[22px] lg:text-[24px] font-normal">
+            {/* Line 2: TELUGU with masked slide-up */}
+            <span className="block text-gold-gradient overflow-hidden">
+              <motion.span
+                className="inline-block"
+                initial={
+                  shouldReduceMotion
+                    ? { opacity: 1, y: 0 }
+                    : { y: "110%", opacity: 0 }
+                }
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.7, ease: EASE_CUSTOM, delay: 0.34 }}
+              >
+                TELUGU
+              </motion.span>
+            </span>
+          </h1>
+
+          {/* 3. Byline with masked slide and rotation */}
+          <div className="flex items-baseline -mt-1 sm:-mt-1.5 overflow-hidden">
+            <motion.span
+              initial={
+                shouldReduceMotion
+                  ? { opacity: 1, y: 0 }
+                  : { y: 24, opacity: 0 }
+              }
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: EASE_CUSTOM, delay: 0.44 }}
+              className="font-body text-[#A8A8A8] text-[18px] sm:text-[22px] lg:text-[24px] font-normal"
+            >
               by
-            </span>
-            <span className="font-script text-[#F5B942] text-[40px] sm:text-[48px] lg:text-[56px] ml-2.5 -rotate-[3deg] select-none leading-none drop-shadow-[0_2px_14px_rgba(245,185,66,0.3)]">
+            </motion.span>
+            <motion.span
+              initial={
+                shouldReduceMotion
+                  ? { opacity: 1, y: 0, rotate: -3 }
+                  : { y: 32, opacity: 0, rotate: -8 }
+              }
+              animate={{ y: 0, opacity: 1, rotate: -3 }}
+              transition={{ duration: 0.7, ease: EASE_CUSTOM, delay: 0.52 }}
+              className="font-script text-[#F5B942] text-[40px] sm:text-[48px] lg:text-[56px] ml-2.5 -rotate-[3deg] select-none leading-none drop-shadow-[0_2px_14px_rgba(245,185,66,0.3)] origin-left"
+            >
               Chaitanya
-            </span>
-          </motion.div>
+            </motion.span>
+          </div>
 
-          {/* 4. Description paragraph */}
+          {/* 4. Description paragraph with soft fade-up */}
           <motion.p
             variants={itemVariants}
             className="font-body text-[#D6D6D6] text-[14px] sm:text-[15px] lg:text-[16px] leading-[1.45] max-w-[540px] mt-3.5 sm:mt-4 font-normal"
@@ -175,7 +241,7 @@ export const Hero: React.FC = () => {
             community.
           </motion.p>
 
-          {/* 5. Stats row */}
+          {/* 5. Stats row with count-up animations */}
           <motion.div
             variants={itemVariants}
             className="mt-4 sm:mt-6 flex flex-wrap items-center gap-5 sm:gap-7 lg:gap-8"
@@ -186,18 +252,25 @@ export const Hero: React.FC = () => {
               label="Total Funding & Payouts"
             />
             <StatItem
-              icon={<BarChart3 className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />}
+              icon={
+                <BarChart3
+                  className="w-5 h-5 sm:w-6 sm:h-6"
+                  strokeWidth={1.5}
+                />
+              }
               value="9+"
               label="Years Experience"
             />
             <StatItem
-              icon={<Users className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />}
-              value="50K+"
+              icon={
+                <Users className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />
+              }
+              value="5k+"
               label="Active Community"
             />
           </motion.div>
 
-          {/* 6. CTA buttons */}
+          {/* 6. CTA buttons with hover scale (1.03-1.05) & shadow */}
           <motion.div
             variants={itemVariants}
             className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto"
@@ -206,17 +279,17 @@ export const Hero: React.FC = () => {
             <button
               type="button"
               onClick={() => scrollToIdGlobal("courses")}
-              className="group relative inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-[8px] gold-btn-gradient text-[#0A0A0A] font-semibold text-[14px] sm:text-[15px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(245,185,66,0.35)] active:translate-y-0 text-center select-none"
+              className="group relative inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-[8px] gold-btn-gradient text-[#0A0A0A] font-semibold text-[14px] sm:text-[15px] transition-all duration-300 hover:scale-[1.035] hover:shadow-[0_12px_36px_rgba(245,185,66,0.4)] active:scale-[0.98] text-center select-none"
             >
               <span>Explore Courses</span>
-              <ArrowRight className="w-[16px] h-[16px] transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="w-[16px] h-[16px] transition-transform duration-300 group-hover:translate-x-1.5" />
             </button>
 
             {/* Secondary CTA */}
             <button
               type="button"
               onClick={() => setIsVideoModalOpen(true)}
-              className="group inline-flex items-center justify-center gap-2.5 px-5 sm:px-6 py-2.5 sm:py-3 rounded-[8px] bg-black/35 backdrop-blur-md border border-white/55 text-white font-medium text-[14px] sm:text-[15px] transition-all duration-300 hover:border-[#F5B942] hover:text-[#F5B942] hover:bg-white/[0.06] active:scale-[0.98]"
+              className="group inline-flex items-center justify-center gap-2.5 px-5 sm:px-6 py-2.5 sm:py-3 rounded-[8px] bg-black/35 backdrop-blur-md border border-white/55 text-white font-medium text-[14px] sm:text-[15px] transition-all duration-300 hover:scale-[1.035] hover:border-[#F5B942] hover:text-[#F5B942] hover:bg-white/[0.06] hover:shadow-[0_0_24px_rgba(245,185,66,0.2)] active:scale-[0.98]"
             >
               {/* Circular play icon */}
               <span className="w-6 h-6 rounded-full border border-white group-hover:border-[#F5B942] flex items-center justify-center shrink-0 transition-colors">
@@ -233,7 +306,7 @@ export const Hero: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Video Modal */}
+      {/* Video Modal with smooth scale/fade animation */}
       <AnimatePresence>
         {isVideoModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -249,10 +322,10 @@ export const Hero: React.FC = () => {
 
             {/* Modal Dialog */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, scale: 0.94, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.25 }}
+              exit={{ opacity: 0, scale: 0.94, y: 24 }}
+              transition={{ duration: 0.3, ease: EASE_CUSTOM }}
               className="relative w-full max-w-4xl bg-[#0B0B0B] border border-white/15 rounded-2xl overflow-hidden shadow-2xl z-10"
               role="dialog"
               aria-modal="true"
@@ -262,7 +335,7 @@ export const Hero: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsVideoModalOpen(false)}
-                className="absolute top-4 right-4 z-20 p-2 text-white/70 hover:text-white bg-black/60 hover:bg-black/90 rounded-full transition-colors"
+                className="absolute top-4 right-4 z-20 p-2 text-white/70 hover:text-white bg-black/60 hover:bg-black/90 rounded-full transition-colors active:scale-95"
                 aria-label="Close modal"
               >
                 <X className="w-6 h-6" />
