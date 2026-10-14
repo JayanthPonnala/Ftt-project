@@ -1,203 +1,327 @@
 "use client";
 
-import React, { useRef } from "react";
-import {
-  ClipboardCheck,
-  Coins,
-  Banknote,
-  ShieldCheck,
-  BarChart3,
-  RefreshCw,
-  Landmark,
-  ArrowRight,
-} from "lucide-react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import React, { useState } from "react";
+import { Check, Clipboard, Info, Percent, ShieldCheck, Users } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import SectionShell from "@/components/ui/SectionShell";
 import Eyebrow from "@/components/ui/Eyebrow";
-import NumberBadge from "@/components/ui/NumberBadge";
-import GlassCard from "@/components/ui/GlassCard";
-import GoldUnderlineScribble from "@/components/ui/GoldUnderlineScribble";
-import Reveal, { RevealGroup, RevealItem, EASE_CUSTOM } from "@/components/ui/Reveal";
-import { routeSteps, routeBenefits } from "@/lib/data";
+import Reveal, { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 
-const stepIcons = {
-  ClipboardCheck: <ClipboardCheck className="w-6 h-6 text-[#F5B942]" />,
-  Coins: <Coins className="w-6 h-6 text-[#F5B942]" />,
-  Banknote: <Banknote className="w-6 h-6 text-[#F5B942]" />,
+type Deal = {
+  kind: string;
+  name: string;
+  description: string;
+  offer: string;
+  offerDetail: string;
+  secondaryOffer?: string;
+  secondaryOfferDetail?: string;
+  bullets: string[];
+  code?: string;
+  secondaryCode?: string;
+  secondaryLabel?: string;
+  action: string;
+  href: string;
+  tone: "gold" | "green" | "blue" | "purple";
 };
 
-const benefitIcons = {
-  ShieldCheck: <ShieldCheck className="w-5 h-5 text-[#F5B942]" />,
-  BarChart3: <BarChart3 className="w-5 h-5 text-[#F5B942]" />,
-  RefreshCw: <RefreshCw className="w-5 h-5 text-[#F5B942]" />,
-  Landmark: <Landmark className="w-5 h-5 text-[#F5B942]" />,
+const deals: Deal[] = [
+  {
+    kind: "PROP FIRM",
+    name: "MyFunded Futures",
+    description: "The Retail Prop Firm",
+    offer: "50% OFF",
+    offerDetail: "Rapid • Builder • Pro Accounts",
+    bullets: ["High payouts", "Trader-friendly rules", "Built for serious traders", "Trade up to $200K"],
+    code: "FTT",
+    action: "Claim Offer",
+    href: "https://myfundedfutures.com",
+    tone: "gold",
+  },
+  {
+    kind: "PROP FIRM",
+    name: "Lucid Trading",
+    description: "More Power. More Opportunities.",
+    offer: "40% OFF",
+    offerDetail: "New Accounts",
+    bullets: ["Recommended: 50K Flex", "More flexibility", "More powerful setups", "Trader-friendly platform"],
+    code: "FTT",
+    action: "Explore Lucid",
+    href: "https://lucidtrading.com",
+    tone: "green",
+  },
+  {
+    kind: "FOREX BROKER",
+    name: "JustMarkets",
+    description: "Trade More. Trade Better.",
+    offer: "",
+    offerDetail: "",
+    bullets: ["Tight spreads", "Fast execution", "Easy payments", "Wide range of instruments", "Reliable and trusted broker"],
+    code: "24u140fax",
+    action: "Open Account",
+    href: "https://justmarkets.com",
+    tone: "blue",
+  },
+  {
+    kind: "CRYPTO PAYMENTS",
+    name: "RedotPay",
+    description: "Spend Crypto Like Fiat!",
+    offer: "$5 FREE",
+    offerDetail: "On Sign Up",
+    secondaryOffer: "20% OFF",
+    secondaryOfferDetail: "On Fees",
+    bullets: ["Global card acceptance", "Low fees", "Easy KYC & quick setup", "Support multiple cryptocurrencies"],
+    code: "0g9eh",
+    secondaryCode: "20OFF2026",
+    secondaryLabel: "20% OFF Fees",
+    action: "Get RedotPay",
+    href: "https://www.redotpay.com",
+    tone: "purple",
+  },
+];
+
+const toneClasses = {
+  gold: {
+    card: "border-amber-400/30 hover:border-amber-300/70",
+    glow: "bg-amber-400/10",
+    accent: "text-amber-300",
+    button: "bg-gradient-to-r from-amber-300 to-yellow-500 text-black",
+    icon: "border-amber-300/40 text-amber-300",
+  },
+  green: {
+    card: "border-emerald-400/30 hover:border-emerald-300/70",
+    glow: "bg-emerald-400/10",
+    accent: "text-emerald-300",
+    button: "bg-gradient-to-r from-emerald-300 to-green-500 text-black",
+    icon: "border-emerald-300/40 text-emerald-300",
+  },
+  blue: {
+    card: "border-blue-400/30 hover:border-blue-300/70",
+    glow: "bg-blue-400/10",
+    accent: "text-blue-300",
+    button: "bg-gradient-to-r from-blue-400 to-blue-600 text-white",
+    icon: "border-blue-300/40 text-blue-300",
+  },
+  purple: {
+    card: "border-purple-400/30 hover:border-purple-300/70",
+    glow: "bg-purple-400/10",
+    accent: "text-purple-300",
+    button: "bg-gradient-to-r from-purple-400 to-violet-600 text-white",
+    icon: "border-purple-300/40 text-purple-300",
+  },
 };
 
-export const TheRouteSection: React.FC = () => {
-  const chartRef = useRef<SVGSVGElement>(null);
-  const isChartInView = useInView(chartRef, { once: true, margin: "-40px" });
+function DealCard({ deal, index }: { deal: Deal; index: number }) {
+  const [copied, setCopied] = useState<string | null>(null);
+  const colors = toneClasses[deal.tone];
   const shouldReduceMotion = useReducedMotion();
 
+  const copyCode = async (code: string) => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(code);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = code;
+        textArea.setAttribute("readonly", "");
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        let copied = false;
+        try {
+          textArea.select();
+          copied = document.execCommand("copy");
+        } finally {
+          textArea.remove();
+        }
+
+        if (!copied) {
+          throw new Error("The browser could not copy the coupon code.");
+        }
+      }
+
+      setCopied(code);
+      window.setTimeout(() => setCopied(null), 1800);
+    } catch (error) {
+      console.error("Unable to copy coupon code.", error);
+      setCopied(null);
+    }
+  };
+
+  return (
+    <RevealItem className="h-full">
+      <motion.article
+        whileHover={shouldReduceMotion ? undefined : { y: -5 }}
+        className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-[#0b1018]/95 p-4 shadow-[0_16px_40px_rgba(0,0,0,0.28)] transition-colors sm:p-5 ${colors.card}`}
+      >
+        <motion.div
+          aria-hidden="true"
+          animate={shouldReduceMotion ? undefined : { x: [-24, 32, -12, -24], rotate: [0, 8, -5, 0], scale: [1, 1.12, 0.96, 1] }}
+          transition={shouldReduceMotion ? undefined : { duration: 12 + index * 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className={`pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full blur-3xl ${colors.glow}`}
+        />
+        <motion.div
+          aria-hidden="true"
+          animate={shouldReduceMotion ? undefined : { x: ["-120%", "120%"] }}
+          transition={shouldReduceMotion ? undefined : { duration: 8 + index, repeat: Infinity, repeatDelay: 4, ease: "easeInOut" }}
+          className="pointer-events-none absolute -inset-y-10 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.16) 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
+            maskImage: "linear-gradient(to bottom, black, transparent 72%)",
+          }}
+        />
+        <div className="relative flex flex-1 flex-col">
+          <div className="mb-4 min-h-[74px]">
+            <p className={`text-[9px] font-bold uppercase tracking-[0.2em] ${colors.accent}`}>{deal.kind}</p>
+            <h3 className="mt-1 text-lg font-extrabold text-white">{deal.name}</h3>
+            <p className="text-[11px] text-slate-400">{deal.description}</p>
+          </div>
+
+          {deal.offer ? (
+            <div className={`mb-4 min-h-[58px] ${deal.secondaryOffer ? "grid grid-cols-2 gap-2" : ""}`}>
+              <div>
+                <p className={`text-4xl font-black leading-none ${colors.accent}`}>{deal.offer}</p>
+                <p className="mt-1 text-[10px] font-medium text-slate-300">{deal.offerDetail}</p>
+              </div>
+              {deal.secondaryOffer && (
+                <div className="border-l border-white/10 pl-2">
+                  <p className={`text-2xl font-black leading-none ${colors.accent}`}>{deal.secondaryOffer}</p>
+                  <p className="mt-1 text-[10px] font-medium text-slate-300">{deal.secondaryOfferDetail}</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="mb-4 flex min-h-[58px] items-center gap-2">
+              {["Tight spreads", "Fast execution"].map((marker) => (
+                <div
+                  key={marker}
+                  className={`flex flex-1 items-center gap-1.5 rounded-lg border border-dashed px-2 py-2 text-[9px] font-semibold ${colors.icon}`}
+                >
+                  <Check className="h-3 w-3 shrink-0" />
+                  <span>{marker}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <ul className="min-h-[104px] space-y-1.5 border-t border-white/10 pt-3">
+            {deal.bullets.map((bullet) => (
+              <li key={bullet} className="flex items-start gap-2 text-[10px] text-slate-300">
+                <Check className={`mt-0.5 h-3 w-3 shrink-0 ${colors.accent}`} />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className={`mt-4 ${deal.secondaryCode ? "grid grid-cols-2 gap-2" : "space-y-2"}`}>
+            {deal.code && (
+              <button
+                type="button"
+                onClick={() => copyCode(deal.code!)}
+                className={`flex min-w-0 w-full cursor-pointer items-center justify-between gap-1 rounded-lg border border-dashed px-2 py-2 text-left text-[9px] ${colors.icon}`}
+              >
+                <span className="flex min-w-0 flex-col leading-tight">
+                  <span className="text-slate-500">USE CODE</span>
+                  <strong className="mt-0.5 truncate tracking-[0.08em]">{deal.code}</strong>
+                </span>
+                {copied === deal.code ? <Check className="h-3 w-3 shrink-0" /> : <Clipboard className="h-3 w-3 shrink-0" />}
+              </button>
+            )}
+            {deal.secondaryCode && (
+              <button
+                type="button"
+                onClick={() => copyCode(deal.secondaryCode!)}
+                className={`flex min-w-0 w-full cursor-pointer items-center justify-between gap-1 rounded-lg border border-dashed px-2 py-2 text-left text-[9px] ${colors.icon}`}
+              >
+                <span className="flex min-w-0 flex-col leading-tight">
+                  <span className="text-slate-500">{deal.secondaryLabel}</span>
+                  <strong className="mt-0.5 truncate tracking-[0.04em]">{deal.secondaryCode}</strong>
+                </span>
+                {copied === deal.secondaryCode ? <Check className="h-3 w-3 shrink-0" /> : <Clipboard className="h-3 w-3 shrink-0" />}
+              </button>
+            )}
+          </div>
+
+          <a
+            href={deal.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`mt-4 flex items-center justify-center rounded-lg px-4 py-2.5 text-xs font-bold transition-transform hover:scale-[1.02] ${colors.button}`}
+          >
+            {deal.action} <span className="ml-1.5">↗</span>
+          </a>
+        </div>
+      </motion.article>
+    </RevealItem>
+  );
+}
+
+export const TheRouteSection: React.FC = () => {
   return (
     <SectionShell id="partners" titleId="partners-title" glowSide="right">
-      {/* Decorative Candlestick Curve in Top-Right */}
-      <div className="absolute top-10 right-6 sm:right-14 opacity-35 pointer-events-none select-none hidden md:block">
-        <svg
-          ref={chartRef}
-          width="260"
-          height="140"
-          viewBox="0 0 260 140"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          {/* Candlestick bars */}
-          <rect x="20" y="80" width="8" height="24" fill="#00D1B2" opacity="0.6" rx="1" />
-          <line x1="24" y1="72" x2="24" y2="110" stroke="#00D1B2" strokeWidth="1.5" opacity="0.6" />
-
-          <rect x="55" y="65" width="8" height="30" fill="#00D1B2" opacity="0.7" rx="1" />
-          <line x1="59" y1="58" x2="59" y2="102" stroke="#00D1B2" strokeWidth="1.5" opacity="0.7" />
-
-          <rect x="95" y="70" width="8" height="18" fill="#FF3B5C" opacity="0.6" rx="1" />
-          <line x1="99" y1="62" x2="99" y2="94" stroke="#FF3B5C" strokeWidth="1.5" opacity="0.6" />
-
-          <rect x="135" y="45" width="8" height="32" fill="#00D1B2" opacity="0.8" rx="1" />
-          <line x1="139" y1="36" x2="139" y2="84" stroke="#00D1B2" strokeWidth="1.5" opacity="0.8" />
-
-          <rect x="180" y="30" width="8" height="36" fill="#00D1B2" opacity="0.9" rx="1" />
-          <line x1="184" y1="20" x2="184" y2="72" stroke="#00D1B2" strokeWidth="1.5" opacity="0.9" />
-
-          <rect x="220" y="15" width="8" height="28" fill="#F5B942" rx="1" />
-          <line x1="224" y1="6" x2="224" y2="48" stroke="#F5B942" strokeWidth="1.5" />
-
-          {/* Golden Trend Arrow Curve */}
-          <motion.path
-            d="M 15 115 Q 110 95 240 18"
-            stroke="#F5B942"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            initial={{ pathLength: shouldReduceMotion ? 1 : 0 }}
-            animate={isChartInView ? { pathLength: 1 } : { pathLength: 0 }}
-            transition={{ duration: 1.4, ease: EASE_CUSTOM }}
-          />
-          <polygon points="236,12 248,15 242,27" fill="#F5B942" />
-        </svg>
-      </div>
-
-      {/* Header Block */}
-      <div className="max-w-[760px]">
-        <Reveal>
-          <Eyebrow>THE ROUTE</Eyebrow>
-        </Reveal>
-
+      <div className="max-w-3xl">
+        <Reveal><Eyebrow>FTT PARTNERS &amp; EXCLUSIVE DEALS</Eyebrow></Reveal>
         <Reveal delay={0.05}>
-          <h2
-            id="partners-title"
-            className="font-heading uppercase tracking-[0.5px] text-[28px] sm:text-[36px] md:text-[42px] lg:text-[46px] leading-[0.95] drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
-          >
-            <span className="text-white block">PROVE YOUR SKILLS.</span>
-            <span className="flex flex-wrap items-baseline gap-2 mt-1">
-              <span className="relative text-gold-gradient inline-block">
-                TRADE BIGGER.
-                <div className="absolute -bottom-2 left-0 right-0">
-                  <GoldUnderlineScribble />
-                </div>
-              </span>
-              <span className="text-white">GET PAID.</span>
-            </span>
+          <h2 id="partners-title" className="mt-2 font-heading text-4xl font-black uppercase leading-[0.95] sm:text-5xl lg:text-6xl">
+            <span className="block text-white">BETTER TOOLS.</span>
+            <span className="block text-gold-gradient">BIGGER OPPORTUNITIES.</span>
           </h2>
         </Reveal>
-
         <Reveal delay={0.1}>
-          <p className="text-[14px] sm:text-[15px] lg:text-[15.5px] leading-[1.6] text-[#D6D6D6] mt-4">
-            A prop firm gives you access to trading capital. You first prove your skills through an
-            evaluation, then get a funded account to trade real market conditions. Meet the rules,
-            manage risk and stay consistent — and you get paid.
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
+            Exclusive offers on trusted trading platforms and tools for our community. Use our codes and support Forex Trader Telugu.
           </p>
         </Reveal>
       </div>
 
-      {/* 3 Step Cards with Gold Arrows */}
-      <div className="mt-8 sm:mt-10">
-        <RevealGroup stagger={0.09} delay={0.1}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative">
-            {routeSteps.map((step, idx) => (
-              <React.Fragment key={step.id}>
-                <RevealItem className="h-full">
-                  <GlassCard
-                    className={`h-full p-4 sm:p-5 lg:p-5.5 flex flex-col justify-between group hover:border-[#F5B942]/60 ${
-                      idx === 2 ? "md:scale-[1.01] border-[#F5B942]/30" : ""
-                    }`}
-                  >
-                    <div>
-                      {/* Top: Badge + Icon */}
-                      <div className="flex items-center justify-between mb-4">
-                        <NumberBadge n={step.number} className="w-9 h-9 text-[13px] transition-transform duration-300 group-hover:scale-105" />
-                        <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-[#F5B942]/30 flex items-center justify-center transition-all duration-300 group-hover:border-[#F5B942]/70 group-hover:bg-[#F5B942]/10 group-hover:scale-105">
-                          {stepIcons[step.icon]}
-                        </div>
-                      </div>
-
-                      {/* Title & Subtitle */}
-                      <h3 className="font-heading uppercase text-white text-[20px] sm:text-[23px] tracking-wide leading-tight group-hover:text-[#F5B942] transition-colors duration-200">
-                        {step.title}
-                      </h3>
-                      <div className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-[#F5B942] mt-1">
-                        {step.subtitle}
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-[12.5px] sm:text-[13.5px] leading-[1.55] text-[#A8A8A8] mt-3">
-                        {step.desc}
-                      </p>
-                    </div>
-
-                    <div className="w-8 h-[2px] bg-[#F5B942] rounded-full mt-5 transition-all duration-300 group-hover:w-14" />
-                  </GlassCard>
-                </RevealItem>
-
-                {/* Arrow separator (desktop) */}
-                {idx < routeSteps.length - 1 && (
-                  <div
-                    className="hidden md:flex absolute top-1/2 -translate-y-1/2 z-20 pointer-events-none text-[#F5B942]/60"
-                    style={{
-                      left: `calc(${(idx + 1) * 33.333}% - 14px)`,
-                    }}
-                    aria-hidden="true"
-                  >
-                    <ArrowRight className="w-5 h-5 stroke-[2]" />
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
+      <Reveal delay={0.12}>
+        <div className="mt-5 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
+          {[
+            { icon: ShieldCheck, title: "Trusted Platforms", detail: "Used by many traders" },
+            { icon: Percent, title: "Exclusive Discounts", detail: "Only for FTT community" },
+            { icon: Users, title: "Support the Community", detail: "Helps us create more content" },
+          ].map(({ icon: Icon, title, detail }) => (
+            <div key={title} className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-[#0b1018]/70 px-3 py-2.5">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-amber-300/70">
+              <Icon className="h-4 w-4 text-amber-300" />
+            </span>
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold text-white">{title}</p>
+              <p className="mt-0.5 text-[9px] text-slate-400">{detail}</p>
+            </div>
           </div>
-        </RevealGroup>
-      </div>
+          ))}
+        </div>
+      </Reveal>
 
-      {/* Bottom Strip: 4 Items with Staggered Entrance */}
-      <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10">
-        <RevealGroup stagger={0.07} delay={0.15}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 lg:divide-x lg:divide-white/10">
-            {routeBenefits.map((item, idx) => (
-              <RevealItem key={idx}>
-                <div className="px-4 py-2 flex items-start gap-3.5 group hover:bg-white/[0.03] rounded-xl transition-all duration-300 cursor-default">
-                  <div className="shrink-0 mt-0.5 transition-transform duration-300 group-hover:scale-110">
-                    {benefitIcons[item.icon]}
-                  </div>
-                  <div>
-                    <h4 className="text-[13px] sm:text-[14px] font-bold text-white uppercase tracking-wider leading-tight group-hover:text-[#F5B942] transition-colors duration-200">
-                      {item.title}
-                    </h4>
-                    <p className="text-[12px] text-[#A8A8A8] mt-1 leading-normal">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              </RevealItem>
-            ))}
+      <RevealGroup stagger={0.08} delay={0.15}>
+        <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {deals.map((deal, index) => <DealCard key={deal.name} deal={deal} index={index} />)}
+        </div>
+      </RevealGroup>
+
+      <Reveal delay={0.2}>
+        <div className="mt-5 flex flex-col gap-4 rounded-2xl border border-white/10 bg-[#0b1018]/80 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+          <div className="flex items-start gap-3">
+            <Users className="mt-0.5 h-8 w-8 shrink-0 text-amber-300" />
+            <div>
+              <h3 className="text-sm font-bold text-white">Support Forex Trader Telugu</h3>
+              <p className="mt-1 max-w-2xl text-xs leading-relaxed text-slate-400">
+                By using our links and codes, you get exclusive discounts and also support our community to create more free content, reviews, and educational resources.
+              </p>
+            </div>
           </div>
-        </RevealGroup>
-      </div>
+          <div className="flex items-start gap-2 text-[10px] leading-relaxed text-slate-500 sm:max-w-[230px]">
+            <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            <span>Offers and terms may change. Please check each provider&apos;s official website for the latest details.</span>
+          </div>
+        </div>
+      </Reveal>
     </SectionShell>
   );
 };

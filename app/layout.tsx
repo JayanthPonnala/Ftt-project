@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Inter, Mrs_Saint_Delafield, Space_Grotesk } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
+import IntroOverlay from "@/components/ui/IntroOverlay";
 import { SITE } from "@/lib/config";
 import "./globals.css";
 
@@ -243,7 +244,7 @@ export default function RootLayout({
       className={`${anton.variable} ${inter.variable} ${mrsSaintDelafield.variable} ${spaceGrotesk.variable} h-full dark`}
     >
       <head>
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/icon.png" type="image/png" />
         <link rel="apple-touch-icon" href="https://res.cloudinary.com/dtqtgdqzq/image/upload/v1791866901/FTT_Logo.jpg" />
         <script
           type="application/ld+json"
@@ -251,7 +252,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-[#050505] text-white font-body antialiased selection:bg-[#F5B942] selection:text-black">
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <IntroOverlay />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );
