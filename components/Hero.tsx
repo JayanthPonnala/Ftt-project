@@ -288,7 +288,10 @@ export const Hero: React.FC = () => {
             {/* Secondary CTA */}
             <button
               type="button"
-              onClick={() => setIsVideoModalOpen(true)}
+              onClick={() => {
+                window.location.hash = "about";
+                scrollToIdGlobal("about");
+              }}
               className="group inline-flex items-center justify-center gap-2.5 px-5 sm:px-6 py-2.5 sm:py-3 rounded-[8px] bg-black/35 backdrop-blur-md border border-white/55 text-white font-medium text-[14px] sm:text-[15px] transition-all duration-300 hover:scale-[1.035] hover:border-[#F5B942] hover:text-[#F5B942] hover:bg-white/[0.06] hover:shadow-[0_0_24px_rgba(245,185,66,0.2)] active:scale-[0.98]"
             >
               {/* Circular play icon */}
