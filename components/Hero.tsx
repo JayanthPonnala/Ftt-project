@@ -67,7 +67,7 @@ export const Hero: React.FC = () => {
     <section
       id="home"
       aria-labelledby="hero-heading"
-      className="relative min-h-[640px] lg:h-screen lg:max-h-screen bg-[#050505] overflow-hidden flex items-center pt-[64px] lg:pt-[68px] pb-4 sm:pb-6 scroll-mt-16 md:scroll-mt-[78px]"
+      className="relative min-h-[840px] sm:min-h-[700px] lg:h-screen lg:max-h-screen bg-[#050505] overflow-hidden flex items-center pt-[64px] lg:pt-[68px] pb-8 sm:pb-6 scroll-mt-16 md:scroll-mt-[78px]"
     >
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full pointer-events-none select-none">
@@ -78,7 +78,7 @@ export const Hero: React.FC = () => {
           priority
           quality={100}
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-[58%_center] sm:object-center"
         />
       </div>
 
@@ -93,7 +93,7 @@ export const Hero: React.FC = () => {
       />
 
       {/* 1b. Mobile uniform overlay */}
-      <div className="md:hidden absolute inset-0 bg-[#050505]/75 pointer-events-none z-[1]" />
+      <div className="md:hidden absolute inset-0 bg-[#050505]/68 pointer-events-none z-[1]" />
 
       {/* 2. Top fade under navbar */}
       <div
@@ -124,7 +124,7 @@ export const Hero: React.FC = () => {
       />
 
       {/* Content Wrapper */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-[60px] xl:px-[80px]">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-[60px] xl:px-[80px]">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -234,7 +234,7 @@ export const Hero: React.FC = () => {
           {/* 4. Description paragraph with soft fade-up */}
           <motion.p
             variants={itemVariants}
-            className="font-body text-[#D6D6D6] text-[14px] sm:text-[15px] lg:text-[16px] leading-[1.45] max-w-[540px] mt-3.5 sm:mt-4 font-normal"
+            className="font-body text-[#D6D6D6] text-[14px] sm:text-[15px] lg:text-[16px] leading-[1.45] w-full max-w-[260px] sm:max-w-[540px] mt-3.5 sm:mt-4 font-normal text-left mr-auto"
           >
             Helping Telugu traders turn knowledge into consistent income through
             practical education, real market experience and a supportive
@@ -244,7 +244,7 @@ export const Hero: React.FC = () => {
           {/* 5. Stats row with count-up animations */}
           <motion.div
             variants={itemVariants}
-            className="mt-4 sm:mt-6 flex flex-wrap items-center gap-5 sm:gap-7 lg:gap-8"
+            className="mt-20 sm:mt-6 grid grid-cols-3 gap-0 sm:flex sm:flex-wrap sm:items-center sm:gap-7 lg:gap-8 w-full sm:w-auto"
           >
             <StatItem
               icon={<MoneyBagIcon />}
@@ -273,7 +273,7 @@ export const Hero: React.FC = () => {
           {/* 6. CTA buttons with hover scale (1.03-1.05) & shadow */}
           <motion.div
             variants={itemVariants}
-            className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto"
+            className="mt-8 sm:mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto"
           >
             {/* Primary CTA */}
             <button
