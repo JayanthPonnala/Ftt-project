@@ -2,14 +2,19 @@ import React from "react";
 
 export const PartnerLogos: React.FC = () => {
   return (
-    <div className="mt-4 sm:mt-5 w-full">
+    <div className="mt-8 sm:mt-5 w-full pb-2 sm:pb-0">
       {/* Label */}
-      <h3 className="text-[10px] sm:text-[11px] uppercase font-semibold tracking-[0.2em] text-[#A8A8A8] mb-2">
-        TRUSTED PARTNERS
-      </h3>
+      <div className="mb-3 flex items-center gap-3 sm:block">
+        <span className="hidden sm:inline-block h-px w-12 bg-white/20 align-middle" />
+        <h3 className="text-[10px] sm:text-[11px] uppercase font-semibold tracking-[0.2em] text-[#A8A8A8] text-center">
+          TRUSTED PARTNERS
+        </h3>
+        <span className="hidden sm:inline-block h-px w-12 bg-white/20 align-middle" />
+      </div>
 
       {/* Logos Strip */}
-      <div className="flex items-center gap-3 sm:gap-4 overflow-x-auto no-scrollbar pb-1 pt-0.5 max-w-full">
+      <div className="rounded-2xl border border-white/15 bg-black/35 px-4 py-5 sm:rounded-none sm:border-0 sm:bg-transparent sm:px-0 sm:py-0">
+        <div className="flex items-center justify-between gap-3 sm:justify-start sm:gap-4 overflow-x-auto no-scrollbar pb-1 pt-0.5 max-w-full">
         {/* 1. MyFundedFutures (Supplied Asset from old code) */}
         <div
           className="shrink-0 flex items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(245,185,66,0.25)]"
@@ -101,12 +106,13 @@ export const PartnerLogos: React.FC = () => {
         </div>
 
         {/* Divider */}
-        <div className="w-[1px] h-3.5 sm:h-4 bg-white/15 shrink-0" />
+        <div className="hidden sm:block w-[1px] h-3.5 sm:h-4 bg-white/15 shrink-0" />
 
         {/* 5. Binance (Vector Crisp Brand from old code) */}
         <div
-          className="shrink-0 flex items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(243,186,47,0.3)]"
+          className="hidden sm:flex shrink-0 items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(243,186,47,0.3)]"
           title="Binance Partner"
+          aria-hidden="true"
         >
           <svg viewBox="0 0 120 30" className="h-5 sm:h-[22px] w-auto" fill="none">
             <g fill="#F3BA2F">
@@ -128,6 +134,7 @@ export const PartnerLogos: React.FC = () => {
               BINANCE
             </text>
           </svg>
+        </div>
         </div>
       </div>
     </div>
