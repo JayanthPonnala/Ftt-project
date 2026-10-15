@@ -87,16 +87,16 @@ export const Navbar: React.FC = () => {
           : "bg-[#050505]/85"
       } ${isVisible || mobileMenuOpen ? "translate-y-0" : "-translate-y-full shadow-none"}`}
     >
-      <div className="max-w-[1440px] mx-auto h-[60px] lg:h-[68px] px-5 sm:px-8 lg:px-[60px] flex items-center justify-between">
+      <div className="max-w-[1440px] mx-auto h-[72px] sm:h-[60px] lg:h-[68px] px-4 sm:px-8 lg:px-[60px] flex items-center justify-between">
         {/* Left: Logo */}
         <Link
           href="/#home"
           onClick={(e) => handleNavClick(e, { href: "/#home", target: "home" })}
-          className="flex items-center gap-3 group focus-visible:ring-2 focus-visible:ring-[#F5B942] rounded-md outline-none"
+          className="flex min-w-0 items-center gap-2.5 sm:gap-3 group focus-visible:ring-2 focus-visible:ring-[#F5B942] rounded-md outline-none"
           aria-label="Forex Trader Telugu Homepage"
         >
           {/* Official FTT Logo with image zoom on hover */}
-          <div className="relative w-[36px] h-[36px] sm:w-[42px] sm:h-[42px] rounded-full overflow-hidden shrink-0 border border-[#F5B942]/60 shadow-[0_0_12px_rgba(245,185,66,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_18px_rgba(245,185,66,0.4)]">
+          <div className="relative w-[44px] h-[44px] sm:w-[42px] sm:h-[42px] rounded-full overflow-hidden shrink-0 border border-[#F5B942]/60 shadow-[0_0_12px_rgba(245,185,66,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_18px_rgba(245,185,66,0.4)]">
             <Image
               src="https://res.cloudinary.com/dtqtgdqzq/image/upload/v1791866901/FTT_Logo.jpg"
               alt="Forex Trader Telugu Logo"
@@ -108,7 +108,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Logo Text: FTT Fullform */}
-          <div className="font-heading uppercase tracking-[0.5px] text-[19px] sm:text-[22px] lg:text-[24px] leading-none select-none flex items-center gap-1.5 pt-0.5">
+          <div className="min-w-0 font-heading uppercase tracking-[0.35px] text-[20px] sm:text-[22px] lg:text-[24px] leading-none select-none flex items-center gap-1.5 pt-0.5 whitespace-nowrap">
             <span className="text-white transition-colors duration-200 group-hover:text-white/90">FOREX TRADER</span>
             <span className="text-[#F5B942] transition-colors duration-200 group-hover:text-[#FFE29A]">TELUGU</span>
           </div>
@@ -166,11 +166,11 @@ export const Navbar: React.FC = () => {
         {/* Mobile Hamburger Toggle Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 text-white hover:text-[#F5B942] focus-visible:ring-2 focus-visible:ring-[#F5B942] rounded-lg transition-colors active:scale-95"
+          className="lg:hidden shrink-0 p-2 text-white hover:text-[#F5B942] focus-visible:ring-2 focus-visible:ring-[#F5B942] rounded-lg transition-colors active:scale-95"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileMenuOpen}
         >
-          {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+          {mobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
         </button>
       </div>
 

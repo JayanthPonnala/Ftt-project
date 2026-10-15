@@ -67,18 +67,27 @@ export const Hero: React.FC = () => {
     <section
       id="home"
       aria-labelledby="hero-heading"
-      className="relative min-h-[840px] sm:min-h-[700px] lg:h-screen lg:max-h-screen bg-[#050505] overflow-hidden flex items-center pt-[64px] lg:pt-[68px] pb-8 sm:pb-6 scroll-mt-16 md:scroll-mt-[78px]"
+      className="relative min-h-[955px] sm:min-h-[700px] lg:h-screen lg:max-h-screen bg-[#050505] overflow-hidden flex items-center pt-[76px] lg:pt-[68px] pb-8 sm:pb-6 scroll-mt-16 md:scroll-mt-[78px]"
     >
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full pointer-events-none select-none">
+        <Image
+          src="https://res.cloudinary.com/sy3ts81q/image/upload/v1792044905/mob-ftt.jpg"
+          alt="Forex Trader Telugu mobile hero"
+          fill
+          priority
+          quality={100}
+          sizes="(max-width: 767px) 100vw, 0px"
+          className="object-cover origin-center scale-[1.05] -translate-y-5 md:hidden"
+        />
         <Image
           src="https://res.cloudinary.com/dtqtgdqzq/image/upload/v1791737603/FTT_hero_background_4K.png"
           alt="Forex Trader Telugu"
           fill
           priority
           quality={100}
-          sizes="100vw"
-          className="object-cover object-[58%_center] sm:object-center"
+          sizes="(min-width: 768px) 100vw, 0px"
+          className="hidden object-cover object-center md:block"
         />
       </div>
 
@@ -93,7 +102,7 @@ export const Hero: React.FC = () => {
       />
 
       {/* 1b. Mobile uniform overlay */}
-      <div className="md:hidden absolute inset-0 bg-[#050505]/68 pointer-events-none z-[1]" />
+      <div className="md:hidden absolute inset-0 bg-[#050505]/28 pointer-events-none z-[1]" />
 
       {/* 2. Top fade under navbar */}
       <div
@@ -244,7 +253,7 @@ export const Hero: React.FC = () => {
           {/* 5. Stats row with count-up animations */}
           <motion.div
             variants={itemVariants}
-            className="mt-20 sm:mt-6 grid grid-cols-3 gap-0 sm:flex sm:flex-wrap sm:items-center sm:gap-7 lg:gap-8 w-full sm:w-auto"
+            className="mt-36 sm:mt-6 grid grid-cols-3 gap-0 sm:flex sm:flex-wrap sm:items-center sm:gap-7 lg:gap-8 w-full sm:w-auto"
           >
             <StatItem
               icon={<MoneyBagIcon />}

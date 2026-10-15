@@ -1,0 +1,149 @@
+FTT WEBSITE SEO & PERFORMANCE OPTIMIZATION PLAN
+================================================
+
+Status
+------
+- Audit completed without changing application code.
+- Repository was clean before this document was added.
+- This file is a planning checklist only.
+
+
+SEO PRIORITIES
+--------------
+
+1. Add robots.txt
+   - Allow public pages.
+   - Disallow /admin, /api, and private dashboard routes.
+   - Point crawlers to the sitemap.
+
+2. Add sitemap.xml
+   - Include the homepage.
+   - Include /blog.
+   - Include all published /blog/[slug] pages.
+   - Exclude admin, API, login, and unpublished content.
+
+3. Improve language metadata
+   - Review the root html lang value.
+   - The audience is primarily Telugu-speaking, so consider te-IN or a deliberate Telugu/English language strategy.
+
+4. Improve homepage metadata
+   - Use a search-focused title mentioning Forex trading in Telugu, Chaitanya, and FTT.
+   - Keep the description natural and useful instead of relying on keyword repetition.
+   - Keep visible headings consistent with the title and description.
+
+5. Add canonical URLs to blog posts
+   - Add a canonical URL for every /blog/[slug] page.
+   - Confirm that the canonical URL matches the public production URL.
+
+6. Add BlogPosting JSON-LD
+   - Add headline, description, author, publisher, dates, image, and canonical URL.
+   - Generate it from the same post data used by the page.
+
+7. Synchronize FAQ schema
+   - Use one shared FAQ data source for both visible FAQ content and FAQ JSON-LD.
+   - Keep schema answers identical to the visible answers.
+
+8. Review Course schema
+   - Verify the current price, membership duration, inclusions, currency, and availability.
+   - Add course duration, audience, educational level, and course mode where accurate.
+   - Do not publish claims that are not visibly supported on the page.
+
+9. Create a dedicated social preview image
+   - Create a branded 1200x630 image for Open Graph and Twitter.
+   - Include FTT branding, Chaitanya, and Telugu Forex/Futures education.
+   - Use it as the default image for the homepage and blog fallback metadata.
+
+10. Improve image alt text
+    - Describe meaningful mentor, course, and testimonial images.
+    - Use empty alt text for purely decorative images.
+    - Avoid repeating the same generic alt text across multiple images.
+
+
+PERFORMANCE PRIORITIES
+----------------------
+
+1. Optimize the hero image for mobile
+   - Use a dedicated mobile crop or responsive Cloudinary transformation.
+   - Avoid downloading a large 4K image when a smaller mobile asset is sufficient.
+   - Keep the desktop image for large screens.
+
+2. Review image quality settings
+   - Replace quality=100 where it does not provide a visible benefit.
+   - Test quality values around 75-85 and compare visual quality and file size.
+
+3. Review the intro overlay
+   - Consider showing it once per browser session.
+   - Keep it disabled for reduced-motion users.
+   - Consider shortening or skipping it on repeat visits and internal pages.
+
+4. Reduce unnecessary client-side JavaScript
+   - Keep use client only where interaction or browser APIs are required.
+   - Replace simple Framer Motion hover effects with CSS where practical.
+   - Avoid loading animation code for sections that do not need it.
+
+5. Improve blog caching
+   - Review force-dynamic and revalidate=0 on public blog pages.
+   - Consider ISR with a short revalidation window.
+   - Revalidate blog pages after creating or editing a post.
+   - Keep admin and session routes dynamic.
+
+6. Fix the Windows SWC warning
+   - Reinstall the correct native SWC package for the current Windows architecture.
+   - Confirm builds no longer fall back to WASM.
+   - This should reduce build time and remove repeated warnings.
+
+7. Migrate deprecated middleware convention
+   - Follow the Next.js migration from middleware to proxy.
+   - Test authentication, redirects, and protected routes after migration.
+
+
+CONTENT AND INTERNAL LINKING
+----------------------------
+
+1. Add contextual links between homepage sections.
+2. Link blog articles to relevant courses, methods, FAQs, and community sections.
+3. Add related articles to each blog post.
+4. Organize articles with clear topics:
+   - Forex
+   - Futures
+   - Prop Firms
+   - Risk Management
+   - Trading Psychology
+   - Payout Journals
+   - Beginner Education
+5. Keep one clear H1 per page.
+6. Use descriptive H2 and H3 headings for every major section.
+7. Make sure claims such as payouts, years of experience, and community size are accurate and supportable.
+
+
+MAINTAINABILITY
+---------------
+
+1. Centralize brand name, URLs, social links, course price, and organization details.
+2. Reuse shared SEO data in metadata and JSON-LD.
+3. Remove or restore the unused Hero video modal code after deciding its intended behavior.
+4. Keep the FAQ, course, and organization data in one source of truth.
+5. Add automated checks for missing metadata, missing image alt text, and invalid canonical URLs.
+
+
+VALIDATION CHECKLIST
+--------------------
+
+- Run a production build.
+- Run ESLint and TypeScript checks.
+- Test mobile performance on a throttled connection.
+- Test desktop and mobile Core Web Vitals.
+- Validate metadata with social preview tools.
+- Validate JSON-LD with Google's Rich Results Test.
+- Submit the sitemap in Google Search Console.
+- Check indexing and canonical selection after deployment.
+
+
+RECOMMENDED ORDER
+-----------------
+
+Phase 1: robots.txt, sitemap.xml, canonical blog URLs, language metadata.
+Phase 2: BlogPosting schema, shared FAQ data, course schema verification.
+Phase 3: Dedicated social image and mobile hero image optimization.
+Phase 4: Blog caching, JavaScript reduction, and intro overlay refinement.
+Phase 5: SWC repair, middleware migration, and automated SEO checks.
