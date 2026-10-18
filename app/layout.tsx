@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Anton, Inter, Mrs_Saint_Delafield, Space_Grotesk } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import IntroOverlay from "@/components/ui/IntroOverlay";
+import BlogAccessModal from "@/components/blog/BlogAccessModal";
 import { SITE } from "@/lib/config";
 import "./globals.css";
 
@@ -179,11 +180,13 @@ const jsonLd = {
       "@id": "https://forextradertelugu.com/#course",
       name: "FTT Community & Trading Course (Telugu)",
       description:
-        "Comprehensive Telugu Forex & Futures trading course covering Price Action, Market Trend Identification, Risk Management, Live Trading Sessions, and Prop Firm Passing Guidance.",
+        "Comprehensive Telugu Forex & Futures trading course covering Simple Price Action, Support and Resistance, Key Market Levels, Risk Management, Daily Live Trading Sessions, and Prop Firm Passing Guidance.",
       provider: {
         "@id": "https://forextradertelugu.com/#organization",
       },
       inLanguage: "te",
+      educationalLevel: "Beginner to Advanced",
+      courseMode: "Online with Daily Live Trading Sessions",
       offers: {
         "@type": "Offer",
         price: "14999",
@@ -198,34 +201,50 @@ const jsonLd = {
       mainEntity: [
         {
           "@type": "Question",
-          name: "Is this trading course taught in Telugu?",
+          name: "What is Forex Trader Telugu (FTT) and who is it designed for?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Yes, all daily live trading sessions, courses, market analysis, and community discussions are conducted in Telugu, tailored specifically for Telugu traders.",
+            text: "Forex Trader Telugu (FTT) is the premier trading academy and mentorship ecosystem founded by Chaitanya for Telugu-speaking traders globally. We specialize in simple price action, support and resistance execution across US Futures (Nasdaq, S&P 500, Gold) and Forex. Whether you are a beginner looking for structured education or an experienced trader struggling with consistency, FTT gives you a proven blueprint to get funded and stay profitable.",
           },
         },
         {
           "@type": "Question",
-          name: "What markets are traded in the FTT Community?",
+          name: "Who is mentor Chaitanya and what is his trading track record?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "We trade and analyze Futures (Gold GC, Nasdaq NQ, ES) and major Forex currency pairs with real-time market execution.",
+            text: "Chaitanya is a full-time professional futures and forex trader with over 9 years of hands-on market experience. He has documented over $1,000,000+ in verified prop firm payouts from premier global firms like MyFundedFutures and Lucid Trading. Unlike theoretical educators, Chaitanya trades live on stream in front of the community every trading day.",
           },
         },
         {
           "@type": "Question",
-          name: "Do you provide guidance to pass Prop Firm challenges?",
+          name: "Is the entire masterclass and mentorship taught in native Telugu?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Yes, complete guidance is provided to pass prop firm evaluations and manage funded accounts with strict risk management.",
+            text: "Yes! 100% of our masterclass academy videos, live trading commentary, Discord study groups, and documentation are provided in clear, authentic Telugu. We demystify institutional Wall Street terminology so every Telugu trader can understand without language barriers.",
           },
         },
         {
           "@type": "Question",
-          name: "What does the ₹14,999 membership include?",
+          name: "What core concepts are covered inside the FTT mentorship curriculum?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "The 6-month membership includes daily live trading sessions from 11:30 AM to 2:00 PM IST, complete basic to advanced course materials, trade ideas and analysis, Discord community access, live Q&A, and weekend reviews.",
+            text: "The curriculum focuses exclusively on simple price action, support and resistance, key market levels, trend identification, breakout and retest setups, strict risk management, position sizing, prop firm passing rules, and trade journaling.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What are the exact timings of the daily Live Trading sessions?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Our live trading streams run every trading day during the high-volatility New York market opening, starting from 7:30 PM IST onwards. You watch live charts, market trend preparation, key support and resistance levels, and real-time execution.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What specific strategy does FTT teach to pass evaluation challenges?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "We teach our mechanical 'Rule of 1-2': maximum 1-2 high-conviction trades per day, strictly 1% risk per trade, and minimum 2R to 4R reward setups. This protects your drawdown while hitting evaluation targets smoothly without reckless gambling.",
           },
         },
       ],
@@ -254,6 +273,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-[#050505] text-white font-body antialiased selection:bg-[#F5B942] selection:text-black">
         <SmoothScroll>
           <IntroOverlay />
+          <BlogAccessModal />
           {children}
         </SmoothScroll>
       </body>

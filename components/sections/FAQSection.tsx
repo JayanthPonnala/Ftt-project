@@ -29,7 +29,7 @@ const FAQ_ITEMS: FAQItem[] = [
     category: "general",
     question: "What is Forex Trader Telugu (FTT) and who is it designed for?",
     answer:
-      "Forex Trader Telugu (FTT) is the premier trading academy and mentorship ecosystem founded by Chaitanya for Telugu-speaking traders globally. We specialize in institutional Price Action, Smart Money Concepts (SMC), and order flow execution across US Futures (Nasdaq, S&P 500, Gold) and Forex. Whether you are a beginner looking for structured education or an experienced trader struggling with consistency, FTT gives you a proven blueprint to get funded and stay profitable.",
+      "Forex Trader Telugu (FTT) is the premier trading academy and mentorship ecosystem founded by Chaitanya for Telugu-speaking traders globally. We specialize in simple price action, support and resistance execution across US Futures (Nasdaq, S&P 500, Gold) and Forex. Whether you are a beginner looking for structured education or an experienced trader struggling with consistency, FTT gives you a proven blueprint to get funded and stay profitable.",
   },
   {
     id: "faq-02",
@@ -66,7 +66,7 @@ const FAQ_ITEMS: FAQItem[] = [
     category: "mentorship",
     question: "What core concepts are covered inside the FTT mentorship curriculum?",
     answer:
-      "The curriculum covers complete Price Action & Liquidity Engineering, Fair Value Gaps (FVG), Institutional Order Flow, Market Structure Shifts, Session Openings (London & New York Killzones), Automated Position Sizing, Prop Firm Challenge Roadmaps, and Trade Journaling.",
+      "The curriculum focuses exclusively on simple price action, support and resistance, key market levels, trend identification, breakout and retest setups, strict risk management, position sizing, prop firm passing rules, and trade journaling.",
   },
   {
     id: "faq-07",
@@ -82,7 +82,7 @@ const FAQ_ITEMS: FAQItem[] = [
     category: "live",
     question: "What are the exact timings of the daily Live Trading sessions?",
     answer:
-      "Our live trading streams run every trading day during the high-volatility New York market opening, starting from 7:30 PM IST onwards. You watch live charts, morning bias preparation, key liquidity hunt levels, and real-time execution.",
+      "Our live trading streams run every trading day during the high-volatility New York market opening, starting from 7:30 PM IST onwards. You watch live charts, market trend preparation, key support and resistance levels, and real-time execution.",
   },
   {
     id: "faq-09",
@@ -299,7 +299,7 @@ export const FAQSection: React.FC = () => {
             Have a question that isn&apos;t answered here?
           </span>
           <a
-            href="https://t.me/"
+            href="https://t.me/forextradertelugu"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#F5B942] hover:underline font-bold inline-flex items-center gap-1"

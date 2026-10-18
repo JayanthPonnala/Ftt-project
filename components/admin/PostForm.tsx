@@ -22,7 +22,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import MarkdownRenderer from "@/components/blog/MarkdownRenderer";
-import { BlogPost } from "@/lib/supabase";
+import type { BlogPost } from "@/lib/supabase";
 
 interface PostFormProps {
   initialData?: BlogPost;

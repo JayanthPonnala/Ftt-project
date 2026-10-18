@@ -9,6 +9,7 @@ import { NAV_ITEMS } from "@/lib/nav";
 import { SITE } from "@/lib/config";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { scrollToIdGlobal } from "@/components/SmoothScroll";
+import { isBlogUnlocked, openBlogAccessModal } from "@/lib/blogAccess";
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -56,6 +57,13 @@ export const Navbar: React.FC = () => {
     e: React.MouseEvent,
     item: { href: string; target: string }
   ) => {
+    if (item.href === "/blog" || item.href.startsWith("/blog")) {
+      if (!isBlogUnlocked()) {
+        e.preventDefault();
+        openBlogAccessModal(item.href);
+        return;
+      }
+    }
     if (item.href.startsWith("/#")) {
       if (typeof window !== "undefined" && window.location.pathname === "/") {
         e.preventDefault();
@@ -68,6 +76,12 @@ export const Navbar: React.FC = () => {
 
   const handleMobileNavClick = (item: { href: string; target: string }) => {
     setMobileMenuOpen(false);
+    if (item.href === "/blog" || item.href.startsWith("/blog")) {
+      if (!isBlogUnlocked()) {
+        openBlogAccessModal(item.href);
+        return;
+      }
+    }
     if (item.href.startsWith("/#") && typeof window !== "undefined" && window.location.pathname === "/") {
       setTimeout(() => {
         setActiveSectionManual(item.target);

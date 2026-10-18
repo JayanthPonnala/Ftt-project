@@ -6,12 +6,19 @@ import { Send, Mail } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/nav";
 import { SITE } from "@/lib/config";
 import { scrollToIdGlobal } from "@/components/SmoothScroll";
+import { isBlogUnlocked, openBlogAccessModal } from "@/lib/blogAccess";
 import Reveal from "@/components/ui/Reveal";
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   const handleNavClick = (href: string) => {
+    if (href === "/blog" || href.startsWith("/blog")) {
+      if (!isBlogUnlocked()) {
+        openBlogAccessModal(href);
+        return;
+      }
+    }
     if (href.startsWith("/#") && typeof window !== "undefined" && window.location.pathname === "/") {
       const hash = href.replace("/#", "");
       scrollToIdGlobal(hash);

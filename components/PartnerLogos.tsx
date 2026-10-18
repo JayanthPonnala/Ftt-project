@@ -45,6 +45,66 @@ export const PartnerLogos: React.FC = () => {
         {/* Divider */}
         <div className="w-[1px] h-3.5 sm:h-4 bg-white/15 shrink-0" />
 
+        {/* 3. FundedNext */}
+        <div
+          className="shrink-0 flex items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(168,85,247,0.35)]"
+          title="FundedNext Official Partner"
+        >
+          <svg viewBox="0 0 132 30" className="h-5 sm:h-[22px] w-auto" fill="none">
+            <g transform="translate(2, 5)">
+              <rect x="0" y="0" width="18" height="18" rx="4" fill="#7C3AED" />
+              <path d="M4 4h10v2.5H7v2.5h6v2.5H7V14H4V4z" fill="#FFF" />
+              <polygon points="12,10 15,14 12,14" fill="#C084FC" />
+            </g>
+            <text
+              x="27"
+              y="20"
+              fill="#FFFFFF"
+              fontFamily="var(--font-heading), system-ui, sans-serif"
+              fontWeight="900"
+              fontSize="12.5"
+              letterSpacing="0.8"
+            >
+              FUNDED<tspan fill="#A855F7">NEXT</tspan>
+            </text>
+          </svg>
+        </div>
+
+        {/* Divider */}
+        <div className="w-[1px] h-3.5 sm:h-4 bg-white/15 shrink-0" />
+
+        {/* 4. Blue Guardian */}
+        <div
+          className="shrink-0 flex items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(56,189,248,0.35)]"
+          title="Blue Guardian Official Partner"
+        >
+          <svg viewBox="0 0 142 30" className="h-5 sm:h-[22px] w-auto" fill="none">
+            <g transform="translate(2, 5)">
+              <path
+                d="M9 1L2 3.5v6.5c0 4.5 3 8 7 9.5 4-1.5 7-5 7-9.5V3.5L9 1z"
+                fill="#0284C7"
+                stroke="#38BDF8"
+                strokeWidth="1.2"
+              />
+              <path d="M6 10v-3h1.5v1.5h1V7h1v1.5h1V7h1.5v3H6z" fill="#FFFFFF" />
+            </g>
+            <text
+              x="27"
+              y="20"
+              fill="#FFFFFF"
+              fontFamily="var(--font-heading), system-ui, sans-serif"
+              fontWeight="800"
+              fontSize="12"
+              letterSpacing="0.5"
+            >
+              BLUE <tspan fill="#38BDF8">GUARDIAN</tspan>
+            </text>
+          </svg>
+        </div>
+
+        {/* Divider */}
+        <div className="w-[1px] h-3.5 sm:h-4 bg-white/15 shrink-0" />
+
         {/* 3. RedotPay (Vector Crisp Brand from old code) */}
         <div
           className="shrink-0 flex items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(229,62,62,0.3)]"

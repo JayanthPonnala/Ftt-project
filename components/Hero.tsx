@@ -73,19 +73,19 @@ export const Hero: React.FC = () => {
       <div className="absolute inset-0 w-full h-full pointer-events-none select-none">
         <Image
           src="https://res.cloudinary.com/sy3ts81q/image/upload/v1792044905/mob-ftt.jpg"
-          alt="Forex Trader Telugu mobile hero"
+          alt="Chaitanya - Forex Trader Telugu Mobile Hero"
           fill
           priority
-          quality={100}
+          quality={85}
           sizes="(max-width: 767px) 100vw, 0px"
           className="object-cover origin-center scale-[1.05] -translate-y-5 md:hidden"
         />
         <Image
           src="https://res.cloudinary.com/dtqtgdqzq/image/upload/v1791737603/FTT_hero_background_4K.png"
-          alt="Forex Trader Telugu"
+          alt="Chaitanya - Lead Mentor at Forex Trader Telugu (FTT)"
           fill
           priority
-          quality={100}
+          quality={85}
           sizes="(min-width: 768px) 100vw, 0px"
           className="hidden object-cover object-center md:block"
         />

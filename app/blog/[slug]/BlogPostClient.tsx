@@ -12,11 +12,12 @@ import {
   Check,
   BookOpen,
 } from "lucide-react";
-import { BlogPost } from "@/lib/supabase";
+import type { BlogPost } from "@/lib/supabase";
 import GlowOrbsBackground from "@/components/blog/GlowOrbsBackground";
 import BlogHeader from "@/components/blog/BlogHeader";
 import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
 import MarkdownRenderer from "@/components/blog/MarkdownRenderer";
+import { isBlogUnlocked, openBlogAccessModal } from "@/lib/blogAccess";
 
 interface BlogPostClientProps {
   post: BlogPost;
@@ -25,6 +26,12 @@ interface BlogPostClientProps {
 export const BlogPostClient: React.FC<BlogPostClientProps> = ({ post }) => {
   const [copied, setCopied] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+
+  React.useEffect(() => {
+    if (!isBlogUnlocked()) {
+      openBlogAccessModal(window.location.pathname);
+    }
+  }, []);
 
   const formattedDate = new Date(post.created_at).toLocaleDateString("en-US", {
     month: "long",
@@ -94,15 +101,15 @@ export const BlogPostClient: React.FC<BlogPostClientProps> = ({ post }) => {
             </div>
           </div>
 
-          {/* Heading with blur-to-sharp fade-in effect */}
+          {/* Heading with smooth fade-in */}
           <motion.h1
             initial={
               shouldReduceMotion
                 ? { opacity: 1 }
-                : { opacity: 0, filter: "blur(10px)", y: 15 }
+                : { opacity: 0, y: 12 }
             }
-            animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-[1.18] mb-6"
           >
             {post.title}

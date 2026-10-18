@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import GlowOrbsBackground from "@/components/blog/GlowOrbsBackground";
 import AdminHeader from "@/components/admin/AdminHeader";
-import { BlogPost } from "@/lib/supabase";
+import type { BlogPost } from "@/lib/supabase";
 
 export default function AdminBlogDashboard() {
   const [posts, setPosts] = useState<BlogPost[]>([]);

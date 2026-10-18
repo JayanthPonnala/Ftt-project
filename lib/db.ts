@@ -1,40 +1,12 @@
 import fs from "fs";
 import path from "path";
-import { MongoClient, ObjectId } from "mongodb";
-import { BlogPost, SEED_POSTS, estimateReadTime } from "./supabase";
+import { BlogPost, SEED_POSTS, estimateReadTime, getSupabaseClient } from "./supabase";
 
 const DATA_FILE = path.join(process.cwd(), "data", "posts.json");
-const MONGODB_URI = process.env.MONGODB_URI || "";
-const DB_NAME = process.env.MONGODB_DB_NAME || "ftt_blog";
-const COLLECTION_NAME = "posts";
-
-// Global cache for MongoDB connection across HMR in development
-declare global {
-  // eslint-disable-next-line no-var
-  var _mongoClientPromise: Promise<MongoClient> | undefined;
-}
-
-let clientPromise: Promise<MongoClient> | null = null;
-
-function isMongoConfigured(): boolean {
-  return Boolean(MONGODB_URI && MONGODB_URI.startsWith("mongodb"));
-}
-
-if (isMongoConfigured()) {
-  if (process.env.NODE_ENV === "development") {
-    if (!global._mongoClientPromise) {
-      const client = new MongoClient(MONGODB_URI);
-      global._mongoClientPromise = client.connect();
-    }
-    clientPromise = global._mongoClientPromise;
-  } else {
-    const client = new MongoClient(MONGODB_URI);
-    clientPromise = client.connect();
-  }
-}
+const LEADS_FILE = path.join(process.cwd(), "data", "leads.json");
 
 // -------------------------------------------------------------
-// LOCAL FILE SYSTEM PERSISTENCE (Fallback / Instant Offline Sync)
+// LOCAL FILE SYSTEM BACKUP (Instant Offline Sync & Durability)
 // -------------------------------------------------------------
 function readFromFile(): BlogPost[] {
   try {
@@ -49,7 +21,7 @@ function readFromFile(): BlogPost[] {
     console.error("Error reading data/posts.json:", err);
   }
 
-  // If file doesn't exist, seed it
+  // Seed file if missing or empty
   writeToFile(SEED_POSTS);
   return [...SEED_POSTS];
 }
@@ -68,7 +40,7 @@ function writeToFile(posts: BlogPost[]): void {
 
 function formatPost(post: any): BlogPost {
   return {
-    id: post.id || (post._id ? post._id.toString() : crypto.randomUUID()),
+    id: post.id || crypto.randomUUID(),
     title: post.title || "",
     slug: post.slug || "",
     excerpt: post.excerpt || "",
@@ -81,28 +53,31 @@ function formatPost(post: any): BlogPost {
 }
 
 // -------------------------------------------------------------
-// PUBLIC RE-EXPORTS: UNIFIED DB ENGINE
+// SUPABASE POSTGRESQL DATABASE OPERATIONS
 // -------------------------------------------------------------
 
+/**
+ * Fetch all published articles for public visitors (ordered by newest first)
+ */
 export async function getPublishedPosts(): Promise<BlogPost[]> {
-  if (isMongoConfigured() && clientPromise) {
+  const supabase = getSupabaseClient();
+  if (supabase) {
     try {
-      const client = await clientPromise;
-      const db = client.db(DB_NAME);
-      const docs = await db
-        .collection(COLLECTION_NAME)
-        .find({ published: true })
-        .sort({ created_at: -1 })
-        .toArray();
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false });
 
-      if (docs.length > 0) {
-        return docs.map(formatPost);
+      if (!error && Array.isArray(data) && data.length > 0) {
+        return data.map(formatPost);
       }
     } catch (err) {
-      console.warn("MongoDB fetch published posts failed, using local file store:", err);
+      console.warn("Supabase fetch published posts failed, using local file backup:", err);
     }
   }
 
+  // Fallback to local file store
   const posts = readFromFile();
   return posts
     .filter((p) => p.published)
@@ -110,17 +85,24 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
     .map(formatPost);
 }
 
+/**
+ * Fetch a single post by slug
+ */
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  if (isMongoConfigured() && clientPromise) {
+  const supabase = getSupabaseClient();
+  if (supabase) {
     try {
-      const client = await clientPromise;
-      const db = client.db(DB_NAME);
-      const doc = await db.collection(COLLECTION_NAME).findOne({ slug });
-      if (doc) {
-        return formatPost(doc);
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .eq("slug", slug)
+        .single();
+
+      if (!error && data) {
+        return formatPost(data);
       }
     } catch (err) {
-      console.warn("MongoDB fetch post by slug failed, using local file store:", err);
+      console.warn(`Supabase fetch post by slug '${slug}' failed, using local file:`, err);
     }
   }
 
@@ -129,22 +111,23 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   return found ? formatPost(found) : null;
 }
 
+/**
+ * Fetch all posts (both published and drafts) for admin dashboard
+ */
 export async function getAllPostsAdmin(): Promise<BlogPost[]> {
-  if (isMongoConfigured() && clientPromise) {
+  const supabase = getSupabaseClient();
+  if (supabase) {
     try {
-      const client = await clientPromise;
-      const db = client.db(DB_NAME);
-      const docs = await db
-        .collection(COLLECTION_NAME)
-        .find({})
-        .sort({ created_at: -1 })
-        .toArray();
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-      if (docs.length > 0) {
-        return docs.map(formatPost);
+      if (!error && Array.isArray(data)) {
+        return data.map(formatPost);
       }
     } catch (err) {
-      console.warn("MongoDB fetch admin posts failed, using local file store:", err);
+      console.warn("Supabase admin fetch all posts failed, using local file backup:", err);
     }
   }
 
@@ -154,21 +137,24 @@ export async function getAllPostsAdmin(): Promise<BlogPost[]> {
     .map(formatPost);
 }
 
+/**
+ * Fetch a single post by ID
+ */
 export async function getPostById(id: string): Promise<BlogPost | null> {
-  if (isMongoConfigured() && clientPromise) {
+  const supabase = getSupabaseClient();
+  if (supabase) {
     try {
-      const client = await clientPromise;
-      const db = client.db(DB_NAME);
-      let query: any = { id };
-      if (ObjectId.isValid(id)) {
-        query = { $or: [{ id }, { _id: new ObjectId(id) }] };
-      }
-      const doc = await db.collection(COLLECTION_NAME).findOne(query);
-      if (doc) {
-        return formatPost(doc);
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (!error && data) {
+        return formatPost(data);
       }
     } catch (err) {
-      console.warn("MongoDB fetch post by id failed, using local file store:", err);
+      console.warn(`Supabase fetch post by id '${id}' failed:`, err);
     }
   }
 
@@ -177,6 +163,9 @@ export async function getPostById(id: string): Promise<BlogPost | null> {
   return found ? formatPost(found) : null;
 }
 
+/**
+ * Create a new article in Supabase PostgreSQL & local backup
+ */
 export async function createPost(
   newPost: Omit<BlogPost, "id" | "created_at"> & {
     id?: string;
@@ -195,27 +184,35 @@ export async function createPost(
     read_time: estimateReadTime(newPost.content || ""),
   };
 
-  // Always write to local file for instant guaranteed durability
+  // Always save to local backup
   const current = readFromFile();
   current.unshift(record);
   writeToFile(current);
 
-  if (isMongoConfigured() && clientPromise) {
+  const supabase = getSupabaseClient();
+  if (supabase) {
     try {
-      const client = await clientPromise;
-      const db = client.db(DB_NAME);
-      await db.collection(COLLECTION_NAME).insertOne({
-        ...record,
-        _id: new ObjectId(),
+      await supabase.from("posts").insert({
+        id: record.id,
+        title: record.title,
+        slug: record.slug,
+        excerpt: record.excerpt,
+        content: record.content,
+        published: record.published,
+        created_at: record.created_at,
+        updated_at: record.updated_at,
       });
     } catch (err) {
-      console.warn("MongoDB insert failed, saved to local file successfully:", err);
+      console.warn("Supabase insert post failed, saved to local file successfully:", err);
     }
   }
 
   return formatPost(record);
 }
 
+/**
+ * Update an article in Supabase PostgreSQL & local backup
+ */
 export async function updatePost(
   id: string,
   updates: Partial<Omit<BlogPost, "id">>
@@ -235,47 +232,69 @@ export async function updatePost(
   current[index] = updated;
   writeToFile(current);
 
-  if (isMongoConfigured() && clientPromise) {
+  const supabase = getSupabaseClient();
+  if (supabase) {
     try {
-      const client = await clientPromise;
-      const db = client.db(DB_NAME);
-      let query: any = { id };
-      if (ObjectId.isValid(id)) {
-        query = { $or: [{ id }, { _id: new ObjectId(id) }] };
-      }
-      await db.collection(COLLECTION_NAME).updateOne(query, {
-        $set: {
+      await supabase
+        .from("posts")
+        .update({
           ...updates,
           updated_at,
-        },
-      });
+        })
+        .eq("id", id);
     } catch (err) {
-      console.warn("MongoDB update failed, updated local file successfully:", err);
+      console.warn(`Supabase update post '${id}' failed:`, err);
     }
   }
 
   return formatPost(updated);
 }
 
+/**
+ * Delete an article in Supabase PostgreSQL & local backup
+ */
 export async function deletePost(id: string): Promise<boolean> {
   const current = readFromFile();
   const beforeLen = current.length;
   const filtered = current.filter((p) => p.id !== id);
   writeToFile(filtered);
 
-  if (isMongoConfigured() && clientPromise) {
+  const supabase = getSupabaseClient();
+  if (supabase) {
     try {
-      const client = await clientPromise;
-      const db = client.db(DB_NAME);
-      let query: any = { id };
-      if (ObjectId.isValid(id)) {
-        query = { $or: [{ id }, { _id: new ObjectId(id) }] };
-      }
-      await db.collection(COLLECTION_NAME).deleteOne(query);
+      await supabase.from("posts").delete().eq("id", id);
     } catch (err) {
-      console.warn("MongoDB delete failed, deleted from local file successfully:", err);
+      console.warn(`Supabase delete post '${id}' failed:`, err);
     }
   }
 
   return filtered.length < beforeLen;
+}
+
+/**
+ * Store user lead details into Supabase PostgreSQL 'leads' table
+ */
+export async function saveLead(lead: {
+  name: string;
+  email: string;
+  phone: string;
+  source?: string;
+}): Promise<boolean> {
+  const supabase = getSupabaseClient();
+  if (supabase) {
+    try {
+      const { error } = await supabase.from("leads").insert({
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        source: lead.source || "FTT Blog",
+      });
+
+      if (!error) return true;
+      console.warn("Supabase lead insert error:", error);
+    } catch (err) {
+      console.warn("Supabase lead insert exception:", err);
+    }
+  }
+  return false;
 }

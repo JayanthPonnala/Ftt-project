@@ -3,11 +3,12 @@
 import React, { useState, useEffect, useTransition } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Search, Sparkles } from "lucide-react";
-import { BlogPost } from "@/lib/supabase";
+import type { BlogPost } from "@/lib/supabase";
 import GlowOrbsBackground from "@/components/blog/GlowOrbsBackground";
 import BlogHeader from "@/components/blog/BlogHeader";
 import BlogCard from "@/components/blog/BlogCard";
 import GoldUnderlineScribble from "@/components/ui/GoldUnderlineScribble";
+import { isBlogUnlocked, openBlogAccessModal } from "@/lib/blogAccess";
 
 interface BlogIndexClientProps {
   initialPosts: BlogPost[];
@@ -23,6 +24,10 @@ export const BlogIndexClient: React.FC<BlogIndexClientProps> = ({
 
   // Fresh client fetch to guarantee newly published posts show up immediately without stale cache
   useEffect(() => {
+    if (!isBlogUnlocked()) {
+      openBlogAccessModal("/blog");
+    }
+
     fetch("/api/posts")
       .then((res) => res.json())
       .then((data) => {

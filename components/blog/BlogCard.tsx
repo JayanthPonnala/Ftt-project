@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
-import { BlogPost } from "@/lib/supabase";
+import type { BlogPost } from "@/lib/supabase";
 
 interface BlogCardProps {
   post: BlogPost;

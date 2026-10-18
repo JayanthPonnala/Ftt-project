@@ -1,10 +1,12 @@
 -- ==============================================================================
--- FTT Community - Admin Blog System Schema for Supabase
+-- FTT Community - Optimized PostgreSQL Schema for Supabase
 -- Run this script in your Supabase SQL Editor:
--- https://supabase.com/dashboard/project/_/sql
+-- Dashboard -> SQL Editor -> New query -> Paste & Run
 -- ==============================================================================
 
--- 1. Create the posts table with all required fields
+-- ------------------------------------------------------------------------------
+-- 1. POSTS TABLE (Blog Articles)
+-- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.posts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
@@ -16,26 +18,95 @@ CREATE TABLE IF NOT EXISTS public.posts (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. Indexes for high performance
+-- Optimized B-Tree & Composite Indexes for Articles
 CREATE INDEX IF NOT EXISTS idx_posts_slug ON public.posts(slug);
 CREATE INDEX IF NOT EXISTS idx_posts_published_created_at ON public.posts(published, created_at DESC);
 
--- 3. Enable Row Level Security (RLS)
-ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
+-- PostgreSQL Full-Text Search (GIN Index) for lightning-fast keyword search
+CREATE INDEX IF NOT EXISTS idx_posts_search ON public.posts USING GIN (
+  to_tsvector('english', coalesce(title, '') || ' ' || coalesce(excerpt, '') || ' ' || coalesce(content, ''))
+);
 
--- 4. Public access policy: Visitors can ONLY SELECT published posts
+-- ------------------------------------------------------------------------------
+-- 2. LEADS TABLE (User Details Captured via Blog Access Modal)
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.leads (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  source TEXT DEFAULT 'FTT Blog',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Optimized Indexes for Leads Queries & Reporting
+CREATE INDEX IF NOT EXISTS idx_leads_email ON public.leads(email);
+CREATE INDEX IF NOT EXISTS idx_leads_phone ON public.leads(phone);
+CREATE INDEX IF NOT EXISTS idx_leads_created_at ON public.leads(created_at DESC);
+
+-- ------------------------------------------------------------------------------
+-- 3. AUTOMATIC updated_at TIMESTAMP TRIGGER (PostgreSQL PL/pgSQL)
+-- ------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.handle_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_posts_updated_at ON public.posts;
+CREATE TRIGGER trigger_posts_updated_at
+BEFORE UPDATE ON public.posts
+FOR EACH ROW
+EXECUTE FUNCTION public.handle_updated_at();
+
+DROP TRIGGER IF EXISTS trigger_leads_updated_at ON public.leads;
+CREATE TRIGGER trigger_leads_updated_at
+BEFORE UPDATE ON public.leads
+FOR EACH ROW
+EXECUTE FUNCTION public.handle_updated_at();
+
+-- ------------------------------------------------------------------------------
+-- 4. ROW LEVEL SECURITY (RLS) POLICIES
+-- ------------------------------------------------------------------------------
+ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
+
+-- Posts Policies:
+-- Visitors can ONLY read published articles
+DROP POLICY IF EXISTS "Public visitors can only view published posts" ON public.posts;
 CREATE POLICY "Public visitors can only view published posts"
 ON public.posts
 FOR SELECT
 USING (published = true);
 
--- 5. Service Role policy: Full admin read / write / update / delete access
+-- Service Role (Backend API) has full admin access to all articles
+DROP POLICY IF EXISTS "Admin service role has full access to all posts" ON public.posts;
 CREATE POLICY "Admin service role has full access to all posts"
 ON public.posts
 FOR ALL
 USING (auth.role() = 'service_role');
 
--- 6. Optional: Insert initial seed posts
+-- Leads Policies:
+-- Visitors can insert their details through the Blog Access Modal
+DROP POLICY IF EXISTS "Public visitors can submit leads" ON public.leads;
+CREATE POLICY "Public visitors can submit leads"
+ON public.leads
+FOR INSERT
+WITH CHECK (true);
+
+-- Service Role (Backend API) has full access to read and export leads
+DROP POLICY IF EXISTS "Admin service role has full access to leads" ON public.leads;
+CREATE POLICY "Admin service role has full access to leads"
+ON public.leads
+FOR ALL
+USING (auth.role() = 'service_role');
+
+-- ------------------------------------------------------------------------------
+-- 5. INITIAL SEED ARTICLES (Inserts if not already present)
+-- ------------------------------------------------------------------------------
 INSERT INTO public.posts (title, slug, excerpt, content, published, created_at)
 VALUES 
 (
@@ -73,8 +144,8 @@ Risk per Trade: $600 (approx. 15 points on 2 NQ contracts)
 
 I trade exclusively during high-liquidity market overlaps:
 
-1. **London Open Sweep (11:30 AM - 1:30 PM IST):** Observing EUR/USD and GBP/USD institutional liquidity pools.
-2. **New York Morning Open (7:00 PM - 9:30 PM IST):** Nasdaq (NQ) and Gold (GC) fair value gap fills and previous day high/low raids.
+1. **London Open (11:30 AM - 1:30 PM IST):** Observing EUR/USD and GBP/USD support & resistance levels.
+2. **New York Morning Open (7:00 PM - 9:30 PM IST):** Nasdaq (NQ) and Gold (GC) breakout and retest execution.
 
 Trading outside these windows introduces erratic spread expansion and low-volume chop that eats away at funded buffers.
 
@@ -89,80 +160,45 @@ Once reaching the 14-day evaluation requirement, many traders make the fatal mis
   NOW() - INTERVAL '3 days'
 ),
 (
-  'Navigating Volatility: How I Withdrew $187,000+ from Lucid Trading',
-  'withdrew-187k-lucid-trading-volatility',
-  'Trading high-impact news days and staying disciplined during choppy summer market conditions to achieve consistent withdrawals.',
-  '# Managing Choppy Regimes & $187,000+ in Lucid Trading Payouts
+  'Simple Price Action: Support & Resistance That Actually Works',
+  'simple-price-action-support-resistance-guide',
+  'Stop cluttering charts with 10 conflicting indicators. Master the clean approach to horizontal levels, dynamic reaction zones, and high-probability entries.',
+  '# Simple Price Action: Support & Resistance That Actually Works
 
-Markets do not trend 100% of the time. Over 70% of market sessions are spent in ranging consolidations or liquidity-seeking rotations. Learning how to trade or **sit on your hands** during chop is what separates professional traders from gamblers.
+Most beginner retail traders fail because their charts look like abstract art—filled with RSIs, MACDs, Bollinger Bands, and conflicting lines.
 
----
-
-## The Rule of High Impact News
-
-During FOMC and CPI announcement weeks, spreads on futures widen dramatically. Here are my rules:
-
-- **15 Minutes Before News:** Flatten all open contracts. No exceptions.
-- **15 Minutes After News:** Wait for the initial spike to exhaust and the orderbook spreads to normalize.
-- **Enter on Liquidity Retest:** Only take trades after the high and low of the news candle have been tapped and swept.
-
-```json
-{
-  "instrument": "Gold Futures (GC)",
-  "payout_total": "$187,240.50",
-  "average_rr": "1:2.4",
-  "win_rate": "58.4%"
-}
-```
-
-> "In the FTT Community, we emphasize that 80% of profitable trading is knowing when NOT to click buy or sell."
+When you strip away the noise and look at raw candlesticks, the market becomes clear.
 
 ---
 
-## Mental Stamina on Drawdown Days
+## 1. Defining True Support & Resistance
 
-When you hit a losing trade, your heart rate spikes. Dopamine triggers urge you to enter another trade to "get back to even". 
+Support and Resistance are not razor-thin lines. They are **reaction zones** where institutional buyers and sellers entered the market previously with heavy volume.
 
-To defeat revenge trading, I close the laptop screen and do 20 pushups or step outside for a 10-minute walk. Your edge only works over hundreds of trades, not in 5 minutes.',
+- **Support:** A price zone where buying pressure overcomes selling pressure, halting a downtrend and reversing price upward.
+- **Resistance:** A price zone where selling pressure overcomes buying pressure, halting an uptrend and rejecting price downward.
+
+---
+
+## 2. The 3-Touch Validation Rule
+
+Not all levels are equal. A level gains strength with clean rejection tests:
+
+1. **Touch 1 (Origin):** Initial swing high or swing low creation.
+2. **Touch 2 (Confirmation):** Price returns and shows a strong rejection wick.
+3. **Touch 3 (Trade Entry):** Wait for a clear confirmation candle close at the zone before entering with defined risk.
+
+---
+
+## 3. Role Reversal: The Break & Retest
+
+Once a key resistance level is broken with strong volume, it flips into potential **support**. 
+
+Patiently waiting for the retest gives you:
+- A tight stop-loss placed just behind the retested level.
+- Favorable risk-to-reward ratios (1:2 to 1:4).
+- Confidence that you are trading in the direction of the dominant breakout.',
   true,
   NOW() - INTERVAL '7 days'
-),
-(
-  '$168,000+ Forex Payouts: Why Simplicity Always Outperforms Complexity',
-  '168k-forex-payouts-simplicity-over-complexity',
-  'Trading major Forex pairs with pure price action, clean liquidity sweeps, and zero lagging indicators.',
-  '# Naked Charts: Why Simplicity Outperforms Indicators
-
-When Telugu traders ask me what magical indicators I rely on to generate hundreds of thousands of dollars in payouts, they are usually stunned by my answer:
-
-**I trade completely naked charts.**
-
-No RSI, no Bollinger Bands, no Stochastic oscillators, and no lagging ribbons.
-
----
-
-## What Actually Moves Forex Prices?
-
-Price moves for two reasons only:
-1. **To engineer and sweep liquidity (Stop-losses of retail traders).**
-2. **To rebalance price inefficiencies (Fair Value Gaps & imbalances).**
-
-Indicators only calculate the average of past prices. By the time a moving average crosses or an RSI registers overbought, the institutional move has already ended.
-
-### My Daily Execution Checklist:
-
-* [x] Mark Previous Day High (PDH) and Previous Day Low (PDL)
-* [x] Identify clean 15-minute Fair Value Gaps (FVG)
-* [x] Wait for a liquidity raid into Asian highs/lows
-* [x] Wait for 1-minute Market Structure Shift (MSS) with displacement
-* [x] Place limit order at 50% discount with stop above swing high
-
----
-
-## The Power of the Telugu Trading Community
-
-Trading can be lonely and isolating. Having a team of dedicated traders analyzing the charts alongside you every day keeps you accountable. Join our live trade rooms, log your trades, and let discipline do the compounding.',
-  true,
-  NOW() - INTERVAL '12 days'
 )
 ON CONFLICT (slug) DO NOTHING;

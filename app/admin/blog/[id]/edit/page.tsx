@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import GlowOrbsBackground from "@/components/blog/GlowOrbsBackground";
 import AdminHeader from "@/components/admin/AdminHeader";
 import PostForm from "@/components/admin/PostForm";
-import { BlogPost } from "@/lib/supabase";
+import type { BlogPost } from "@/lib/supabase";
 
 export default function EditPostPage() {
   const params = useParams();
