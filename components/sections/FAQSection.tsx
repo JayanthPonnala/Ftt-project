@@ -27,9 +27,9 @@ const FAQ_ITEMS: FAQItem[] = [
   {
     id: "faq-01",
     category: "general",
-    question: "What is Forex Trader Telugu (FTT) and who is it designed for?",
+    question: "Where can I learn Forex in Telugu and Gold in Telugu from scratch?",
     answer:
-      "Forex Trader Telugu (FTT) is the premier trading academy and mentorship ecosystem founded by Chaitanya for Telugu-speaking traders globally. We specialize in simple price action, support and resistance execution across US Futures (Nasdaq, S&P 500, Gold) and Forex. Whether you are a beginner looking for structured education or an experienced trader struggling with consistency, FTT gives you a proven blueprint to get funded and stay profitable.",
+      "Forex Trader Telugu (forextradertelugu) by Chaitanya is the premier platform to master Forex in Telugu and Gold in Telugu. We provide step-by-step mechanical price action, key market levels, and institutional concepts in authentic Telugu without complex jargon.",
   },
   {
     id: "faq-02",
@@ -64,9 +64,9 @@ const FAQ_ITEMS: FAQItem[] = [
   {
     id: "faq-06",
     category: "mentorship",
-    question: "What core concepts are covered inside the FTT mentorship curriculum?",
+    question: "What is included inside the Telugu Trading Course by forextradertelugu?",
     answer:
-      "The curriculum focuses exclusively on simple price action, support and resistance, key market levels, trend identification, breakout and retest setups, strict risk management, position sizing, prop firm passing rules, and trade journaling.",
+      "The Telugu trading course covers pure price action, support and resistance, institutional liquidity concepts (SMC), Gold in Telugu (XAUUSD), US Futures (NQ/ES), strict 1% risk management, prop firm passing strategies, and trade journaling.",
   },
   {
     id: "faq-07",
@@ -80,9 +80,9 @@ const FAQ_ITEMS: FAQItem[] = [
   {
     id: "faq-08",
     category: "live",
-    question: "What are the exact timings of the daily Live Trading sessions?",
+    question: "When does the daily Telugu Trading Live stream take place?",
     answer:
-      "Our live trading streams run every trading day during the high-volatility New York market opening, starting from 7:30 PM IST onwards. You watch live charts, market trend preparation, key support and resistance levels, and real-time execution.",
+      "Our Telugu trading live streams run every trading day during the high-volatility New York market opening from 7:30 PM IST onwards. You watch live charts, market trend preparation, key support/resistance levels, and real-time execution in Telugu.",
   },
   {
     id: "faq-09",

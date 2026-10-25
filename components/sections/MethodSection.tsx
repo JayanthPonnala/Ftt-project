@@ -77,50 +77,47 @@ export const MethodSection: React.FC = () => {
       {/* 4 Cards in a Row with Arrows */}
       <div className="mt-8 sm:mt-10">
         <RevealGroup stagger={0.08} delay={0.1}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 relative">
             {methodSteps.map((step, idx) => {
               return (
-                <React.Fragment key={step.id}>
-                  <RevealItem className="h-full">
-                    <GlassCard className="h-full p-4 sm:p-5 flex flex-col justify-between group hover:border-[#F5B942]/60">
-                      <div>
-                        {/* Top Row: Badge + Icon */}
-                        <div className="flex items-center justify-between mb-4">
-                          <NumberBadge n={step.number} className="w-9 h-9 text-[13px] transition-transform duration-300 group-hover:scale-105" />
-                          <div className="w-9 h-9 rounded-lg bg-white/[0.03] border border-[#F5B942]/30 flex items-center justify-center transition-colors group-hover:border-[#F5B942]/70 group-hover:bg-[#F5B942]/10">
-                            {iconMap[step.icon]}
-                          </div>
+                <RevealItem key={step.id} className="h-full relative">
+                  <GlassCard className="h-full p-4 sm:p-5 flex flex-col justify-between group hover:border-[#F5B942]/60">
+                    <div>
+                      {/* Top Row: Badge + Icon */}
+                      <div className="flex items-center justify-between mb-4">
+                        <NumberBadge n={step.number} className="w-9 h-9 text-[13px] transition-transform duration-300 group-hover:scale-105" />
+                        <div className="w-9 h-9 rounded-lg bg-white/[0.03] border border-[#F5B942]/30 flex items-center justify-center transition-colors group-hover:border-[#F5B942]/70 group-hover:bg-[#F5B942]/10">
+                          {iconMap[step.icon]}
                         </div>
-
-                        {/* Step Title - Bold, Clean & Neat Inter typography */}
-                        <h3 className="text-white font-bold text-[16.5px] sm:text-[17.5px] font-body tracking-tight leading-snug group-hover:text-[#F5B942] transition-colors">
-                          {step.title}
-                        </h3>
-
-                        {/* Description */}
-                        <p className="text-[12.5px] sm:text-[13.5px] leading-[1.55] text-[#A8A8A8] mt-2">
-                          {step.desc}
-                        </p>
                       </div>
 
-                      {/* 28px x 2px Gold Underline at Bottom */}
-                      <div className="w-7 h-[2px] bg-[#F5B942] rounded-full mt-5 transition-all duration-300 group-hover:w-12" />
-                    </GlassCard>
-                  </RevealItem>
+                      {/* Step Title - Bold, Clean & Neat typography */}
+                      <div className="min-h-[42px] flex items-center">
+                        <h3 className="text-white font-bold text-[16px] sm:text-[17px] font-body tracking-tight leading-snug group-hover:text-[#F5B942] transition-colors">
+                          {step.title}
+                        </h3>
+                      </div>
 
-                  {/* Arrow Indicator between cards (desktop right arrow) */}
+                      {/* Description */}
+                      <p className="text-[12.5px] sm:text-[13.5px] leading-[1.55] text-[#A8A8A8] mt-2">
+                        {step.desc}
+                      </p>
+                    </div>
+
+                    {/* 28px x 2px Gold Underline at Bottom */}
+                    <div className="w-7 h-[2px] bg-[#F5B942] rounded-full mt-5 transition-all duration-300 group-hover:w-12 shrink-0" />
+                  </GlassCard>
+
+                  {/* Arrow Indicator between cards - perfectly centered in gap and at exact vertical midpoint */}
                   {idx < methodSteps.length - 1 && (
                     <div
-                      className="hidden lg:flex absolute top-1/2 -translate-y-1/2 z-20 pointer-events-none text-[#F5B942]/50 transition-transform duration-300 group-hover:translate-x-1"
-                      style={{
-                        left: `calc(${(idx + 1) * 25}% - 14px)`,
-                      }}
+                      className="hidden lg:flex absolute -right-[20px] top-1/2 -translate-y-1/2 z-20 pointer-events-none items-center justify-center w-4 h-4 text-[#F5B942]/70 transition-transform duration-300 group-hover:translate-x-0.5"
                       aria-hidden="true"
                     >
-                      <ArrowRight className="w-5 h-5 stroke-[2]" />
+                      <ArrowRight className="w-4 h-4 stroke-[2.2]" />
                     </div>
                   )}
-                </React.Fragment>
+                </RevealItem>
               );
             })}
           </div>

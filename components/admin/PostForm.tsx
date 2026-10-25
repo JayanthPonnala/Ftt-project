@@ -19,7 +19,6 @@ import {
   List,
   Link2,
   Table as TableIcon,
-  Sparkles,
 } from "lucide-react";
 import MarkdownRenderer from "@/components/blog/MarkdownRenderer";
 import type { BlogPost } from "@/lib/supabase";
@@ -46,21 +45,21 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
     null
   );
 
-  // Auto generate slug from title if user hasn't typed custom slug
+  function slugify(text: string) {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  // Auto generate slug from title in create mode if user hasn't typed custom slug
   const handleTitleChange = (val: string) => {
     setTitle(val);
     if (mode === "create" && (!slug || slug === slugify(title))) {
       setSlug(slugify(val));
     }
   };
-
-  function slugify(text: string) {
-    return text
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
-  }
 
   const insertMarkdown = (prefix: string, suffix: string = "") => {
     const textarea = document.getElementById("content-editor") as HTMLTextAreaElement;
@@ -97,6 +96,11 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
       return;
     }
 
+    if (mode === "edit" && !initialData?.id) {
+      showToast("error", "Error: Missing article ID for updating.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -107,19 +111,21 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
 
       const method = mode === "create" ? "POST" : "PUT";
 
+      const finalSlug = slugify(slug || title);
+
       const res = await fetch(endpoint, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title,
-          slug: slugify(slug || title),
-          excerpt,
-          content,
+          title: title.trim(),
+          slug: finalSlug,
+          excerpt: excerpt.trim(),
+          content: content.trim(),
           published,
         }),
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
         throw new Error(data.error || "Failed to save post");
@@ -128,14 +134,14 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
       showToast(
         "success",
         mode === "create"
-          ? "Article published successfully!"
+          ? "Article created and published successfully!"
           : "Article updated successfully!"
       );
 
       setTimeout(() => {
         router.push("/admin/blog");
         router.refresh();
-      }, 1000);
+      }, 800);
     } catch (err: unknown) {
       if (err instanceof Error) {
         showToast("error", err.message);
@@ -148,7 +154,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Toast */}
+      {/* Toast Notification */}
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -171,11 +177,11 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
         )}
       </AnimatePresence>
 
-      {/* Top Bar */}
+      {/* Top Bar Navigation */}
       <div className="flex items-center justify-between pb-6 mb-8 border-b border-white/10">
         <Link
           href="/admin/blog"
-          className="inline-flex items-center gap-2 text-xs sm:text-sm text-[#94A3B8] hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs sm:text-sm text-[#94A3B8] hover:text-[#F5B942] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Dashboard</span>
@@ -183,17 +189,19 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
 
         <div className="flex items-center gap-3">
           <span className="text-xs text-[#94A3B8] font-mono">
-            {mode === "create" ? "New Entry" : `Editing ID: ${initialData?.id?.slice(0, 8)}...`}
+            {mode === "create"
+              ? "New Post"
+              : `Article ID: ${initialData?.id?.slice(0, 8)}...`}
           </span>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Title */}
-        <div className="rounded-2xl backdrop-blur-xl bg-white/[0.03] border border-white/10 p-6">
+        {/* Title & Slug */}
+        <div className="rounded-2xl backdrop-blur-xl bg-[#0D0D0D]/90 border border-white/10 p-6">
           <label
             htmlFor="title"
-            className="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2"
+            className="block text-xs font-semibold uppercase tracking-wider text-[#F5B942] mb-2 font-mono"
           >
             Article Heading *
           </label>
@@ -204,12 +212,12 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
             value={title}
             onChange={(e) => handleTitleChange(e.target.value)}
             placeholder="e.g. $196,000+ MyFundedFutures Payout: My Scaling Plan & Risk Rules"
-            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-lg font-space font-semibold text-white placeholder-[#64748B] focus:outline-none focus:border-cyan-400/60 transition-all"
+            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-lg font-space font-semibold text-white placeholder-[#666] focus:outline-none focus:border-[#F5B942] focus:ring-1 focus:ring-[#F5B942] transition-all"
           />
 
           {/* Slug */}
           <div className="mt-4 pt-4 border-t border-white/5 flex flex-col sm:flex-row sm:items-center gap-2">
-            <span className="text-xs font-mono text-[#64748B] shrink-0">
+            <span className="text-xs font-mono text-[#888] shrink-0">
               URL Slug: /blog/
             </span>
             <input
@@ -218,16 +226,16 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               value={slug}
               onChange={(e) => setSlug(slugify(e.target.value))}
               placeholder="196k-myfundedfutures-payout-scaling-plan"
-              className="flex-1 bg-white/[0.02] border border-white/10 rounded-lg px-3 py-1.5 text-xs font-mono text-[#CBD5E1] focus:outline-none focus:border-cyan-400/50"
+              className="flex-1 bg-white/[0.02] border border-white/10 rounded-lg px-3 py-1.5 text-xs font-mono text-[#CBD5E1] focus:outline-none focus:border-[#F5B942]"
             />
           </div>
         </div>
 
         {/* Short Excerpt */}
-        <div className="rounded-2xl backdrop-blur-xl bg-white/[0.03] border border-white/10 p-6">
+        <div className="rounded-2xl backdrop-blur-xl bg-[#0D0D0D]/90 border border-white/10 p-6">
           <label
             htmlFor="excerpt"
-            className="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2"
+            className="block text-xs font-semibold uppercase tracking-wider text-[#F5B942] mb-2 font-mono"
           >
             Excerpt / Summary *
           </label>
@@ -238,16 +246,16 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
             value={excerpt}
             onChange={(e) => setExcerpt(e.target.value)}
             placeholder="A concise 1-2 sentence preview shown on blog cards and Google search results..."
-            className="w-full bg-white/[0.03] border border-white/10 rounded-xl p-3.5 text-sm text-white placeholder-[#64748B] focus:outline-none focus:border-cyan-400/60 transition-all leading-relaxed"
+            className="w-full bg-white/[0.03] border border-white/10 rounded-xl p-3.5 text-sm text-white placeholder-[#666] focus:outline-none focus:border-[#F5B942] focus:ring-1 focus:ring-[#F5B942] transition-all leading-relaxed"
           />
         </div>
 
         {/* Content with Markdown Toolbar & Preview */}
-        <div className="rounded-2xl backdrop-blur-xl bg-white/[0.03] border border-white/10 overflow-hidden">
+        <div className="rounded-2xl backdrop-blur-xl bg-[#0D0D0D]/90 border border-white/10 overflow-hidden">
           {/* Header with Tabs */}
           <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#F5B942] font-mono">
                 Body Content (Markdown Supported) *
               </span>
             </div>
@@ -256,9 +264,9 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => setActiveTab("write")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   activeTab === "write"
-                    ? "bg-cyan-500 text-black shadow-md"
+                    ? "bg-gradient-to-r from-[#FFE29A] to-[#F5B942] text-black shadow-md"
                     : "text-[#94A3B8] hover:text-white"
                 }`}
               >
@@ -268,9 +276,9 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => setActiveTab("preview")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   activeTab === "preview"
-                    ? "bg-cyan-500 text-black shadow-md"
+                    ? "bg-gradient-to-r from-[#FFE29A] to-[#F5B942] text-black shadow-md"
                     : "text-[#94A3B8] hover:text-white"
                 }`}
               >
@@ -286,7 +294,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => insertMarkdown("**", "**")}
-                className="p-1.5 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1.5 rounded hover:bg-white/10 hover:text-[#F5B942] transition-colors"
                 title="Bold"
               >
                 <Bold className="w-3.5 h-3.5" />
@@ -294,7 +302,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => insertMarkdown("*", "*")}
-                className="p-1.5 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1.5 rounded hover:bg-white/10 hover:text-[#F5B942] transition-colors"
                 title="Italic"
               >
                 <Italic className="w-3.5 h-3.5" />
@@ -302,7 +310,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => insertMarkdown("## ")}
-                className="p-1.5 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1.5 rounded hover:bg-white/10 hover:text-[#F5B942] transition-colors"
                 title="Heading 2"
               >
                 <Heading2 className="w-3.5 h-3.5" />
@@ -310,7 +318,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => insertMarkdown("### ")}
-                className="p-1.5 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1.5 rounded hover:bg-white/10 hover:text-[#F5B942] transition-colors"
                 title="Heading 3"
               >
                 <Heading3 className="w-3.5 h-3.5" />
@@ -318,7 +326,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => insertMarkdown("> ")}
-                className="p-1.5 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1.5 rounded hover:bg-white/10 hover:text-[#F5B942] transition-colors"
                 title="Blockquote"
               >
                 <Quote className="w-3.5 h-3.5" />
@@ -326,7 +334,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => insertMarkdown("```\n", "\n```")}
-                className="p-1.5 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1.5 rounded hover:bg-white/10 hover:text-[#F5B942] transition-colors"
                 title="Code Block"
               >
                 <Code className="w-3.5 h-3.5" />
@@ -334,7 +342,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => insertMarkdown("- ")}
-                className="p-1.5 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1.5 rounded hover:bg-white/10 hover:text-[#F5B942] transition-colors"
                 title="Bullet List"
               >
                 <List className="w-3.5 h-3.5" />
@@ -342,7 +350,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
               <button
                 type="button"
                 onClick={() => insertMarkdown("[", "](https://)")}
-                className="p-1.5 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1.5 rounded hover:bg-white/10 hover:text-[#F5B942] transition-colors"
                 title="Link"
               >
                 <Link2 className="w-3.5 h-3.5" />
@@ -354,7 +362,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
                     "| Header 1 | Header 2 |\n| --- | --- |\n| Cell 1 | Cell 2 |\n"
                   )
                 }
-                className="p-1.5 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1.5 rounded hover:bg-white/10 hover:text-[#F5B942] transition-colors"
                 title="Table"
               >
                 <TableIcon className="w-3.5 h-3.5" />
@@ -375,7 +383,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
 
 # Heading 1
 ## Heading 2
-> Inspirational quote
+> Key trading quote
 
 - Key takeaway 1
 - Key takeaway 2
@@ -383,7 +391,7 @@ export const PostForm: React.FC<PostFormProps> = ({ initialData, mode }) => {
 ```text
 Trade log entries
 ```"
-                className="w-full bg-transparent border-0 text-sm font-mono leading-relaxed text-white placeholder-[#64748B] focus:outline-none resize-y min-h-[360px]"
+                className="w-full bg-transparent border-0 text-sm font-mono leading-relaxed text-white placeholder-[#666] focus:outline-none resize-y min-h-[360px]"
               />
             ) : (
               <div className="p-4 rounded-xl bg-[#070B16] border border-white/5 min-h-[360px]">
@@ -400,7 +408,7 @@ Trade log entries
         </div>
 
         {/* Publish Status & Actions */}
-        <div className="rounded-2xl backdrop-blur-xl bg-white/[0.03] border border-white/10 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="rounded-2xl backdrop-blur-xl bg-[#0D0D0D]/90 border border-white/10 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           {/* Status Toggle */}
           <div className="flex items-center gap-3">
             <button
@@ -441,7 +449,7 @@ Trade log entries
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-semibold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(56,189,248,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FFE29A] via-[#F5B942] to-[#B8801F] text-black font-bold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(245,185,66,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
             >
               {loading
                 ? "Saving..."

@@ -44,31 +44,32 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://forextradertelugu.com"),
   title: {
-    default: "Forex Trader Telugu by Chaitanya | FTT Trading Community & Courses",
+    default: "Forex Trader Telugu by Chaitanya | Forex in Telugu, Gold & Telugu Trading Course",
     template: "%s | Forex Trader Telugu",
   },
   description:
-    "Master Forex and Futures trading in Telugu with Chaitanya (Forex Trader Telugu - FTT). Join 50,000+ Telugu traders learning Price Action, Risk Management, NQ/Gold analysis, and Funded Prop Firm strategies. Daily live trading sessions, beginner to advanced courses, and $1M+ in verified payouts.",
+    "Forex Trader Telugu (forextradertelugu) by mentor Chaitanya — India's premier community to master Forex in Telugu and Gold in Telugu. Join our high-conviction Telugu trading course with daily Telugu trading live execution, institutional price action setups, and funded prop firm blueprints.",
   keywords: [
+    "forextradertelugu",
+    "forex in telugu",
+    "gold in telugu",
+    "telugu trading course",
+    "telugu trading live",
     "Forex Trader Telugu",
-    "FTT",
+    "forex trading in telugu",
+    "gold trading in telugu",
+    "xauusd in telugu",
+    "telugu trading community",
+    "best telugu trading course",
+    "telugu trading live stream",
     "Chaitanya Forex Trader Telugu",
-    "Forex Trading Telugu",
-    "Learn Forex in Telugu",
-    "Forex Trading Course in Telugu",
-    "Telugu Forex Tutorials",
-    "Telugu Trading Community",
-    "Telugu Stock Market and Forex",
-    "Price Action Telugu",
-    "Futures Trading Telugu",
-    "Prop Firm Passing Guidance Telugu",
-    "Funded Trader Telugu",
-    "Daily Live Trading Telugu",
-    "Gold Trading Telugu",
-    "NQ Futures Telugu",
-    "Trading Psychology Telugu",
-    "Best Trading Mentorship Telugu",
-    "Telugu Day Trading",
+    "FTT forex trader telugu",
+    "price action in telugu",
+    "funded trader telugu",
+    "prop firm passing telugu",
+    "telugu stock market and forex",
+    "learn forex in telugu",
+    "daily live trading telugu",
   ],
   authors: [{ name: "Chaitanya", url: "https://forextradertelugu.com" }],
   creator: "Chaitanya (Forex Trader Telugu)",
@@ -95,9 +96,9 @@ export const metadata: Metadata = {
     apple: "/apple-icon.png",
   },
   openGraph: {
-    title: "Forex Trader Telugu by Chaitanya | FTT Community & Courses",
+    title: "Forex Trader Telugu | Best Forex in Telugu, Gold in Telugu & Trading Course",
     description:
-      "Helping Telugu traders turn knowledge into consistent income through practical education, real market experience, daily live trading and a supportive community.",
+      "Master Forex in Telugu and Gold in Telugu with mentor Chaitanya (forextradertelugu). Daily Telugu trading live sessions, comprehensive Telugu trading course, and $1M+ in verified payouts.",
     url: "https://forextradertelugu.com",
     siteName: "Forex Trader Telugu (FTT)",
     locale: "te_IN",
@@ -120,9 +121,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Forex Trader Telugu | Best Telugu Trading Community by Chaitanya",
+    title: "Forex Trader Telugu | Best Forex in Telugu, Gold in Telugu & Trading Course",
     description:
-      "Learn Forex & Futures trading in Telugu. Daily live trading sessions, price action education, and prop firm passing guidance.",
+      "Learn Forex in Telugu and Gold in Telugu with mentor Chaitanya. Daily Telugu trading live market execution and institutional Telugu trading course.",
     images: ["https://res.cloudinary.com/dtqtgdqzq/image/upload/v1791866901/FTT_Logo.jpg"],
     creator: "@forex_telugu",
     site: "@forex_telugu",
@@ -149,10 +150,18 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": "https://forextradertelugu.com/#website",
       url: "https://forextradertelugu.com",
-      name: "Forex Trader Telugu",
-      alternateName: ["FTT", "Forex Trader Telugu by Chaitanya", "FTT Community"],
+      name: "Forex Trader Telugu (forextradertelugu)",
+      alternateName: [
+        "forextradertelugu",
+        "Forex in Telugu",
+        "Gold in Telugu",
+        "Telugu Trading Course",
+        "Telugu Trading Live",
+        "FTT",
+        "Forex Trader Telugu by Chaitanya",
+      ],
       description:
-        "The leading Forex and Futures trading education platform and community for Telugu speakers worldwide.",
+        "India's premier community to master Forex in Telugu and Gold in Telugu with mentor Chaitanya. Comprehensive Telugu trading course and daily Telugu trading live streams.",
       inLanguage: ["te", "en"],
     },
     {
@@ -178,9 +187,9 @@ const jsonLd = {
     {
       "@type": "Course",
       "@id": "https://forextradertelugu.com/#course",
-      name: "FTT Community & Trading Course (Telugu)",
+      name: "Comprehensive Telugu Trading Course — Forex in Telugu & Gold in Telugu Masterclass",
       description:
-        "Comprehensive Telugu Forex & Futures trading course covering Simple Price Action, Support and Resistance, Key Market Levels, Risk Management, Daily Live Trading Sessions, and Prop Firm Passing Guidance.",
+        "India's premier Telugu trading course covering simple price action, Forex in Telugu, Gold in Telugu (XAUUSD), US Futures, daily Telugu trading live streams, and prop firm passing guidance.",
       provider: {
         "@id": "https://forextradertelugu.com/#organization",
       },
@@ -197,14 +206,40 @@ const jsonLd = {
       },
     },
     {
+      "@type": "BroadcastEvent",
+      "@id": "https://forextradertelugu.com/#livetrading",
+      name: "Daily Telugu Trading Live Execution Stream",
+      description:
+        "Daily Telugu trading live market execution during the New York market opening, covering Gold in Telugu (XAUUSD), US Futures, and Forex setups from 7:30 PM IST.",
+      isLiveBroadcast: true,
+      inLanguage: "te",
+      videoFormat: "HD",
+    },
+    {
       "@type": "FAQPage",
       mainEntity: [
         {
           "@type": "Question",
-          name: "What is Forex Trader Telugu (FTT) and who is it designed for?",
+          name: "Where can I learn Forex in Telugu and Gold in Telugu from scratch?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Forex Trader Telugu (FTT) is the premier trading academy and mentorship ecosystem founded by Chaitanya for Telugu-speaking traders globally. We specialize in simple price action, support and resistance execution across US Futures (Nasdaq, S&P 500, Gold) and Forex. Whether you are a beginner looking for structured education or an experienced trader struggling with consistency, FTT gives you a proven blueprint to get funded and stay profitable.",
+            text: "Forex Trader Telugu (forextradertelugu) by Chaitanya is the premier platform to master Forex in Telugu and Gold in Telugu. We provide step-by-step mechanical price action, key market levels, and institutional concepts in authentic Telugu without complex jargon.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What is included inside the Telugu Trading Course by forextradertelugu?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "The Telugu trading course covers pure price action, support and resistance, institutional liquidity concepts (SMC), Gold in Telugu (XAUUSD), US Futures (NQ/ES), strict 1% risk management, prop firm passing strategies, and trade journaling.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "When does the daily Telugu Trading Live stream take place?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Our Telugu trading live streams run every trading day during the high-volatility New York market opening from 7:30 PM IST onwards. You watch live charts, market trend preparation, key support/resistance levels, and real-time execution in Telugu.",
           },
         },
         {
@@ -213,30 +248,6 @@ const jsonLd = {
           acceptedAnswer: {
             "@type": "Answer",
             text: "Chaitanya is a full-time professional futures and forex trader with over 9 years of hands-on market experience. He has documented over $1,000,000+ in verified prop firm payouts from premier global firms like MyFundedFutures and Lucid Trading. Unlike theoretical educators, Chaitanya trades live on stream in front of the community every trading day.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Is the entire masterclass and mentorship taught in native Telugu?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes! 100% of our masterclass academy videos, live trading commentary, Discord study groups, and documentation are provided in clear, authentic Telugu. We demystify institutional Wall Street terminology so every Telugu trader can understand without language barriers.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What core concepts are covered inside the FTT mentorship curriculum?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "The curriculum focuses exclusively on simple price action, support and resistance, key market levels, trend identification, breakout and retest setups, strict risk management, position sizing, prop firm passing rules, and trade journaling.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What are the exact timings of the daily Live Trading sessions?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Our live trading streams run every trading day during the high-volatility New York market opening, starting from 7:30 PM IST onwards. You watch live charts, market trend preparation, key support and resistance levels, and real-time execution.",
           },
         },
         {
@@ -261,6 +272,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${anton.variable} ${inter.variable} ${mrsSaintDelafield.variable} ${spaceGrotesk.variable} h-full dark`}
+      suppressHydrationWarning
     >
       <head>
         <link rel="icon" href="/icon.png" type="image/png" />
@@ -270,7 +282,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-[#050505] text-white font-body antialiased selection:bg-[#F5B942] selection:text-black">
+      <body
+        className="min-h-screen bg-[#050505] text-white font-body antialiased selection:bg-[#F5B942] selection:text-black"
+        suppressHydrationWarning
+      >
         <SmoothScroll>
           <IntroOverlay />
           <BlogAccessModal />

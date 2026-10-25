@@ -1,7 +1,6 @@
 export const NAV_ITEMS = [
   { label: "Home", href: "/#home", target: "home", sections: ["home"] },
   { label: "About", href: "/#about", target: "about", sections: ["about"] },
-  { label: "Reviews", href: "/#testimonials", target: "testimonials", sections: ["testimonials"] },
   { label: "Courses", href: "/#courses", target: "courses", sections: ["method", "courses"] },
   { label: "Community", href: "/#community", target: "community", sections: ["community", "join"] },
   { label: "Partners", href: "/#partners", target: "partners", sections: ["partners"] },

@@ -48,3 +48,7 @@ data/*.local.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scratch & temp
+scratch/
+

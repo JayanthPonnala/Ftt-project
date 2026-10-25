@@ -51,15 +51,17 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
     if (prefersReducedMotion) return;
 
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.05,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.2,
       infinite: false,
     });
 
     lenisRef.current = lenis;
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    document.documentElement.classList.add("lenis", "lenis-smooth");
 
     function raf(time: number) {
       lenis.raf(time);
@@ -108,6 +110,7 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
     return () => {
       cancelAnimationFrame(animId);
       document.removeEventListener("click", handleAnchorClick);
+      document.documentElement.classList.remove("lenis", "lenis-smooth");
       lenis.destroy();
       (window as unknown as { __lenis?: Lenis }).__lenis = undefined;
     };

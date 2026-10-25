@@ -1,19 +1,28 @@
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import { BlogPost, SEED_POSTS, estimateReadTime, getSupabaseClient } from "./supabase";
 
 const DATA_FILE = path.join(process.cwd(), "data", "posts.json");
 const LEADS_FILE = path.join(process.cwd(), "data", "leads.json");
 
+/**
+ * Validates any 32-character hexadecimal UUID format (PostgreSQL uuid compliant)
+ */
+export function isValidUUID(str: string): boolean {
+  if (!str || typeof str !== "string") return false;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str.trim());
+}
+
 // -------------------------------------------------------------
-// LOCAL FILE SYSTEM BACKUP (Instant Offline Sync & Durability)
+// LOCAL FILE SYSTEM BACKUP & CACHE
 // -------------------------------------------------------------
 function readFromFile(): BlogPost[] {
   try {
     if (fs.existsSync(DATA_FILE)) {
       const raw = fs.readFileSync(DATA_FILE, "utf-8");
       const data = JSON.parse(raw);
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         return data;
       }
     }
@@ -21,7 +30,7 @@ function readFromFile(): BlogPost[] {
     console.error("Error reading data/posts.json:", err);
   }
 
-  // Seed file if missing or empty
+  // Initial seed only if file does not exist
   writeToFile(SEED_POSTS);
   return [...SEED_POSTS];
 }
@@ -53,14 +62,50 @@ function formatPost(post: any): BlogPost {
 }
 
 // -------------------------------------------------------------
-// SUPABASE POSTGRESQL DATABASE OPERATIONS
+// SUPABASE POSTGRESQL PRIMARY DATABASE OPERATIONS
 // -------------------------------------------------------------
+
+/**
+ * Fetch all posts (both published and drafts) for admin dashboard.
+ * When Supabase is configured, it is the authoritative database.
+ * The result is cached locally in data/posts.json for offline resilience.
+ */
+export async function getAllPostsAdmin(): Promise<BlogPost[]> {
+  const supabase = getSupabaseClient();
+
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!error && Array.isArray(data)) {
+        const supaPosts = data.map(formatPost);
+        // Update local backup file so it reflects exact database state
+        writeToFile(supaPosts);
+        return supaPosts;
+      } else if (error) {
+        console.warn("Supabase admin fetch error, falling back to local file:", error);
+      }
+    } catch (err) {
+      console.warn("Supabase admin fetch exception, falling back to local file:", err);
+    }
+  }
+
+  // Fallback to local file store if Supabase unavailable
+  const localPosts = readFromFile();
+  return localPosts
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .map(formatPost);
+}
 
 /**
  * Fetch all published articles for public visitors (ordered by newest first)
  */
 export async function getPublishedPosts(): Promise<BlogPost[]> {
   const supabase = getSupabaseClient();
+
   if (supabase) {
     try {
       const { data, error } = await supabase
@@ -69,15 +114,16 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
         .eq("published", true)
         .order("created_at", { ascending: false });
 
-      if (!error && Array.isArray(data) && data.length > 0) {
+      if (!error && Array.isArray(data)) {
         return data.map(formatPost);
+      } else if (error) {
+        console.warn("Supabase published fetch error, falling back:", error);
       }
     } catch (err) {
-      console.warn("Supabase fetch published posts failed, using local file backup:", err);
+      console.warn("Supabase published fetch exception, falling back:", err);
     }
   }
 
-  // Fallback to local file store
   const posts = readFromFile();
   return posts
     .filter((p) => p.published)
@@ -96,13 +142,13 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
         .from("posts")
         .select("*")
         .eq("slug", slug)
-        .single();
+        .maybeSingle();
 
       if (!error && data) {
         return formatPost(data);
       }
     } catch (err) {
-      console.warn(`Supabase fetch post by slug '${slug}' failed, using local file:`, err);
+      console.warn(`Supabase fetch post by slug '${slug}' failed:`, err);
     }
   }
 
@@ -112,43 +158,17 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 }
 
 /**
- * Fetch all posts (both published and drafts) for admin dashboard
- */
-export async function getAllPostsAdmin(): Promise<BlogPost[]> {
-  const supabase = getSupabaseClient();
-  if (supabase) {
-    try {
-      const { data, error } = await supabase
-        .from("posts")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (!error && Array.isArray(data)) {
-        return data.map(formatPost);
-      }
-    } catch (err) {
-      console.warn("Supabase admin fetch all posts failed, using local file backup:", err);
-    }
-  }
-
-  const posts = readFromFile();
-  return posts
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    .map(formatPost);
-}
-
-/**
  * Fetch a single post by ID
  */
 export async function getPostById(id: string): Promise<BlogPost | null> {
   const supabase = getSupabaseClient();
-  if (supabase) {
+  if (supabase && isValidUUID(id)) {
     try {
       const { data, error } = await supabase
         .from("posts")
         .select("*")
         .eq("id", id)
-        .single();
+        .maybeSingle();
 
       if (!error && data) {
         return formatPost(data);
@@ -164,7 +184,7 @@ export async function getPostById(id: string): Promise<BlogPost | null> {
 }
 
 /**
- * Create a new article in Supabase PostgreSQL & local backup
+ * Create a new article directly in Supabase PostgreSQL & update local cache.
  */
 export async function createPost(
   newPost: Omit<BlogPost, "id" | "created_at"> & {
@@ -172,11 +192,12 @@ export async function createPost(
     created_at?: string;
   }
 ): Promise<BlogPost> {
-  const id = newPost.id || crypto.randomUUID();
+  const id =
+    newPost.id && isValidUUID(newPost.id) ? newPost.id : crypto.randomUUID();
   const created_at = newPost.created_at || new Date().toISOString();
   const updated_at = new Date().toISOString();
 
-  const record: BlogPost = {
+  let record: BlogPost = {
     ...newPost,
     id,
     created_at,
@@ -184,15 +205,11 @@ export async function createPost(
     read_time: estimateReadTime(newPost.content || ""),
   };
 
-  // Always save to local backup
-  const current = readFromFile();
-  current.unshift(record);
-  writeToFile(current);
-
   const supabase = getSupabaseClient();
   if (supabase) {
-    try {
-      await supabase.from("posts").insert({
+    const { data, error } = await supabase
+      .from("posts")
+      .insert({
         id: record.id,
         title: record.title,
         slug: record.slug,
@@ -201,74 +218,130 @@ export async function createPost(
         published: record.published,
         created_at: record.created_at,
         updated_at: record.updated_at,
-      });
-    } catch (err) {
-      console.warn("Supabase insert post failed, saved to local file successfully:", err);
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Supabase insert failed:", error);
+      throw new Error(`Database insert error: ${error.message}`);
+    }
+
+    if (data) {
+      record = formatPost(data);
     }
   }
 
-  return formatPost(record);
+  // Update local file cache
+  const current = readFromFile();
+  const filtered = current.filter((p) => p.id !== record.id);
+  filtered.unshift(record);
+  writeToFile(filtered);
+
+  return record;
 }
 
 /**
- * Update an article in Supabase PostgreSQL & local backup
+ * Update an article directly in Supabase PostgreSQL & update local cache.
  */
 export async function updatePost(
   id: string,
   updates: Partial<Omit<BlogPost, "id">>
 ): Promise<BlogPost | null> {
   const updated_at = new Date().toISOString();
-
-  const current = readFromFile();
-  const index = current.findIndex((p) => p.id === id);
-  if (index === -1) return null;
-
-  const updated: BlogPost = {
-    ...current[index],
-    ...updates,
-    updated_at,
-    read_time: estimateReadTime(updates.content || current[index].content || ""),
-  };
-  current[index] = updated;
-  writeToFile(current);
-
+  let updatedRecord: BlogPost | null = null;
   const supabase = getSupabaseClient();
-  if (supabase) {
-    try {
-      await supabase
-        .from("posts")
-        .update({
-          ...updates,
-          updated_at,
-        })
-        .eq("id", id);
-    } catch (err) {
-      console.warn(`Supabase update post '${id}' failed:`, err);
+
+  if (supabase && isValidUUID(id)) {
+    const payload: Record<string, unknown> = {
+      updated_at,
+    };
+    if (updates.title !== undefined) payload.title = updates.title;
+    if (updates.slug !== undefined) payload.slug = updates.slug;
+    if (updates.excerpt !== undefined) payload.excerpt = updates.excerpt;
+    if (updates.content !== undefined) payload.content = updates.content;
+    if (updates.published !== undefined) payload.published = updates.published;
+
+    const { data, error } = await supabase
+      .from("posts")
+      .update(payload)
+      .eq("id", id)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.error(`Supabase update post '${id}' error:`, error);
+      throw new Error(`Database update error: ${error.message}`);
+    }
+
+    if (data) {
+      updatedRecord = formatPost(data);
     }
   }
 
-  return formatPost(updated);
+  // Update in local file backup
+  const current = readFromFile();
+  const index = current.findIndex((p) => p.id === id);
+
+  if (index !== -1) {
+    const localUpdated: BlogPost = {
+      ...current[index],
+      ...updates,
+      updated_at,
+      read_time: estimateReadTime(
+        updates.content !== undefined ? updates.content : current[index].content
+      ),
+    };
+    current[index] = localUpdated;
+    writeToFile(current);
+
+    if (!updatedRecord) {
+      updatedRecord = localUpdated;
+    }
+  } else if (updatedRecord) {
+    current.unshift(updatedRecord);
+    writeToFile(current);
+  }
+
+  return updatedRecord;
 }
 
 /**
- * Delete an article in Supabase PostgreSQL & local backup
+ * Permanently delete an article from Supabase PostgreSQL & local cache.
  */
 export async function deletePost(id: string): Promise<boolean> {
-  const current = readFromFile();
-  const beforeLen = current.length;
-  const filtered = current.filter((p) => p.id !== id);
-  writeToFile(filtered);
-
+  let deleted = false;
   const supabase = getSupabaseClient();
-  if (supabase) {
-    try {
-      await supabase.from("posts").delete().eq("id", id);
-    } catch (err) {
-      console.warn(`Supabase delete post '${id}' failed:`, err);
+
+  // 1. Delete permanently from Supabase PostgreSQL
+  if (supabase && isValidUUID(id)) {
+    const { data, error } = await supabase
+      .from("posts")
+      .delete()
+      .eq("id", id)
+      .select();
+
+    if (error) {
+      console.error(`Supabase delete post '${id}' error:`, error);
+      throw new Error(`Database delete error: ${error.message}`);
+    }
+
+    if (Array.isArray(data) && data.length > 0) {
+      deleted = true;
     }
   }
 
-  return filtered.length < beforeLen;
+  // 2. Remove permanently from local cache file
+  const current = readFromFile();
+  const beforeLen = current.length;
+  const filtered = current.filter((p) => p.id !== id);
+
+  if (filtered.length < beforeLen) {
+    writeToFile(filtered);
+    deleted = true;
+  }
+
+  return deleted;
 }
 
 /**
@@ -296,5 +369,23 @@ export async function saveLead(lead: {
       console.warn("Supabase lead insert exception:", err);
     }
   }
+
+  // Backup to local leads file
+  try {
+    let existingLeads: any[] = [];
+    if (fs.existsSync(LEADS_FILE)) {
+      existingLeads = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"));
+    }
+    existingLeads.push({
+      ...lead,
+      id: crypto.randomUUID(),
+      created_at: new Date().toISOString(),
+    });
+    fs.writeFileSync(LEADS_FILE, JSON.stringify(existingLeads, null, 2), "utf-8");
+    return true;
+  } catch (err) {
+    console.error("Failed to save lead locally:", err);
+  }
+
   return false;
 }
