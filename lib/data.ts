@@ -106,16 +106,16 @@ export const communityGrid: CommunityItem[] = [
   {
     id: "c-01",
     number: "01",
-    title: "LIVE TRADING",
+    title: "TELUGU TRADING LIVE",
     subtitle: `Daily ${SITE.liveTime}`,
-    desc: "Watch real market analysis and live executions every trading day. Learn my thought process, entries, exits and trade management.",
+    desc: "Watch real market analysis and live executions every trading day. Learn my thought process, entries, exits and trade management on Telugu trading live stream.",
   },
   {
     id: "c-02",
     number: "02",
-    title: "FUTURES & FOREX",
-    subtitle: "Gold (GC), Nasdaq (NQ) & Major Pairs",
-    desc: "We trade and analyze high probability setups across futures and forex with real-time market execution.",
+    title: "FOREX & GOLD IN TELUGU",
+    subtitle: "Gold (GC / XAUUSD), NQ & Forex in Telugu",
+    desc: "We trade and analyze high-probability setups across Forex in Telugu and Gold in Telugu with real-time institutional execution.",
   },
   {
     id: "c-03",

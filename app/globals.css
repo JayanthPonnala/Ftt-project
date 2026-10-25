@@ -42,6 +42,7 @@ html.lenis body {
   height: auto;
 }
 
+html.lenis,
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
@@ -56,6 +57,13 @@ html.lenis body {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* GPU & Smooth Rendering Acceleration */
+.gpu-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 
 body {

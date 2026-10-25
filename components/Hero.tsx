@@ -243,11 +243,9 @@ export const Hero: React.FC = () => {
           {/* 4. Description paragraph with soft fade-up */}
           <motion.p
             variants={itemVariants}
-            className="font-body text-[#D6D6D6] text-[14px] sm:text-[15px] lg:text-[16px] leading-[1.45] w-full max-w-[260px] sm:max-w-[540px] mt-3.5 sm:mt-4 font-normal text-left mr-auto"
+            className="font-body text-[#D6D6D6] text-[14px] sm:text-[15px] lg:text-[16.5px] leading-[1.5] w-full max-w-[280px] sm:max-w-[560px] mt-3.5 sm:mt-4 font-normal text-left mr-auto"
           >
-            Helping Telugu traders turn knowledge into consistent income through
-            practical education, real market experience and a supportive
-            community.
+            India&apos;s premier platform to master <strong className="text-white font-medium">Forex in Telugu</strong> and <strong className="text-white font-medium">Gold in Telugu</strong>. Enroll in the comprehensive <strong className="text-white font-medium">Telugu trading course</strong> with daily <strong className="text-[#F5B942] font-semibold">Telugu trading live</strong> execution by Chaitanya (<span className="text-[#D6D6D6]/80 font-normal">forextradertelugu</span>).
           </motion.p>
 
           {/* 5. Stats row with count-up animations */}

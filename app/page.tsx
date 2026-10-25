@@ -3,7 +3,6 @@ import Hero from "@/components/Hero";
 import AboutSection from "@/components/sections/AboutSection";
 import CommunityOverviewSection from "@/components/sections/CommunityOverviewSection";
 import MethodSection from "@/components/sections/MethodSection";
-import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import MembershipSection from "@/components/sections/MembershipSection";
 import TheRouteSection from "@/components/sections/TheRouteSection";
 import JoinCommunitySection from "@/components/sections/JoinCommunitySection";
@@ -31,10 +30,7 @@ export default function Home() {
         {/* Section 4: Method (id="method") */}
         <MethodSection />
 
-        {/* Section 5: Real Trader Testimonials & Reviews (id="testimonials") */}
-        <TestimonialsSection />
-
-        {/* Section 7: Membership (id="courses") */}
+        {/* Section 5: Membership (id="courses") */}
         <MembershipSection />
 
         {/* Section 8: The Route (id="partners") */}

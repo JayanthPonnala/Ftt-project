@@ -21,7 +21,9 @@ export default function EditPostPage() {
 
     const fetchPost = async () => {
       try {
-        const res = await fetch(`/api/admin/posts/${id}`);
+        const res = await fetch(`/api/admin/posts/${id}?_t=${Date.now()}`, {
+          cache: "no-store",
+        });
         const data = await res.json();
         if (res.ok && data.post) {
           setPost(data.post);

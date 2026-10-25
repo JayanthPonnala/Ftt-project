@@ -66,8 +66,8 @@ export const MembershipSection: React.FC = () => {
             <div>
               {/* 1. Eyebrow */}
               <Reveal>
-                <div className="inline-flex items-center gap-2.5 text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.3em] text-[#F5B942]">
-                  <span>MEMBERSHIP</span>
+                <div className="inline-flex items-center gap-2.5 text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F5B942]">
+                  <span>TELUGU TRADING COURSE & MEMBERSHIP</span>
                   <span className="w-[50px] h-[1px] bg-[#F5B942] inline-block shrink-0" aria-hidden="true" />
                 </div>
               </Reveal>
@@ -76,31 +76,28 @@ export const MembershipSection: React.FC = () => {
               <Reveal delay={0.08}>
                 <h2
                   id="courses-title"
-                  className="font-heading uppercase tracking-[0.5px] text-[38px] sm:text-[48px] xl:text-[60px] leading-[0.9] mt-2.5 drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
+                  className="font-heading uppercase tracking-[0.5px] text-[38px] sm:text-[48px] xl:text-[58px] leading-[0.9] mt-2.5 drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
                 >
-                  <span className="block text-white">FTT</span>
-                  <span className="block text-gold-gradient">COMMUNITY</span>
+                  <span className="block text-white">FTT TRADING</span>
+                  <span className="block text-gold-gradient">COURSE</span>
                 </h2>
               </Reveal>
 
               {/* 3. Tagline with gold bullets */}
               <Reveal delay={0.16}>
-                <div className="text-[11px] sm:text-[12.5px] font-medium tracking-[0.25em] text-[#A8A8A8] uppercase mt-3 flex items-center flex-wrap gap-2">
-                  <span>TRADE</span>
+                <div className="text-[11px] sm:text-[12px] font-medium tracking-[0.2em] text-[#A8A8A8] uppercase mt-3 flex items-center flex-wrap gap-2">
+                  <span>FOREX IN TELUGU</span>
                   <span className="text-[#F5B942]">•</span>
-                  <span>LEARN</span>
+                  <span>GOLD IN TELUGU</span>
                   <span className="text-[#F5B942]">•</span>
-                  <span>DISCUSS</span>
-                  <span className="text-[#F5B942]">•</span>
-                  <span>GROW TOGETHER</span>
+                  <span>TELUGU TRADING LIVE</span>
                 </div>
               </Reveal>
 
               {/* 4. Descriptive Paragraph */}
               <Reveal delay={0.24}>
                 <p className="font-body text-[#D6D6D6] text-[13.5px] sm:text-[14.5px] leading-[1.6] max-w-[440px] mt-3.5 font-normal">
-                  Get complete access to live trading sessions, advanced concepts, trade ideas,
-                  community support and everything you need to become a consistent trader.
+                  Enroll in India&apos;s highest rated <strong className="text-white font-medium">Telugu trading course</strong> with daily <strong className="text-[#F5B942] font-medium">Telugu trading live</strong> market execution. Master <strong className="text-white font-medium">Forex in Telugu</strong>, institutional <strong className="text-white font-medium">Gold in Telugu</strong> (XAUUSD), and trade ideas by forextradertelugu.
                 </p>
               </Reveal>
             </div>

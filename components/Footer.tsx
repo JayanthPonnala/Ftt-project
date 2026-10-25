@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Send, Mail } from "lucide-react";
+import { Send, Mail, FileText } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/nav";
 import { SITE } from "@/lib/config";
 import { scrollToIdGlobal } from "@/components/SmoothScroll";
@@ -87,6 +87,15 @@ export const Footer: React.FC = () => {
                   <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#F5B942] transition-all duration-300 ease-out group-hover:w-full" />
                 </button>
               ))}
+              <a
+                href="/terms-and-conditions.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative group text-[14px] font-medium text-[#D6D6D6] hover:text-[#F5B942] transition-colors py-1 outline-none focus-visible:text-[#F5B942] inline-flex items-center gap-1.5"
+              >
+                <span>Terms & Conditions</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#F5B942] transition-all duration-300 ease-out group-hover:w-full" />
+              </a>
             </nav>
 
             {/* Right: Social Icons & Contact */}
@@ -151,9 +160,26 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Copyright & Disclaimer */}
         <Reveal delay={0.1}>
-          <div className="pt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-[12px] text-[#7E7E7E]">
-            <p>© {currentYear} Forex Trader Telugu by Chaitanya. All rights reserved.</p>
-            <p className="max-w-xl text-left sm:text-right">
+          <div className="pt-8 flex flex-col md:flex-row md:items-center justify-between gap-4 text-[12px] text-[#7E7E7E]">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+              <p>© {currentYear} Forex Trader Telugu by Chaitanya. All rights reserved.</p>
+              <span className="hidden sm:inline text-white/20">•</span>
+              <a
+                href="/terms-and-conditions.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-[#D6D6D6] hover:text-[#F5B942] transition-colors font-medium group"
+              >
+                <FileText className="w-3.5 h-3.5 text-[#F5B942] transition-transform duration-200 group-hover:scale-110" />
+                <span className="underline underline-offset-4 decoration-[#F5B942]/40 group-hover:decoration-[#F5B942]">
+                  Terms & Conditions
+                </span>
+                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/10 text-[#F5B942]">
+                  PDF
+                </span>
+              </a>
+            </div>
+            <p className="max-w-xl text-left md:text-right">
               Risk Warning: Trading futures, forex and CFDs carries high market risk. Past prop firm
               performance does not guarantee future results.
             </p>

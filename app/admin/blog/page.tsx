@@ -30,10 +30,14 @@ export default function AdminBlogDashboard() {
 
   const fetchPosts = async () => {
     try {
-      const res = await fetch("/api/admin/posts");
+      const res = await fetch(`/api/admin/posts?_t=${Date.now()}`, {
+        cache: "no-store",
+      });
       const data = await res.json();
       if (res.ok && data.posts) {
         setPosts(data.posts);
+      } else {
+        console.error("Failed to load posts:", data.error);
       }
     } catch (err) {
       console.error("Failed to load admin posts:", err);
@@ -60,12 +64,14 @@ export default function AdminBlogDashboard() {
         method: "DELETE",
       });
 
+      const data = await res.json().catch(() => ({}));
+
       if (res.ok) {
         setPosts((prev) => prev.filter((p) => p.id !== postToDelete.id));
         showToast("success", `"${postToDelete.title}" was deleted.`);
         setPostToDelete(null);
       } else {
-        showToast("error", "Failed to delete article. Please try again.");
+        showToast("error", data.error || "Failed to delete article. Please try again.");
       }
     } catch {
       showToast("error", "An error occurred while deleting.");
