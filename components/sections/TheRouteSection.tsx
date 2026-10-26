@@ -7,16 +7,15 @@ import {
   ExternalLink,
   ChevronLeft,
   ChevronRight,
-  ShieldCheck,
-  Percent,
+  Tag,
+  RotateCw,
+  ArrowRight,
   Users,
   Info,
-  Sparkles,
-  Flame,
-  ArrowRight,
-  Tag,
+  ShieldCheck,
+  Percent,
 } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import SectionShell from "@/components/ui/SectionShell";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
@@ -30,6 +29,7 @@ export type Deal = {
   categoryBadge: string;
   offer: string;
   offerDetail: string;
+  offerTag?: string;
   badgeText: string;
   bullets: Array<{ title: string; desc: string }>;
   code?: string;
@@ -37,8 +37,10 @@ export type Deal = {
   secondaryLabel?: string;
   action: string;
   href: string;
-  tone: "gold" | "purple" | "green" | "blue" | "cyan" | "rose";
+  tone: "gold" | "purple" | "green" | "blue" | "cyan" | "rose" | "vest";
   accountSizes: string;
+  accountSizesLabel?: string;
+  bulletIconType?: "check" | "refresh";
   featured?: boolean;
 };
 
@@ -64,29 +66,6 @@ const deals: Deal[] = [
     href: "https://myfundedfutures.com/?ref=4886",
     tone: "gold",
     accountSizes: "$25K • $50K • $100K Accounts",
-    featured: true,
-  },
-  {
-    id: "fundednext",
-    name: "FundedNext",
-    planName: "FLEX FUTURES MODEL",
-    tagline: "Maximum Flexibility • Maximum Opportunity",
-    category: "prop",
-    categoryBadge: "FUTURES PROP FIRM",
-    offer: "55% OFF",
-    offerDetail: "On Flex Futures Plan",
-    badgeText: "EXCLUSIVE 55% OFF",
-    bullets: [
-      { title: "No Buffer & No DLL", desc: "Direct straightforward path to live funding" },
-      { title: "95% Profit Split", desc: "Keep up to 95% of your trading rewards" },
-      { title: "From $133.99", desc: "The most affordable modern futures model" },
-      { title: "Fast Funding", desc: "Modern flexible rules built for day traders" },
-    ],
-    code: "FTTFX",
-    action: "Claim 55% Off",
-    href: "https://fundednext.com/?fpr=FTTFX",
-    tone: "purple",
-    accountSizes: "Flexible Account Sizing Available",
     featured: true,
   },
   {
@@ -136,6 +115,33 @@ const deals: Deal[] = [
     featured: true,
   },
   {
+    id: "vestmarkets",
+    name: "Vest Markets",
+    planName: "UNRESTRICTED TRADING",
+    tagline: "Trade Without Limits",
+    category: "broker",
+    categoryBadge: "FOREX & CFDS BROKER",
+    offer: "5% OFF",
+    offerDetail: "On Your Trading Account",
+    offerTag: "EXCLUSIVE DEAL",
+    badgeText: "OFFICIAL PARTNER",
+    accountSizesLabel: "Account Types:",
+    accountSizes: "Standard • Pro • Zero • ECN",
+    bulletIconType: "refresh",
+    bullets: [
+      { title: "No minimum to claim", desc: "No threshold to reach before your first profit claim." },
+      { title: "On-demand payouts", desc: "Request a profit claim whenever you want. Processed in 24 hours." },
+      { title: "Up to 95% Profit Split", desc: "You keep up to 95% of your profits with every profit claim." },
+      { title: "No consistency rule", desc: "Trade at your own pace. Every winning day counts in full." },
+      { title: "One clear loss limit", desc: "Max. drawdown applies to every plan. A daily loss limit is optional with a Bespoke Account." },
+    ],
+    code: "FTT",
+    action: "Claim 5% Off",
+    href: "https://vestmarkets.com/?ref=FTT",
+    tone: "vest",
+    featured: true,
+  },
+  {
     id: "justmarkets",
     name: "JustMarkets",
     planName: "RAW SPREAD ACCOUNT",
@@ -180,6 +186,29 @@ const deals: Deal[] = [
     href: "https://url.hk/i/en/0g9eh",
     tone: "rose",
     accountSizes: "Virtual & Physical Visa Cards",
+  },
+  {
+    id: "fundednext",
+    name: "FundedNext",
+    planName: "FLEX FUTURES MODEL",
+    tagline: "Maximum Flexibility • Maximum Opportunity",
+    category: "prop",
+    categoryBadge: "FUTURES PROP FIRM",
+    offer: "55% OFF",
+    offerDetail: "On Flex Futures Plan",
+    badgeText: "EXCLUSIVE 55% OFF",
+    bullets: [
+      { title: "No Buffer & No DLL", desc: "Direct straightforward path to live funding" },
+      { title: "95% Profit Split", desc: "Keep up to 95% of your trading rewards" },
+      { title: "From $133.99", desc: "The most affordable modern futures model" },
+      { title: "Fast Funding", desc: "Modern flexible rules built for day traders" },
+    ],
+    code: "FTTFX",
+    action: "Claim 55% Off",
+    href: "https://fundednext.com/?fpr=FTTFX",
+    tone: "purple",
+    accountSizes: "Flexible Account Sizing Available",
+    featured: true,
   },
 ];
 
@@ -228,6 +257,17 @@ const toneClasses = {
     bulletIcon: "text-sky-300",
     brandBg: "bg-gradient-to-br from-sky-400/20 to-blue-700/10 border-sky-400/30",
   },
+  vest: {
+    card: "border-sky-500/30 hover:border-sky-400/80 shadow-[0_16px_40px_rgba(0,0,0,0.45)] hover:shadow-[0_0_35px_rgba(56,189,248,0.25)]",
+    glow: "bg-sky-400/20",
+    accent: "text-[#38bdf8]",
+    badge: "border-sky-400/40 bg-sky-400/10 text-sky-300",
+    button: "bg-gradient-to-r from-[#00b4d8] via-[#38bdf8] to-[#0284c7] text-[#050b14] font-extrabold hover:brightness-110 shadow-[0_0_22px_rgba(56,189,248,0.4)]",
+    iconBorder: "border-sky-400/40 text-sky-300 bg-sky-400/5",
+    couponBg: "bg-sky-400/[0.04] border-sky-400/35 text-sky-200",
+    bulletIcon: "text-[#38bdf8]",
+    brandBg: "bg-gradient-to-br from-sky-400/20 to-blue-700/10 border-sky-400/30",
+  },
   cyan: {
     card: "border-cyan-400/30 hover:border-cyan-300/80 shadow-[0_16px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.22)]",
     glow: "bg-cyan-400/15",
@@ -253,13 +293,55 @@ const toneClasses = {
 };
 
 // Custom Brand Emblem for visual consistency & polish
-function BrandEmblem({ id, name }: { id: string; name: string }) {
+function BrandEmblem({ id }: { id: string; name?: string }) {
   switch (id) {
     case "mff":
       return (
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-amber-400/30 bg-amber-400/10 shadow-[0_0_12px_rgba(245,185,66,0.2)]">
           <svg viewBox="0 0 24 24" className="h-5 w-5 text-amber-300" fill="currentColor">
             <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5m14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z" />
+          </svg>
+        </div>
+      );
+    case "fundednext":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-purple-400/30 bg-purple-500/10 shadow-[0_0_12px_rgba(168,85,247,0.25)]">
+          <svg viewBox="0 0 24 24" className="h-5 w-5 text-purple-300" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M7 6h10v3H10v3h6v3H10v3H7V6z" fill="currentColor" />
+          </svg>
+        </div>
+      );
+    case "lucid":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-400/10 shadow-[0_0_12px_rgba(16,185,129,0.2)]">
+          <svg viewBox="0 0 24 24" className="h-5 w-5 text-emerald-300" fill="none">
+            <polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="12" cy="12" r="3.5" fill="currentColor" />
+          </svg>
+        </div>
+      );
+    case "blueguardian":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-sky-400/30 bg-sky-400/10 shadow-[0_0_12px_rgba(56,189,248,0.25)]">
+          <svg viewBox="0 0 24 24" className="h-5 w-5 text-sky-300" fill="none">
+            <path
+              d="M12 2L4 5.5v7.5c0 5 3.5 9 8 10.5 4.5-1.5 8-5.5 8-10.5V5.5L12 2z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              fill="rgba(56,189,248,0.15)"
+            />
+            <path d="M9 13.5v-3h1.5v1.5h1v-1.5h1v1.5h1v-1.5h1.5v3H9z" fill="currentColor" />
+          </svg>
+        </div>
+      );
+    case "vestmarkets":
+      return (
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-sky-400/35 bg-[#091526] shadow-[0_0_14px_rgba(56,189,248,0.25)]">
+          <svg viewBox="0 0 550 339" className="h-5 w-auto" fill="white">
+            <path d="M546.559 104.307L418.198 1.6418C415.785 -0.290179 412.222 1.43159 412.222 4.52475V217.483L546.559 110.043C548.401 108.561 548.401 105.768 546.559 104.307Z" />
+            <path d="M130.463 1.64132L2.10114 104.296C0.259255 105.778 0.259255 108.571 2.10114 110.032L136.429 217.472V4.52427C136.429 1.43111 132.865 -0.260628 130.453 1.64132H130.463Z" />
+            <path d="M272.038 325.934L136.429 217.482V335.143C136.429 337.165 138.06 338.827 140.112 338.827H408.597C410.62 338.827 412.281 337.195 412.281 335.143V217.482L276.672 325.934C275.331 327.005 273.439 327.005 272.068 325.934H272.038Z" />
           </svg>
         </div>
       );
@@ -442,7 +524,7 @@ function DealCard({ deal, index }: { deal: Deal; index: number }) {
               );
             })()}
             <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
-              Verified Deal
+              {deal.offerTag || "Verified Deal"}
             </span>
           </div>
           <p className="mt-1.5 text-xs font-medium text-slate-200">
@@ -452,7 +534,7 @@ function DealCard({ deal, index }: { deal: Deal; index: number }) {
 
         {/* ROW 4: Account Sizes / Model Pill (h-[26px]) */}
         <div className="mb-4 flex items-center gap-1.5 text-[10.5px] text-slate-400 h-[26px]">
-          <span className="font-medium text-slate-500">Plan Options:</span>
+          <span className="font-medium text-slate-500">{deal.accountSizesLabel || "Plan Options:"}</span>
           <span className="font-semibold text-slate-200 truncate">{deal.accountSizes}</span>
         </div>
 
@@ -461,7 +543,11 @@ function DealCard({ deal, index }: { deal: Deal; index: number }) {
           {deal.bullets.map((bullet) => (
             <li key={bullet.title} className="flex items-start gap-2 text-[11px] leading-snug text-slate-300">
               <span className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] ${colors.bulletIcon}`}>
-                <Check className="h-2.5 w-2.5 stroke-[3]" />
+                {deal.bulletIconType === "refresh" ? (
+                  <RotateCw className="h-2.5 w-2.5 stroke-[2.5]" />
+                ) : (
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
+                )}
               </span>
               <div className="min-w-0 flex-1">
                 <span className="font-bold text-white mr-1">{bullet.title}:</span>
@@ -636,8 +722,8 @@ export const TheRouteSection: React.FC = () => {
             <div className="flex items-center rounded-xl border border-white/10 bg-[#0b1018]/90 p-1">
               {[
                 { id: "all", label: `All Deals (${deals.length})` },
-                { id: "prop", label: "Futures Prop (4)" },
-                { id: "broker", label: "Brokers & Crypto (2)" },
+                { id: "prop", label: `Futures Prop (${deals.filter((d) => d.category === "prop").length})` },
+                { id: "broker", label: `Brokers & Crypto (${deals.filter((d) => d.category === "broker").length})` },
               ].map((tab) => (
                 <button
                   key={tab.id}
