@@ -12,11 +12,6 @@ export function getAdminCredentials() {
   };
 }
 
-// Convert string to Uint8Array
-function stringToBytes(str: string): Uint8Array {
-  return new TextEncoder().encode(str);
-}
-
 // Convert bytes to hex string
 function bytesToHex(bytes: Uint8Array): string {
   return Array.from(bytes)
