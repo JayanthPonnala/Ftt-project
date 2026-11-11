@@ -25,7 +25,7 @@ export type Deal = {
   name: string;
   planName: string;
   tagline: string;
-  category: "all" | "prop" | "broker";
+  category: "futures" | "cfd" | "broker";
   categoryBadge: string;
   offer: string;
   offerDetail: string;
@@ -37,7 +37,7 @@ export type Deal = {
   secondaryLabel?: string;
   action: string;
   href: string;
-  tone: "gold" | "purple" | "green" | "blue" | "cyan" | "rose" | "vest";
+  tone: "gold" | "purple" | "green" | "blue" | "cyan" | "rose" | "vest" | "elite" | "blueberry" | "perps";
   accountSizes: string;
   accountSizesLabel?: string;
   bulletIconType?: "check" | "refresh";
@@ -45,12 +45,13 @@ export type Deal = {
 };
 
 const deals: Deal[] = [
+  // 1. FUTURES PROP FIRMS
   {
     id: "mff",
     name: "MyFunded Futures",
     planName: "BUILDER & RAPID PLANS",
     tagline: "The Simplest Way To Get Funded",
-    category: "prop",
+    category: "futures",
     categoryBadge: "FUTURES PROP FIRM",
     offer: "50% OFF",
     offerDetail: "Rapid • Builder • Pro Plans",
@@ -73,7 +74,7 @@ const deals: Deal[] = [
     name: "Lucid Trading",
     planName: "FLEX & SCALE TRADING",
     tagline: "More Power • More Opportunities",
-    category: "prop",
+    category: "futures",
     categoryBadge: "FUTURES PROP FIRM",
     offer: "40% OFF",
     offerDetail: "New Accounts • 50K Flex",
@@ -96,10 +97,10 @@ const deals: Deal[] = [
     name: "Blue Guardian",
     planName: "EMPOWERING TRADERS",
     tagline: "Trade With Confidence • Grow With BG",
-    category: "prop",
-    categoryBadge: "FUTURES & CFDs",
+    category: "futures",
+    categoryBadge: "FUTURES PROP FIRM",
     offer: "25% OFF",
-    offerDetail: "All Accounts • CFDs & Futures",
+    offerDetail: "All Accounts • Futures & CFDs",
     badgeText: "ZERO TIME LIMITS",
     bullets: [
       { title: "Fund Up To $200,000", desc: "Access substantial institutional capital" },
@@ -114,6 +115,103 @@ const deals: Deal[] = [
     accountSizes: "Up to $200,000 Capital",
     featured: true,
   },
+  {
+    id: "futureselite",
+    name: "FuturesElite",
+    planName: "RECOMMENDED ELITE PLAN",
+    tagline: "Your Path to Elite Trading Begins Here",
+    category: "futures",
+    categoryBadge: "FUTURES PROP FIRM",
+    offer: "25% OFF",
+    offerDetail: "Recommended Elite Plan • Code: FTT",
+    badgeText: "NO CONSISTENCY RULE",
+    bullets: [
+      { title: "Recommended Elite Plan", desc: "Best entry price with zero consistency once funded" },
+      { title: "End-Of-Day (EOD) Drawdown", desc: "Trailing drawdown calculated at market close, not intraday" },
+      { title: "90% Profit Split", desc: "$2,000 payout cap on 50K Elite with rapid withdrawal cycles" },
+      { title: "Zero Activation Fees", desc: "Tradovate, NinjaTrader & multi-platform day trading" },
+    ],
+    code: "FTT",
+    action: "Claim 25% Off",
+    href: "https://app.futureselite.com?aff=AFF7727599",
+    tone: "elite",
+    accountSizes: "$25K • $50K • $100K • $150K Elite",
+    featured: true,
+  },
+  {
+    id: "fundednext",
+    name: "FundedNext",
+    planName: "FLEX FUTURES MODEL",
+    tagline: "Maximum Flexibility • Maximum Opportunity",
+    category: "futures",
+    categoryBadge: "FUTURES PROP FIRM",
+    offer: "55% OFF",
+    offerDetail: "On Flex Futures Plan",
+    badgeText: "EXCLUSIVE 55% OFF",
+    bullets: [
+      { title: "No Buffer & No DLL", desc: "Direct straightforward path to live funding" },
+      { title: "95% Profit Split", desc: "Keep up to 95% of your trading rewards" },
+      { title: "From $133.99", desc: "The most affordable modern futures model" },
+      { title: "Fast Funding", desc: "Modern flexible rules built for day traders" },
+    ],
+    code: "FTTFX",
+    action: "Claim 55% Off",
+    href: "https://fundednext.com/?fpr=FTTFX",
+    tone: "purple",
+    accountSizes: "Flexible Account Sizing Available",
+    featured: true,
+  },
+
+  // 2. CFDS & PERPS PROP FIRMS
+  {
+    id: "blueberryfunded",
+    name: "Blueberry Funded",
+    planName: "PRIME 2-STEP & FLEX MODELS",
+    tagline: "Broker-Backed by Blueberry • Synthetics",
+    category: "cfd",
+    categoryBadge: "CFD & PERPS PROP",
+    offer: "30% OFF",
+    offerDetail: "Prime 2-Step & Flex • Code: FTT",
+    badgeText: "BROKER-BACKED",
+    bullets: [
+      { title: "Broker-Backed Prop", desc: "World's premier broker-backed firm with real liquidity" },
+      { title: "Spreads From 0.0", desc: "Ultra-low raw spreads & scalp-friendly environment" },
+      { title: "24/7 Synthetic Indices", desc: "Trade synthetics and perps even when markets are closed" },
+      { title: "Up to 85% Profit Split", desc: "On-demand rewards with zero consistency restrictions" },
+    ],
+    code: "FTT",
+    action: "Claim 30% Off",
+    href: "https://blueberryfunded.com/?utm_source=affoliate&ref=2889",
+    tone: "blueberry",
+    accountSizes: "$10K • $25K • $50K • $100K • $200K",
+    featured: true,
+  },
+  {
+    id: "myfundedperps",
+    name: "MyFundedPerps",
+    planName: "MYFUNDEDPERPS ELITE",
+    tagline: "10% Target • Static 5% Max Loss • FREE Elite Case",
+    category: "cfd",
+    categoryBadge: "PERPS & CRYPTO PROP",
+    offer: "25% OFF",
+    offerDetail: "Elite Plan • Code: FTT50 • Limited Time",
+    badgeText: "LIMITED TIME ONLY",
+    accountSizesLabel: "Account Sizes:",
+    accountSizes: "$5K • $10K • $25K • $50K Elite",
+    bullets: [
+      { title: "Static 5% Max Loss", desc: "10% target with static drawdown, not trailing" },
+      { title: "No Daily Loss Option", desc: "Choose no daily loss or 3% option for lower fee" },
+      { title: "80/20 On-Demand Split", desc: "Request payouts on demand with zero consistency rule" },
+      { title: "Up to 40x Leverage", desc: "Trade NAS100, S&P 500, Gold & Crypto + FREE Elite Case" },
+    ],
+    code: "FTT50",
+    action: "Claim 25% Off",
+    href: "https://myfundedperpetuals.com/@FTT50",
+    tone: "perps",
+    featured: true,
+  },
+
+  // 3. BROKERS & CRYPTO
   {
     id: "vestmarkets",
     name: "Vest Markets",
@@ -186,29 +284,6 @@ const deals: Deal[] = [
     href: "https://url.hk/i/en/0g9eh",
     tone: "rose",
     accountSizes: "Virtual & Physical Visa Cards",
-  },
-  {
-    id: "fundednext",
-    name: "FundedNext",
-    planName: "FLEX FUTURES MODEL",
-    tagline: "Maximum Flexibility • Maximum Opportunity",
-    category: "prop",
-    categoryBadge: "FUTURES PROP FIRM",
-    offer: "55% OFF",
-    offerDetail: "On Flex Futures Plan",
-    badgeText: "EXCLUSIVE 55% OFF",
-    bullets: [
-      { title: "No Buffer & No DLL", desc: "Direct straightforward path to live funding" },
-      { title: "95% Profit Split", desc: "Keep up to 95% of your trading rewards" },
-      { title: "From $133.99", desc: "The most affordable modern futures model" },
-      { title: "Fast Funding", desc: "Modern flexible rules built for day traders" },
-    ],
-    code: "FTTFX",
-    action: "Claim 55% Off",
-    href: "https://fundednext.com/?fpr=FTTFX",
-    tone: "purple",
-    accountSizes: "Flexible Account Sizing Available",
-    featured: true,
   },
 ];
 
@@ -290,6 +365,39 @@ const toneClasses = {
     bulletIcon: "text-rose-300",
     brandBg: "bg-gradient-to-br from-rose-400/20 to-pink-700/10 border-rose-400/30",
   },
+  elite: {
+    card: "border-[#ec4899]/35 hover:border-[#f43f8e]/90 shadow-[0_16px_40px_rgba(0,0,0,0.45)] hover:shadow-[0_0_35px_rgba(236,72,153,0.32)]",
+    glow: "bg-gradient-to-br from-[#ec4899]/20 via-[#f43f8e]/15 to-[#8b5cf6]/20",
+    accent: "text-[#f472b6]",
+    badge: "border-[#ec4899]/40 bg-[#ec4899]/10 text-[#f472b6]",
+    button: "bg-gradient-to-r from-[#ec4899] via-[#d946ef] to-[#8b5cf6] text-white font-extrabold hover:brightness-110 shadow-[0_0_22px_rgba(236,72,153,0.45)]",
+    iconBorder: "border-[#ec4899]/40 text-[#f472b6] bg-[#ec4899]/5",
+    couponBg: "bg-[#ec4899]/[0.05] border-[#ec4899]/35 text-[#fbcfe8]",
+    bulletIcon: "text-[#f472b6]",
+    brandBg: "bg-gradient-to-br from-[#ec4899]/20 to-[#8b5cf6]/10 border-[#ec4899]/30",
+  },
+  blueberry: {
+    card: "border-[#818cf8]/35 hover:border-[#a5b4fc]/90 shadow-[0_16px_40px_rgba(0,0,0,0.45)] hover:shadow-[0_0_35px_rgba(129,140,248,0.3)]",
+    glow: "bg-indigo-500/20",
+    accent: "text-[#a5b4fc]",
+    badge: "border-[#818cf8]/40 bg-[#818cf8]/10 text-[#a5b4fc]",
+    button: "bg-gradient-to-r from-[#6366f1] via-[#818cf8] to-[#4f46e5] text-white font-extrabold hover:brightness-110 shadow-[0_0_22px_rgba(99,102,241,0.45)]",
+    iconBorder: "border-[#818cf8]/40 text-[#a5b4fc] bg-[#818cf8]/5",
+    couponBg: "bg-[#818cf8]/[0.05] border-[#818cf8]/35 text-[#c7d2fe]",
+    bulletIcon: "text-[#a5b4fc]",
+    brandBg: "bg-gradient-to-br from-[#818cf8]/20 to-[#4338ca]/10 border-[#818cf8]/30",
+  },
+  perps: {
+    card: "border-[#E5B869]/35 hover:border-[#F5B942]/90 shadow-[0_16px_40px_rgba(0,0,0,0.45)] hover:shadow-[0_0_35px_rgba(229,184,105,0.28)]",
+    glow: "bg-gradient-to-br from-[#E5B869]/20 via-[#00F5A0]/15 to-[#F5B942]/10",
+    accent: "text-[#F5B942]",
+    badge: "border-[#E5B869]/40 bg-[#E5B869]/10 text-[#F5B942]",
+    button: "bg-gradient-to-r from-[#E5B869] via-[#F5B942] to-[#D4A347] text-black font-extrabold hover:brightness-110 shadow-[0_0_22px_rgba(245,185,66,0.4)]",
+    iconBorder: "border-[#00F5A0]/40 text-[#00F5A0] bg-[#00F5A0]/5",
+    couponBg: "bg-[#00F5A0]/[0.08] border-[#00F5A0]/45 text-[#00F5A0]",
+    bulletIcon: "text-[#00F5A0]",
+    brandBg: "bg-gradient-to-br from-[#E5B869]/20 to-[#00F5A0]/10 border-[#E5B869]/30",
+  },
 };
 
 // Custom Brand Emblem for visual consistency & polish
@@ -303,15 +411,6 @@ function BrandEmblem({ id }: { id: string; name?: string }) {
           </svg>
         </div>
       );
-    case "fundednext":
-      return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-purple-400/30 bg-purple-500/10 shadow-[0_0_12px_rgba(168,85,247,0.25)]">
-          <svg viewBox="0 0 24 24" className="h-5 w-5 text-purple-300" fill="none">
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M7 6h10v3H10v3h6v3H10v3H7V6z" fill="currentColor" />
-          </svg>
-        </div>
-      );
     case "lucid":
       return (
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-400/10 shadow-[0_0_12px_rgba(16,185,129,0.2)]">
@@ -332,6 +431,53 @@ function BrandEmblem({ id }: { id: string; name?: string }) {
               fill="rgba(56,189,248,0.15)"
             />
             <path d="M9 13.5v-3h1.5v1.5h1v-1.5h1v1.5h1v-1.5h1.5v3H9z" fill="currentColor" />
+          </svg>
+        </div>
+      );
+    case "futureselite":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#ec4899]/40 bg-gradient-to-br from-[#ec4899]/15 to-[#8b5cf6]/15 shadow-[0_0_14px_rgba(236,72,153,0.3)]">
+          <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#f472b6]" fill="none">
+            <path
+              d="M4 6.5C4 5.67 4.67 5 5.5 5H10.5C11.5 5 12.5 6 13.5 7C14.5 8 15.5 9 17 9H19.5"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+            />
+            <path
+              d="M3 12C3 11.17 3.67 10.5 4.5 10.5H9.5C10.5 10.5 11.5 11.5 12.5 12.5C13.5 13.5 14.5 14.5 16 14.5H19.5"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+            />
+            <path
+              d="M4 17.5C4 16.67 4.67 16 5.5 16H10.5C11.5 16 12.5 17 13.5 18C14.5 19 15.5 20 17 20H19.5"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+      );
+    case "blueberryfunded":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#818cf8]/40 bg-gradient-to-br from-[#818cf8]/15 to-[#4f46e5]/15 shadow-[0_0_14px_rgba(129,140,248,0.25)]">
+          <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#a5b4fc]" fill="currentColor">
+            <path d="M6 3.5h7.2a4.2 4.2 0 0 1 3.4 6.7A4.6 4.6 0 0 1 14 18.5H6V3.5zm3.2 2.7v3.6h3.8a1.8 1.8 0 0 0 0-3.6H9.2zm0 6.3v3.7H14a1.85 1.85 0 0 0 0-3.7H9.2z" />
+          </svg>
+        </div>
+      );
+    case "myfundedperps":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#E5B869]/40 bg-[#0c111a] shadow-[0_0_14px_rgba(229,184,105,0.25)]">
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
+            <path d="M7 6L9 8.5L12 5L15 8.5L17 6V9.5H7V6Z" fill="#00F5A0" />
+            <rect x="6" y="11" width="2.5" height="8" rx="0.75" fill="#00F5A0" />
+            <line x1="7.25" y1="9.5" x2="7.25" y2="11" stroke="#00F5A0" strokeWidth="1.2" strokeLinecap="round" />
+            <rect x="10.75" y="12" width="2.5" height="7" rx="0.75" fill="#F5B942" />
+            <line x1="12" y1="10.5" x2="12" y2="12" stroke="#F5B942" strokeWidth="1.2" strokeLinecap="round" />
+            <rect x="15.5" y="10" width="2.5" height="9" rx="0.75" fill="#00F5A0" />
+            <line x1="16.75" y1="8.5" x2="16.75" y2="10" stroke="#00F5A0" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
         </div>
       );
@@ -342,38 +488,6 @@ function BrandEmblem({ id }: { id: string; name?: string }) {
             <path d="M546.559 104.307L418.198 1.6418C415.785 -0.290179 412.222 1.43159 412.222 4.52475V217.483L546.559 110.043C548.401 108.561 548.401 105.768 546.559 104.307Z" />
             <path d="M130.463 1.64132L2.10114 104.296C0.259255 105.778 0.259255 108.571 2.10114 110.032L136.429 217.472V4.52427C136.429 1.43111 132.865 -0.260628 130.453 1.64132H130.463Z" />
             <path d="M272.038 325.934L136.429 217.482V335.143C136.429 337.165 138.06 338.827 140.112 338.827H408.597C410.62 338.827 412.281 337.195 412.281 335.143V217.482L276.672 325.934C275.331 327.005 273.439 327.005 272.068 325.934H272.038Z" />
-          </svg>
-        </div>
-      );
-    case "fundednext":
-      return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-purple-400/30 bg-purple-500/10 shadow-[0_0_12px_rgba(168,85,247,0.25)]">
-          <svg viewBox="0 0 24 24" className="h-5 w-5 text-purple-300" fill="none">
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M7 6h10v3H10v3h6v3H10v3H7V6z" fill="currentColor" />
-          </svg>
-        </div>
-      );
-    case "lucid":
-      return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-400/10 shadow-[0_0_12px_rgba(16,185,129,0.2)]">
-          <svg viewBox="0 0 24 24" className="h-5 w-5 text-emerald-300" fill="none">
-            <polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5" stroke="currentColor" strokeWidth="1.5" />
-            <circle cx="12" cy="12" r="3.5" fill="currentColor" />
-          </svg>
-        </div>
-      );
-    case "blueguardian":
-      return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-sky-400/30 bg-sky-400/10 shadow-[0_0_12px_rgba(56,189,248,0.25)]">
-          <svg viewBox="0 0 24 24" className="h-5 w-5 text-sky-300" fill="none">
-            <path
-              d="M12 2L4 5.5v7.5c0 5 3.5 9 8 10.5 4.5-1.5 8-5.5 8-10.5V5.5L12 2z"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              fill="rgba(56,189,248,0.15)"
-            />
-            <path d="M9 13.5v-3h1.5v1.5h1v-1.5h1v1.5h1v-1.5h1.5v3H9z" fill="currentColor" />
           </svg>
         </div>
       );
@@ -393,6 +507,15 @@ function BrandEmblem({ id }: { id: string; name?: string }) {
             <rect x="2" y="5" width="20" height="14" rx="3" stroke="currentColor" strokeWidth="1.5" />
             <path d="M2 10h20" stroke="currentColor" strokeWidth="1.5" />
             <circle cx="6" cy="15" r="1.5" fill="currentColor" />
+          </svg>
+        </div>
+      );
+    case "fundednext":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-purple-400/30 bg-purple-500/10 shadow-[0_0_12px_rgba(168,85,247,0.25)]">
+          <svg viewBox="0 0 24 24" className="h-5 w-5 text-purple-300" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M7 6h10v3H10v3h6v3H10v3H7V6z" fill="currentColor" />
           </svg>
         </div>
       );
@@ -439,33 +562,25 @@ function DealCard({ deal, index }: { deal: Deal; index: number }) {
   };
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay: index * 0.06 }}
-      whileHover={shouldReduceMotion ? undefined : { y: -6, scale: 1.01 }}
-      className={`group relative flex h-full min-h-[580px] w-full flex-col overflow-hidden rounded-2xl border bg-[#0b1018]/95 p-5 sm:p-6 backdrop-blur-xl transition-all duration-300 ${colors.card}`}
+    <div
+      className={`group relative flex h-full min-h-[580px] w-full flex-col overflow-hidden rounded-2xl border bg-[#0c111a] p-5 sm:p-6 transition-all duration-200 hover:-translate-y-1.5 will-change-transform ${colors.card}`}
     >
-      {/* Background Animated Ambient Glow */}
-      <motion.div
+      {/* Background Static Ambient Glow with Smooth CSS Hover - zero JS frame drops */}
+      <div
         aria-hidden="true"
-        animate={shouldReduceMotion ? undefined : { scale: [1, 1.25, 0.95, 1], opacity: [0.15, 0.28, 0.18, 0.15] }}
-        transition={shouldReduceMotion ? undefined : { duration: 10 + index * 2, repeat: Infinity, ease: "easeInOut" }}
-        className={`pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full blur-3xl ${colors.glow}`}
+        className={`pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-300 ${colors.glow}`}
       />
 
-      {/* Shimmer light sweep */}
-      <motion.div
+      {/* Subtle top edge highlight */}
+      <div
         aria-hidden="true"
-        animate={shouldReduceMotion ? undefined : { x: ["-130%", "140%"] }}
-        transition={shouldReduceMotion ? undefined : { duration: 7 + index, repeat: Infinity, repeatDelay: 5, ease: "easeInOut" }}
-        className="pointer-events-none absolute -inset-y-12 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
       />
 
       {/* Fine grid pattern overlay */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage:
             "linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)",
@@ -608,16 +723,15 @@ function DealCard({ deal, index }: { deal: Deal; index: number }) {
           Official Partner Link • Instant Discount Active
         </p>
       </div>
-    </motion.article>
+    </div>
   );
 }
 
 export const TheRouteSection: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState<"all" | "prop" | "broker">("all");
+  const [activeFilter, setActiveFilter] = useState<"futures" | "cfd" | "broker" | "all">("futures");
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const filteredDeals = deals.filter(
@@ -631,7 +745,6 @@ export const TheRouteSection: React.FC = () => {
     setCanScrollLeft(scrollLeft > 10);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
-    // Calculate approximate active card index based on scroll position
     const cardWidth = el.firstElementChild?.clientWidth || 360;
     const gap = 20;
     const index = Math.round(scrollLeft / (cardWidth + gap));
@@ -643,15 +756,22 @@ export const TheRouteSection: React.FC = () => {
     const el = scrollContainerRef.current;
     if (!el) return;
 
+    let ticking = false;
     const handleScroll = () => {
-      checkScrollState();
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          checkScrollState();
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     el.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", checkScrollState);
+    window.addEventListener("resize", handleScroll);
     return () => {
       el.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", checkScrollState);
+      window.removeEventListener("resize", handleScroll);
     };
   }, [checkScrollState, filteredDeals]);
 
@@ -671,24 +791,6 @@ export const TheRouteSection: React.FC = () => {
     const cardWidth = el.firstElementChild?.clientWidth || 360;
     el.scrollTo({ left: index * (cardWidth + 20), behavior: "smooth" });
   };
-
-  // Subtle smooth auto-cycle when idle
-  useEffect(() => {
-    if (isPaused || filteredDeals.length <= 1) return;
-
-    const interval = setInterval(() => {
-      const el = scrollContainerRef.current;
-      if (!el) return;
-      const { scrollLeft, scrollWidth, clientWidth } = el;
-      if (scrollLeft >= scrollWidth - clientWidth - 20) {
-        el.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        scroll("right");
-      }
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, [isPaused, filteredDeals.length]);
 
   return (
     <SectionShell id="partners" titleId="partners-title" glowSide="right">
@@ -719,17 +821,18 @@ export const TheRouteSection: React.FC = () => {
         <Reveal delay={0.12}>
           <div className="flex items-center gap-3 shrink-0">
             {/* Filter Pills */}
-            <div className="flex items-center rounded-xl border border-white/10 bg-[#0b1018]/90 p-1">
+            <div className="flex items-center rounded-xl border border-white/10 bg-[#0b1018]/90 p-1 flex-wrap sm:flex-nowrap gap-1">
               {[
-                { id: "all", label: `All Deals (${deals.length})` },
-                { id: "prop", label: `Futures Prop (${deals.filter((d) => d.category === "prop").length})` },
+                { id: "futures", label: `Futures Prop (${deals.filter((d) => d.category === "futures").length})` },
+                { id: "cfd", label: `CFDs & Perps (${deals.filter((d) => d.category === "cfd").length})` },
                 { id: "broker", label: `Brokers & Crypto (${deals.filter((d) => d.category === "broker").length})` },
+                { id: "all", label: `All Deals (${deals.length})` },
               ].map((tab) => (
                 <button
                   key={tab.id}
                   type="button"
                   onClick={() => {
-                    setActiveFilter(tab.id as "all" | "prop" | "broker");
+                    setActiveFilter(tab.id as "futures" | "cfd" | "broker" | "all");
                     const el = scrollContainerRef.current;
                     if (el) el.scrollTo({ left: 0, behavior: "smooth" });
                   }}
@@ -814,13 +917,7 @@ export const TheRouteSection: React.FC = () => {
       </Reveal>
 
       {/* Carousel Track Container */}
-      <div
-        className="relative mt-8"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={() => setIsPaused(true)}
-        onTouchEnd={() => setIsPaused(false)}
-      >
+      <div className="relative mt-8">
         {/* Subtle Horizontal Edge Shadows for overflow depth */}
         {canScrollLeft && (
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-20 w-12 bg-gradient-to-r from-[#050505] to-transparent" />

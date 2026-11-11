@@ -82,7 +82,72 @@ export const PartnerLogos: React.FC = () => {
           {/* Divider */}
           <div className="w-[1px] h-3.5 sm:h-4 bg-white/15 shrink-0" />
 
-          {/* 4. Vest Markets (vest markets) */}
+          {/* 4. FuturesElite (futureselite) */}
+          <div
+            className="shrink-0 flex items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(236,72,153,0.45)]"
+            title="FuturesElite Official Partner"
+          >
+            <div className="flex items-center gap-1.5">
+              <div className="flex h-5 w-5 sm:h-[22px] sm:w-[22px] items-center justify-center rounded-md bg-[#ec4899]/10 border border-[#ec4899]/40 p-0.5 shadow-[0_0_8px_rgba(236,72,153,0.3)]">
+                <svg viewBox="0 0 24 24" className="h-3 sm:h-3.5 w-auto text-[#f472b6]" fill="none">
+                  <path d="M4 6.5C4 5.67 4.67 5 5.5 5H10.5C11.5 5 12.5 6 13.5 7C14.5 8 15.5 9 17 9H19.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                  <path d="M3 12C3 11.17 3.67 10.5 4.5 10.5H9.5C10.5 10.5 11.5 11.5 12.5 12.5C13.5 13.5 14.5 14.5 16 14.5H19.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                  <path d="M4 17.5C4 16.67 4.67 16 5.5 16H10.5C11.5 16 12.5 17 13.5 18C14.5 19 15.5 20 17 20H19.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                </svg>
+              </div>
+              <span className="font-heading text-[12.5px] sm:text-[13px] font-extrabold tracking-tight text-white">
+                Futures<span className="text-[#ec4899]">Elite</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="w-[1px] h-3.5 sm:h-4 bg-white/15 shrink-0" />
+
+          {/* Blueberry Funded (blueberryfunded) */}
+          <div
+            className="shrink-0 flex items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(129,140,248,0.45)]"
+            title="Blueberry Funded Official Partner"
+          >
+            <div className="flex items-center gap-1.5">
+              <div className="flex h-5 w-5 sm:h-[22px] sm:w-[22px] items-center justify-center rounded-md bg-[#6366f1]/15 border border-[#818cf8]/45 p-0.5 shadow-[0_0_8px_rgba(129,140,248,0.35)]">
+                <svg viewBox="0 0 24 24" className="h-3 sm:h-3.5 w-auto text-[#a5b4fc]" fill="currentColor">
+                  <path d="M6 3.5h7.2a4.2 4.2 0 0 1 3.4 6.7A4.6 4.6 0 0 1 14 18.5H6V3.5zm3.2 2.7v3.6h3.8a1.8 1.8 0 0 0 0-3.6H9.2zm0 6.3v3.7H14a1.85 1.85 0 0 0 0-3.7H9.2z" />
+                </svg>
+              </div>
+              <span className="font-heading text-[12.5px] sm:text-[13px] font-extrabold tracking-tight text-white">
+                Blueberry<span className="text-[#818cf8]">Funded</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="w-[1px] h-3.5 sm:h-4 bg-white/15 shrink-0" />
+
+          {/* MyFundedPerps (myfundedperps) */}
+          <div
+            className="shrink-0 flex items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(245,185,66,0.35)]"
+            title="MyFundedPerps Official Partner"
+          >
+            <div className="flex items-center gap-1.5">
+              <div className="flex h-5 w-5 sm:h-[22px] sm:w-[22px] items-center justify-center rounded-md bg-[#00F5A0]/10 border border-[#00F5A0]/40 p-0.5 shadow-[0_0_8px_rgba(0,245,160,0.25)]">
+                <svg viewBox="0 0 24 24" className="h-3 sm:h-3.5 w-auto" fill="none">
+                  <path d="M7 6L9 8.5L12 5L15 8.5L17 6V9.5H7V6Z" fill="#00F5A0" />
+                  <rect x="6" y="11" width="2.5" height="7" rx="0.5" fill="#00F5A0" />
+                  <rect x="10.5" y="12" width="2.5" height="6" rx="0.5" fill="#F5B942" />
+                  <rect x="15" y="10" width="2.5" height="8" rx="0.5" fill="#00F5A0" />
+                </svg>
+              </div>
+              <span className="font-heading text-[12.5px] sm:text-[13px] font-extrabold tracking-tight text-white">
+                MyFunded<span className="text-[#F5B942]">Perps</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="w-[1px] h-3.5 sm:h-4 bg-white/15 shrink-0" />
+
+          {/* 5. Vest Markets (vest markets) */}
           <div
             className="shrink-0 flex items-center opacity-85 hover:opacity-100 transition-all duration-200 hover:-translate-y-0.5 cursor-default hover:drop-shadow-[0_0_10px_rgba(56,189,248,0.35)]"
             title="Vest Markets Official Partner"
